@@ -1,0 +1,261 @@
+[
+  {
+    "onix": {
+      "RecordReference": "9784480439123",
+      "NotificationType": "03",
+      "ProductIdentifier": {
+        "ProductIDType": "15",
+        "IDValue": "9784480439123"
+      },
+      "DescriptiveDetail": {
+        "ProductComposition": "00",
+        "ProductForm": "BA",
+        "ProductFormDetail": "B111",
+        "Collection": {
+          "CollectionType": "10",
+          "TitleDetail": {
+            "TitleType": "01",
+            "TitleElement": [
+              {
+                "TitleElementLevel": "02",
+                "PartNumber": "と-1-11",
+                "TitleText": {
+                  "collationkey": "チクマブンコ",
+                  "content": "ちくま文庫"
+                }
+              }
+            ]
+          }
+        },
+        "TitleDetail": {
+          "TitleType": "01",
+          "TitleElement": {
+            "TitleElementLevel": "01",
+            "TitleText": {
+              "collationkey": "シンパン　シコウノセイリガク",
+              "content": "新版　思考の整理学"
+            }
+          }
+        },
+        "Contributor": [
+          {
+            "SequenceNumber": "1",
+            "ContributorRole": [
+              "A01"
+            ],
+            "PersonName": {
+              "collationkey": "トヤマ シゲヒコ",
+              "content": "外山 滋比古"
+            },
+            "BiographicalNote": "外山 滋比古（とやま・しげひこ）：1923年、愛知県生まれ。英文学者、文学博士、評論家、エッセイスト。東京文理科大学卒業。「英語青年」編集長を経て、東京教育大学助教授、お茶の水女子大学教授、昭和女子大学教授などを歴任。専門の英文学をはじめ、日本語、教育、意味論などに関する評論を多数執筆している。2020年7月逝去。30年以上にわたり学生、ビジネスマンなど多くの読者の支持を得る『思考の整理学』をはじめ、『忘却の整理学』『知的創造のヒント』（以上、筑摩書房）、『乱読のセレンディピティ』（扶桑社）など著作は多数。"
+          }
+        ],
+        "Language": [
+          {
+            "LanguageRole": "01",
+            "LanguageCode": "jpn",
+            "CountryCode": "JP"
+          }
+        ],
+        "Extent": [
+          {
+            "ExtentType": "11",
+            "ExtentValue": "256",
+            "ExtentUnit": "03"
+          }
+        ],
+        "Subject": [
+          {
+            "MainSubject": "",
+            "SubjectSchemeIdentifier": "78",
+            "SubjectCode": "0110"
+          },
+          {
+            "SubjectSchemeIdentifier": "79",
+            "SubjectCode": "31"
+          },
+          {
+            "SubjectSchemeIdentifier": "C9",
+            "SubjectCode": "HC01"
+          },
+          {
+            "SubjectSchemeIdentifier": "C9",
+            "SubjectCode": "AB02"
+          },
+          {
+            "SubjectSchemeIdentifier": "C9",
+            "SubjectCode": "BE12"
+          },
+          {
+            "SubjectSchemeIdentifier": "93",
+            "SubjectCode": "VXA"
+          },
+          {
+            "SubjectSchemeIdentifier": "93",
+            "SubjectCode": "KJP"
+          },
+          {
+            "SubjectSchemeIdentifier": "93",
+            "SubjectCode": "QDXB"
+          },
+          {
+            "SubjectSchemeIdentifier": "93",
+            "SubjectCode": "YNK"
+          }
+        ],
+        "Audience": [
+          {
+            "AudienceCodeType": "22",
+            "AudienceCodeValue": "00"
+          }
+        ]
+      },
+      "CollateralDetail": {
+        "TextContent": [
+          {
+            "TextType": "02",
+            "ContentAudience": "04",
+            "Text": "「東大・京大で1番読まれた本」で知られる〈知のバイブル〉の増補改訂版。2009年の東京大学での講義を新収録し読みやすい活字になりました。"
+          },
+          {
+            "TextType": "03",
+            "ContentAudience": "00",
+            "Text": "「東大・京大で1番読まれた本」で知られる〈知のバイブル〉の増補改訂版。2009年の東京大学での講義を新収録し読みやすい活字になりました。"
+          }
+        ],
+        "SupportingResource": [
+          {
+            "ResourceContentType": "01",
+            "ContentAudience": "01",
+            "ResourceMode": "03",
+            "ResourceVersion": [
+              {
+                "ResourceForm": "02",
+                "ResourceVersionFeature": [
+                  {
+                    "ResourceVersionFeatureType": "01",
+                    "FeatureValue": "D502"
+                  },
+                  {
+                    "ResourceVersionFeatureType": "04",
+                    "FeatureValue": "9784480439123.jpg"
+                  }
+                ],
+                "ResourceLink": "https:\/\/cover.openbd.jp\/9784480439123.jpg"
+              }
+            ]
+          }
+        ]
+      },
+      "PublishingDetail": {
+        "Imprint": {
+          "ImprintIdentifier": [
+            {
+              "ImprintIDType": "24",
+              "IDValue": "4604"
+            },
+            {
+              "ImprintIDType": "19",
+              "IDValue": "480"
+            }
+          ],
+          "ImprintName": "筑摩書房"
+        },
+        "Publisher": {
+          "PublishingRole": "01",
+          "PublisherIdentifier": [
+            {
+              "PublisherIDType": "24",
+              "IDValue": "4604"
+            },
+            {
+              "PublisherIDType": "19",
+              "IDValue": "480"
+            }
+          ],
+          "PublisherName": "筑摩書房"
+        },
+        "PublishingDate": [
+          {
+            "PublishingDateRole": "01",
+            "Date": "20240213"
+          },
+          {
+            "PublishingDateRole": "11",
+            "Date": "20240208"
+          }
+        ]
+      },
+      "ProductSupply": {
+        "MarketPublishingDetail": {
+          "MarketPublishingStatus": "00",
+          "MarketPublishingStatusNote": "1;1"
+        },
+        "SupplyDetail": {
+          "ReturnsConditions": {
+            "ReturnsCodeType": "04",
+            "ReturnsCode": "03"
+          },
+          "ProductAvailability": "99",
+          "Price": [
+            {
+              "PriceType": "03",
+              "PriceAmount": "630",
+              "CurrencyCode": "JPY"
+            }
+          ]
+        }
+      }
+    },
+    "hanmoto": {
+      "zaiko": 11,
+      "kaisetsu105w": "「東大・京大で1番読まれた本」で知られる〈知のバイブル〉の増補改訂版。2009年の東京大学での講義を新収録し読みやすい活字になりました。",
+      "dokushakakikomi": "0",
+      "hatsubai": "筑摩書房",
+      "author": [
+        {
+          "listseq": 1,
+          "dokujikubun": "本文"
+        }
+      ],
+      "datemodified": "2024-03-19 13:50:26",
+      "datecreated": "2023-12-09 07:50:28",
+      "reviews": [
+        {
+          "post_user": "admin",
+          "reviewer": "",
+          "source_id": 7,
+          "kubun_id": 1,
+          "source": "産經新聞",
+          "choyukan": "朝刊",
+          "han": "",
+          "link": "",
+          "appearance": "2024-03-03",
+          "gou": ""
+        }
+      ],
+      "hanmotoinfo": {
+        "name": "筑摩書房",
+        "yomi": "チクマショボウ",
+        "url": "https:\/\/www.chikumashobo.co.jp\/",
+        "toritsugitorikyo": "",
+        "toritsugisonota": "",
+        "eigyoudaihyousha": "",
+        "phoneshoten": "",
+        "facsimileshoten": "",
+        "emailshoten": ""
+      },
+      "hankeidokuji": "文庫判"
+    },
+    "summary": {
+      "isbn": "9784480439123",
+      "title": "新版　思考の整理学",
+      "volume": "と-1-11",
+      "series": "ちくま文庫",
+      "publisher": "筑摩書房",
+      "pubdate": "20240213",
+      "cover": "https:\/\/cover.openbd.jp\/9784480439123.jpg",
+      "author": "外山滋比古／本文"
+    }
+  }
+]

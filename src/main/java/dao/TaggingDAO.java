@@ -15,8 +15,7 @@ class TaggingDAO extends DAOTemplate{
 
 	private ConnectionManager manager;
 	private String sql;
-//	private ResultSet rs;
-//	private PreparedStatement pstmt;
+
 	private Connection conn;
 
 	TaggingDAO(){
@@ -53,7 +52,7 @@ class TaggingDAO extends DAOTemplate{
 					+ bi.getBook().getISBN() + "), "
 					+ "(SELECT ID FROM AUTHORS WHERE NAME = "
 					+ a.getName() + " AND PROFESSION = "
-					+ a.getProfession().toString() + "))";
+					+ a.getProfession() + "))";
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			tagcount += pstmt.executeUpdate();
 		}

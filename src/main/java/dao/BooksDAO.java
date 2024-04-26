@@ -19,8 +19,6 @@ class BooksDAO extends DAOTemplate{
 
 	private ConnectionManager manager;
 	private String sql;
-//	private ResultSet rs;
-//	private PreparedStatement pstmt;
 	private Connection conn;
 	
 	BooksDAO(){
@@ -58,6 +56,7 @@ class BooksDAO extends DAOTemplate{
 					+ "(TITLE, PUBLISH_DATE, PUBLISHER, "
 					+ "PAGES, ISBN, NDC, "
 					+ "PRICE, REGISTATION_TIME, COMMENT)";
+			//間違ったSQL文
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, book.getTitle());

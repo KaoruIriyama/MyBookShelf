@@ -19,8 +19,7 @@ import model.entity.Profession;
 public class DAOFacade extends DAOTemplate{
 	private ConnectionManager manager = null;
 	private String sql;
-//	private ResultSet rs;
-//	private PreparedStatement pstmt;
+
 	
 	private BooksDAO bkdao;
 	private AuthorsDAO athdao;
@@ -252,7 +251,9 @@ public class DAOFacade extends DAOTemplate{
 		
 		int authorid = rs.getInt("AUTHOR_ID");
 		String name = rs.getString("NAME");
-		Profession profession = Profession.getByOrder(rs.getInt("PROFESSION"));
+		Profession profession 
+//		= Profession.getByOrder(rs.getInt("PROFESSION"));
+		= Profession.getByPFName(rs.getString("PROFESSION"));
 		Author author = new Author(authorid, name, profession);
 		
 		return new BookInfo(book, author);

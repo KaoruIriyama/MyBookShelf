@@ -47,7 +47,7 @@ class AuthorsDAO extends DAOTemplate{
 			for (Author au : alist) {
 				if (au.isNotEmpty()) {
 					StringBuilder sb = new StringBuilder();
-					sb.append(au.getName().toString()).append(",").append(au.getProfession().toString());
+					sb.append(au.getName().toString()).append(",").append(au.getProfession().getPFName());
 					String value = "( " + sb.toString() + " )";
 					values.add(value);
 				}
@@ -93,7 +93,9 @@ class AuthorsDAO extends DAOTemplate{
 		if(rs.getInt("ID") != 0) {id = rs.getInt("ID");}
 		else if(rs.getInt("AUTHOR_ID") != 0) {id = rs.getInt("AUTHOR_ID");}
 		String name = rs.getString("NAME");
-		Profession profession = Profession.getByOrder(rs.getInt("PROFESSION"));
+		Profession profession 
+//		= Profession.getByOrder(rs.getInt("PROFESSION"));
+		= Profession.getByPFName(rs.getString("PROFESSION"));
 
 		return new Author(id, name, profession);
 	}

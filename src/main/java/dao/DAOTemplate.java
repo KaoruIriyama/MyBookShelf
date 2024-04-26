@@ -10,9 +10,7 @@ import model.entity.DTO;
 
 public abstract class DAOTemplate {
 	private ConnectionManager manager;
-	private String sql;
-//	private ResultSet rs;
-//	private PreparedStatement pstmt;
+//	private String sql;
 
 //	static {
 //		try {

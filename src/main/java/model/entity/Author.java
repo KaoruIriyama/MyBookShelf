@@ -7,7 +7,7 @@ import java.util.Optional;
 public class Author extends DTO implements Serializable{
 	private int id;
 	private String name;
-	private Profession profession;
+	private Profession profession; //テーブル上ではINTEGERとして扱う
 
 	/** JavaBeansの条件を満たすためのコンストラクタ*/
 	public Author() {

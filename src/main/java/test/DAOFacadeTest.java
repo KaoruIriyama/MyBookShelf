@@ -120,15 +120,18 @@ public class DAOFacadeTest {
 				new Book("カント「視霊者の夢」", LocalDate.of(2013, 3, 12),
 						"講談社", 173, "9784062921619", "147", 680, "講談社学術文庫 ; 2161 心霊研究 「霊界と哲学の対話」(論創社 1991年刊)の抜粋"),
 				new Author("Immanuel Kant", Profession.Author)));
-//		System.out.println(insert_list);//"this.registationTime" is null
-		assertEquals(facade.insertBookInfo(insert_list), true);//false
-		System.out.println(facade.selectBookInfoAll());
+		System.out.println(facade.getNewbook() + ": " + facade.getNewauthor());
+		//0:0
+		
 		assertEquals(facade.getNewbook(), 2);
 		assertEquals(facade.getNewauthor(), 1);
+		assertEquals(facade.insertBookInfo(insert_list), true);//false
+		System.out.println(facade.selectBookInfoAll());
+		
 //		System.out.println(facade.selectBookInfoAll());
 	}
 
-//		@Test
+		@Test
 	public void insertTestNGBoth() {
 		facade = new DAOFacade(JDBC_URL, DB_USER, DB_PASS);
 		List<BookInfo> insert_both = new ArrayList<>();
@@ -142,7 +145,7 @@ public class DAOFacadeTest {
 		assertEquals(facade.getNewauthor(), 0);
 	}
 
-//		@Test
+		@Test
 	public void insertTestNGBook() {
 		//		書籍のみが不完全なデータ
 		facade = new DAOFacade(JDBC_URL, DB_USER, DB_PASS);
@@ -156,7 +159,7 @@ public class DAOFacadeTest {
 		assertEquals(facade.getNewauthor(), 0);
 	}
 
-//	@Test
+	@Test
 	public void insertTestNGAuthor() {
 		//		作者のみが不完全なデータ
 		facade = new DAOFacade(JDBC_URL, DB_USER, DB_PASS);

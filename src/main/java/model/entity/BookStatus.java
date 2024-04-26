@@ -24,4 +24,13 @@ public enum BookStatus implements Serializable{
 	    }
 	    return null; // 特定できない場合
 	  }
+//	順番からenum 定数を特定して返す処理
+	public static BookStatus getByOrder(int order) {
+		for (BookStatus value : BookStatus.values()) {
+		      if (value.ordinal() == order) {
+		        return value;
+		      }
+		    }
+		    return null; // 特定できない場合
+	}
 }

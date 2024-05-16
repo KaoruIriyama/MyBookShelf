@@ -20,7 +20,7 @@ public class EditServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		//mainページでリストが表示されている時にページ遷移が出来ない問題
 		String url = "WEB-INF/jsp/editlist.jsp";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 		dispatcher.forward(request, response);
@@ -30,7 +30,7 @@ public class EditServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+
 		//actionの値によって更新と削除の処理を分岐
 		//actionの値が取得できていない
 		//formactionについて調べる

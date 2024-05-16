@@ -17,19 +17,19 @@
 			<h1>編集画面</h1>
 		</div>
 	</div>
-	<p><c:if test="${not empty Msg}"><c:out value="${Msg }"/></c:if></p>
+	<p><c:if test="${not empty Msg}"><c:out value="${Msg}"/></c:if></p>
 	<form method="post">
 	<jsp:include page="/WEB-INF/jsp/include/editablelist.jsp"></jsp:include>
 	
 		<div class="col-12 m-3">
 			<div class="btn-group" role="group">
 				<input type="submit" class="btn btn-info" value="更新" 
-				formaction="UpdateServlet"/>
+				formaction="UpdateServlet"
+				onclick="return confirm('これらの書籍を更新してよろしいですか？');"/>
 				<input type="submit" class="btn btn-info" value="削除"
 				formaction="DeleteServlet"
 				onclick="return confirm('これらの書籍を削除してよろしいですか？');"/>
-				<input type="reset" class="btn btn-info" value="リセット">
-				<%--分岐が機能してない --%>
+				<input type="reset" class="btn btn-info" value="リセット" />
 			</div>
 		</div>
 	</form>

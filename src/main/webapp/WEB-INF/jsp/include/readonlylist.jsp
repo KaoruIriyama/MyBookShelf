@@ -43,6 +43,7 @@
 			 </ul>
 		</c:otherwise>
 	</c:choose>--%>
+	
 	<%--<% if(total <= limit){ %>
 	<p>全<%=total %>件</p>
 	
@@ -103,10 +104,10 @@
 			<td><c:out value="${bookinfo.book.getPublishDate()}" /></td>
 			<td><c:out value="${bookinfo.book.getPublisher()}" /></td>
 			<td><c:out value="${bookinfo.book.getISBN()}" /></td>
-			<td><c:out value="${bookinfo.book.getRegistationTime()}" /></td>
+			<td><c:out value="${bookinfo.book.getRegistationTime().toString()}" /></td>
 			<td><c:out value="${bookinfo.book.getStatus().getName()}" /></td>
 			<td><c:out value="${bookinfo.book.isFavorite()}" /></td>
-			<td><a href="DetailServlet?id=${bookinfo.book.getID()}"></a></td>
+			<td><a href="DetailServlet?id=${bookinfo.getBook().getId()}"></a></td><%--表示されない --%>
 			</tr>
 		</c:forEach>
 		</tbody>

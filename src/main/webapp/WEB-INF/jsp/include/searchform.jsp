@@ -9,16 +9,16 @@
 			<div class="form-group">
 				<p>ISBNで検索</p>
 				<input type="text" class="form-control" name="isbn"
-				placeholder="ISBN(例 978-4-295-01596-3)" >
+				placeholder="ISBN(例 978-4-295-01596-3)" />
 			</div>
 			<div class="form-group">
 				<p>キーワード検索</p>
-				キーワード<input type="text" class="form-control" name="any" ><br>
-				タイトル<input type="text" class="form-control" name="title" ><br>
-				著者<input type="search" class="form-control" name="creator" ><br>
-				出版社<input type="search" class="form-control" name="publisher" ><br>
-				出版日<input type="date" class="form-control" name="from"  >
-				～<input type="date" class="form-control" name="until"  ><br>
+				キーワード<input type="text" class="form-control" name="any" /><br>
+				タイトル<input type="text" class="form-control" name="title" /><br>
+				著者<input type="search" class="form-control" name="creator" /><br>
+				出版社<input type="search" class="form-control" name="publisher" /><br>
+				出版日<input type="date" class="form-control" name="from"  />
+				～<input type="date" class="form-control" name="until"  /><br>
 			</div>
 			<%--（3）引数（[query]）の形式
 			リクエストの中で指定できる項目は以下である。

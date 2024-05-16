@@ -1,7 +1,6 @@
 package dao;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -17,22 +16,28 @@ import model.entity.DTO;
 import model.entity.Profession;
 
 public class DAOFacade extends DAOTemplate{
-	private ConnectionManager manager = null;
+	private ConnectionManager manager;
 	private String sql;
-
+	private int newbook = 0;
+	private int newauthor = 0;
 	
 	private BooksDAO bkdao;
 	private AuthorsDAO athdao;
 	private TaggingDAO tagdao;
-	private int newbook = 0;
-	private int newauthor = 0;
+	
 
 	public DAOFacade() {
 		this.setManager(ConnectionManager.getInstance());
+		this.bkdao = new BooksDAO();
+		this.athdao = new AuthorsDAO();
+		this.tagdao = new TaggingDAO();
 		}
 	//てすと用
 	public DAOFacade(String db_url, String db_user, String db_pass){
 		this.setManager(ConnectionManager.getInstance(db_url, db_user, db_pass));
+		this.bkdao = new BooksDAO();
+		this.athdao = new AuthorsDAO();
+		this.tagdao = new TaggingDAO();
 	}
 	
 	public ConnectionManager getManager() {	return this.manager;}
@@ -47,92 +52,83 @@ public class DAOFacade extends DAOTemplate{
 
 	public void setNewauthor(int newauthor) {this.newauthor = newauthor;}
 
-	public boolean insertBookAuthor(List<BookInfo> data) {
+	public BooksDAO getBkdao() {
+		return bkdao;
+	}
+	public AuthorsDAO getAthdao() {
+		return athdao;
+	}
+	public TaggingDAO getTagdao() {
+		return tagdao;
+	}
+	public boolean insertBookInfo(List<BookInfo> data) {
 		this.setNewbook(0);
 		this.setNewauthor(0);
 		int newtag = 0;
 		boolean flg = false;
-
-		try {
-			Connection conn = this.getManager().getConn();
+		try (Connection conn = this.getManager().getConn()){
+			if(conn != null) {
 			conn.setAutoCommit(false);
-			bkdao = new BooksDAO();
-			athdao = new AuthorsDAO();
-			tagdao = new TaggingDAO();
-			for (BookInfo b : data) {
-
-				if (bkdao.insertBook(b.getBook()) == 1) {
-					setNewbook(this.getNewbook() + bkdao.insertBook(b.getBook()));
-					System.out.println("Newbook:" + this.getNewbook() + "NewAuthor:" + this.getNewauthor() 
-					+ "NewTag:" + newtag);
+			
+				for (BookInfo b : data) {
+					this.setNewbook(this.getNewbook() + bkdao.insertOne(conn, b.getBook()));
 					try {
-						setNewauthor(this.getNewauthor() + athdao.insertAuthorList(b.getAuthors()));
-						System.out.println("Newbook:" + this.getNewbook() + "NewAuthor:" + this.getNewauthor() 
-						+ "NewTag:" + newtag);
+						if(b.getAuthors().size() > 1) {//ここの分岐が上手く行っていない
+							int acount = 0;
+//							for(Author a : b.getAuthors()){
+//								acount += athdao.insertOne(conn, a);
+//							}
+							this.setNewauthor(this.getNewauthor() 
+									+ acount
+									+ athdao.insertList(conn, b.getAuthors())
+									);
+						}else{
+							this.setNewauthor(this.getNewauthor() 
+									+ athdao.insertOne(conn, b.getAuthors().get(0)));
+						}
 					} catch (SQLException e) {
 						e.printStackTrace();
 						conn.rollback();
 					}
-				} else {
-					conn.rollback();
 				}
-				//				TAGGINGテーブルへの登録用に<Book>一対一＜Author＞対応のリストへ変換
-				List<BookInfo> mappeddata = BookInfo.retributeList(data);
-				for (BookInfo bi : mappeddata) {
-					if (tagdao.insertTaggingfromBookInfo(bi) == 1) {
+				for (BookInfo bi : data) {
+//					if (tagdao.insertTaggingfromBookInfo(conn, bi) != 0) {
 						//本一冊ごとにTAGGINGへの登録を行う(内部では著者名の数だけ登録をする)
 						//						全ての著者が登録できたとき、insertメソッドの返り値は1になるので、
 						//						それが確認出来たら本一冊の登録が終わったと判断し新規タグの登録完了カウントを
 						//						1増やす
-						newtag++;
-					} else {
-						conn.rollback();
-					}
+						newtag += tagdao.insertTaggingfromBookInfo(conn, bi);
+//					} 
 				}
-				if (newtag == this.getNewbook()) {
+				
+				if (newtag > 0 && newtag >= newbook) {//ここが問題か
 					conn.commit();
 					flg = true;
 				} else {
 					conn.rollback();
 					flg = false;
 				}
-				System.out.println("Newbook:" + this.getNewbook() + "NewAuthor:" + this.getNewauthor() 
-				+ "NewTag:" + newtag);
+				
+//				System.out.println("Newbook:" + newbook + "NewAuthor:" + newauthor
+//				+ "NewTag:" + newtag);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			flg = false;
-		} finally {
-			this.manager.closeConn();
-			
 		}
+
 		return flg;
-	}
-//	org.opentest4j.AssertionFailedError: expected: <false> but was: <true>
-//	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
-//	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
-//	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
-//	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:182)
-//	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:177)
-//	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1145)
-//	at test.DAOFacadeTest.insertTestOK(DAOFacadeTest.java:124)
-//	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
-//	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-//	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-
-
-	public boolean insertBookInfo(List<BookInfo> data) {
-
-		//BOOK＿AUTHOR(ビュー)に直接insertするメソッドも書く
-		return false;
 	}
 	
 	public List<BookInfo> selectBookInfoAll(){
 		List<BookInfo> list = new ArrayList<>();
 		try(Connection conn = this.getManager().getConn()){
+			if(conn != null) {
 			list = this.selectAll(conn);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return null;
 		}
 		return list;
 	}
@@ -140,57 +136,73 @@ public class DAOFacade extends DAOTemplate{
 	public List<BookInfo> selectBookInfoList(List<Integer> idList){
 		List<BookInfo> list = new ArrayList<>();
 		try(Connection conn = this.getManager().getConn()){
-			list = this.selectList(conn, idList);
+			if(conn != null) {
+				list = this.selectList(conn, idList);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return null;
 		}
 		return list;
 	}
 	
-	public int updateBookInfoList() {
-		return 0;
+	public int updateBookInfoList(List<BookInfo> infolist) {
+		int result = 0;
+		//infolistをBookSDAO, AuthorsDAOにそれぞれ渡し、mergeを行う
+		
+//		両方上手く行ったらTaggingDAOでタグ付けを更新(または追加、削除)する
+		//BookｓDAOの時はISBNのハイフンの削除（または追加)、出版日の更新に対応できるようにする
+		try (Connection conn = this.getManager().getConn()){
+			if(conn != null) {
+				conn.setAutoCommit(false);
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}
+		return result;
 	}
 
 	public int deleteBookInfoList(List<Integer> idList, String action) {
 		int result = 0;
 		int flag = 0;
 		int count = 0;//該当するIDのあるすべての組み合わせ行数
-		count = countBookAuthorList(idList, action);
+		count += countBookAuthorList(idList, action);
 		if (checkIDList(idList)) {
 			if ("book".equals(action) || "author".equals(action)) {
-				try (Connection conn = this.getManager().getConn()){			
-					conn.setAutoCommit(false);
-
-					bkdao = new BooksDAO();
-					athdao = new AuthorsDAO();
-					tagdao = new TaggingDAO();
-//					ここの各ＤＡＯへのコネクション受け渡しが上手く行っていない？
-					result = tagdao.deleteList(conn, idList, action);
-					if (result == count) {
-						//TAGGINGから削除した行数がBOOK＿AUTHORの該当組み合わせ行数と等しいなら
-						if ("book".equals(action)) {
-							flag = bkdao.deleteList(conn, idList, action);
-						} else if ("author".equals(action)) {
-							flag = athdao.deleteList(conn, idList, action);
-						}	
-						 if(idList.size() == flag) {//消したentityテーブルの行数が引数のidの総数と等しいなら
-							conn.commit();
+				try (Connection conn = this.getManager().getConn()){
+					if(conn != null) {
+						conn.setAutoCommit(false);
+	
+						bkdao = new BooksDAO();
+						athdao = new AuthorsDAO();
+						tagdao = new TaggingDAO();
+	//					ここの各ＤＡＯへのコネクション受け渡しが上手く行っていない？
+						result += tagdao.deleteList(conn, idList, action);
+						if (result == count) {
+							//TAGGINGから削除した行数がBOOK＿AUTHORの該当組み合わせ行数と等しいなら
+							if ("book".equals(action)) {
+								flag += bkdao.deleteList(conn, idList, action);
+							} else if ("author".equals(action)) {
+								flag += athdao.deleteList(conn, idList, action);
+							}	
+							 if(idList.size() == flag) {//消したentityテーブルの行数が引数のidの総数と等しいなら
+								conn.commit();
+							}else {
+								conn.rollback();
+								throw new SQLException(action + "削除に失敗しました");
+							}
 						}else {
 							conn.rollback();
-							throw new SQLException(action + "削除に失敗しました");
+							throw new SQLException("Tagging削除に失敗しました");//これが出た
 						}
-					}else {
-						conn.rollback();
-						throw new SQLException("Tagging削除に失敗しました");//これが出た
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
+					return 0;
 				} 
-//				finally {
-				
-//					this.getManager().closeConn();
-//				}
-				System.out.println("result:" + result + " count:" + count + " flag:" + flag);
+//				System.out.println("result:" + result + " count:" + count + " flag:" + flag);
 			}else {
 				throw new IllegalArgumentException("actionの値が不正です");
 			}
@@ -198,6 +210,20 @@ public class DAOFacade extends DAOTemplate{
 		return flag;
 
 	} 
+	int[] countDAOList(Connection conn) throws SQLException {
+		int[] count = new int[2];
+		String sqlbook = "SELECT COUNT ( * ) AS B_COUNT FROM BOOKS;";
+		String sqlauthor = "SELECT COUNT ( * ) AS A_COUNT FROM AUTHORS;";
+		
+			ResultSet rsbook = executeQueryfromSQL(conn, sqlbook);
+			ResultSet rsauthor = executeQueryfromSQL(conn, sqlauthor);
+			while(rsbook.next() && rsauthor.next()) {
+				count[0] = rsbook.getInt("B_COUNT");
+				count[1] = rsauthor.getInt("A_COUNT");
+			}
+		
+		return count;
+	}
 	
 	int countBookAuthorList(List<Integer> idlist, String action){
 		int count = 0;
@@ -213,15 +239,15 @@ public class DAOFacade extends DAOTemplate{
 		sql = "SELECT COUNT ( * ) AS COUNTING "
 			+ "FROM BOOK_AUTHOR WHERE " + id + " IN " + placeholder;
 		try (Connection conn = this.getManager().getConn()){
-
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-
-			ResultSet rs = pstmt.executeQuery();
-			while(rs.next()) {
-				count = rs.getInt("COUNTING");
+			if(conn != null) {
+				ResultSet rs = executeQueryfromSQL(conn, sql);
+				while(rs.next()) {
+					count = rs.getInt("COUNTING");
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return 0;
 		}
 		return count;
 	}
@@ -273,15 +299,16 @@ public class DAOFacade extends DAOTemplate{
 		return sql;
 	}
 	@Override
-	protected String createInsertOneSQL(DTO dto) {
+	public <T extends DTO> String createInsertOneSQL(T t) {
 		return null;
 	}
 	@Override
-	protected String createInsertListSQL(List<DTO> list) {
+	public <T extends DTO> String createInsertListSQL(List<T> list) {
 		return null;
 	}
 	@Override
-	protected String createUpdateListSQL(List<DTO> list) {
+	protected <T extends DTO> String createUpdateListSQL(List<T> list) {
+	
 		return null;
 	}
 	@Override

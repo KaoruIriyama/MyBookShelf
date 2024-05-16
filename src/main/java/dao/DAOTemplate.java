@@ -24,32 +24,18 @@ public abstract class DAOTemplate {
 	
 	public void setManager(ConnectionManager manager) {this.manager = manager;}
 	
-//	public void closeConnection(PreparedStatement pstmt, ResultSet rs) {
-//
-//		try {
-//			if (pstmt != null) {
-//				pstmt.close();
-//			}
-//			if (rs != null) {
-//				rs.close();
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	}
-	
-	public final int insertOne(Connection conn, DTO dto) throws SQLException{
+	public final <T extends DTO> int insertOne(Connection conn, T t) throws SQLException{
 		int result = 0;
-		if(dto.isNotEmpty()) {
-			result = executeUpdatefromSQL(conn, createInsertOneSQL(dto));
+		if(t.isNotEmpty()) {
+			result += executeUpdatefromSQL(conn, createInsertOneSQL(t));
 		}
 		return result;
 	}
 
-	public final int insertList(Connection conn, List<DTO> list) throws SQLException{
+	public final <T extends DTO> int insertList(Connection conn, List<T> list) throws SQLException{
 		int result = 0;
 		if (list.stream().allMatch(dto -> dto.isNotEmpty())) {
-			result = executeUpdatefromSQL(conn, createInsertListSQL(list));
+			result += executeUpdatefromSQL(conn, createInsertListSQL(list));
 		}
 		return result;
 	}
@@ -89,10 +75,10 @@ public abstract class DAOTemplate {
 		return list;
 	}
 	
-	protected final <T extends DTO> int updateList(Connection conn,List<DTO> list)
+	protected final <T extends DTO> int updateList(Connection conn,List<T> list)
 			throws SQLException {
 		int result = 0;
-		if (list.stream().allMatch(dto -> dto.isNotEmpty())) {
+		if (list.stream().allMatch(t -> t.isNotEmpty())) {
 			result = executeUpdatefromSQL(conn, createUpdateListSQL(list));
 		}
 		return result; 
@@ -107,25 +93,25 @@ public abstract class DAOTemplate {
 		return result; 
 	}
 
-	protected abstract String createInsertOneSQL(DTO dto);
+	protected abstract <T extends DTO> String createInsertOneSQL(T t);
 
-	protected abstract String createInsertListSQL(List<DTO> list);
+	public abstract <T extends DTO> String createInsertListSQL(List<T> list);
 	
 	protected abstract String createSelectAllSQL();
 	
 	protected abstract String createSelectListSQL(List<Integer> idlist);
 	
-	protected abstract String createUpdateListSQL(List<DTO> list);
+	protected abstract <T extends DTO> String createUpdateListSQL(List<T> list);
 	
 	protected abstract String createDeleteListSQL(List<Integer> idList, String action);
 
-	private ResultSet executeQueryfromSQL(Connection conn, String sql) throws SQLException {
+	protected ResultSet executeQueryfromSQL(Connection conn, String sql) throws SQLException {
 //		PreparedStatement pstmt = conn.prepareStatement(sql);
 		ResultSet rs = conn.prepareStatement(sql).executeQuery();
 		return rs;
 	}
 
-	private int executeUpdatefromSQL(Connection conn, String sql) throws SQLException {
+	protected int executeUpdatefromSQL(Connection conn, String sql) throws SQLException {
 //		PreparedStatement pstmt = conn.prepareStatement(sql);
 		int result = conn.prepareStatement(sql).executeUpdate();
 		return result;
@@ -133,26 +119,31 @@ public abstract class DAOTemplate {
 
 	protected static String convertListtoPlaceholder(List<?> list) {
 		List<String> strlist = list.stream().map(o -> o.toString()).toList();
-		return " ( " + String.join(" , ", strlist) + " ) ";
+		return "(" + String.join(",", strlist) + ")";
 	}
 
+//	protected abstract static <T extends DTO> String getVarcharFromDTO(T t);
 	//	インスタンスごとに(va, vb, ... , vn)という文字列を
 	//	つくって返すメソッドを作る
-	protected static String convertListtoValueholder(List<DTO> list) {
+//	public static String convertListtoValueholder(List<DTO> list) {
+//
+//		List<String> values = new ArrayList<>();
+//	    	for(DTO o : list){ 
+////		インスタンスoのもつフィールド一覧を取得し、
+////		    		それぞれのフィールドデータがnullでなければsbに加える
+////		    		StringBuilder sb = new StringBuilder();
+//					List<String> valuelist = o.getAllValue();//受け取れてない
+//		    		String value = "("+ String.join(", ", valuelist) + ")";
+//		    		values.add(value);
+//		   		}
+//		String valueHolder = "(" + String.join(", ", values) + ")";
+//		return valueHolder;
+//	}
 
-		List<String> values = new ArrayList<>();
-	    	for(DTO o : list){ 
-//		インスタンスoのもつフィールド一覧を取得し、
-//		    		それぞれのフィールドデータがnullでなければsbに加える
-//		    		StringBuilder sb = new StringBuilder();
-					List<String> valuelist = o.getAllValue();
-		    		String value = "( "+ String.join(" , ", valuelist) + " )";
-		    		values.add(value);
-		   		}
-		String valueHolder = String.join(" , ", values);
-		return valueHolder;
+	protected static String decorateBySingleQuote(String s) {
+		return "\'" + s + "\'";
 	}
-
+	
 	//idリストに0が含まれるかどうか調べる
 	protected boolean checkIDList(List<Integer> idList) {
 		return idList.stream().noneMatch(i -> i == 0);

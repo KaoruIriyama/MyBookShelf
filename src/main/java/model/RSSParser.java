@@ -91,7 +91,7 @@ public class RSSParser {
 					volume = node_volume.getTextContent() + "巻";
 				}
 				if (node_desc != null) {
-					for (int j = 0; j < subjects.getLength(); j++) {
+					for (int j = 0; j < node_desc.getLength(); j++) {
 						desc += node_desc.item(j).getTextContent() + " ";
 					}
 				}
@@ -104,7 +104,7 @@ public class RSSParser {
 				Book book = new Book(title, publishDate, publisher, pages, isbn, ndc, price, comment);
 				NodeList creators = bookelement.getElementsByTagName("dc:creator");
 				for (int k = 0; k < creators.getLength(); k++) {
-					String name = SearchBookLogic.nameParser(creators.item(k).getTextContent());
+					String name = Author.nameParser(creators.item(k).getTextContent());
 					//createrの数だけ新しい著者インスタンスをlistに詰める
 					alist.add(new Author(name, Profession.Author));
 				}
@@ -124,7 +124,7 @@ public class RSSParser {
 		}
 		return infolist;
 	}
-
+	//NDC－apiの出版年月には「日」がないので、日付を1日として挿入するためのメソッド
 	private LocalDate datePrettier(String month) {
 		String date = month + ".1";
 		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy.M.d");

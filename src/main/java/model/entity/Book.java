@@ -43,7 +43,7 @@ public class Book extends DTO implements Serializable{
 		this.publishDate = opdate.orElse(LocalDate.now());
 		this.publisher = oppublisher.orElse("不明");
 		this.pages = oppages.orElse(0);
-		this.isbn = opisbn.orElse("なし");
+		this.isbn = removeHyphen(opisbn.orElse("なし"));
 		this.ndc = opndc.orElse("なし");
 		this.price = opprice.orElse(0);
 		this.comment = opcomment.orElse("なし");
@@ -59,7 +59,7 @@ public class Book extends DTO implements Serializable{
 		this.publishDate = publishDate;
 		this.publisher = publisher;
 		this.pages = pages;
-		this.isbn = isbn;
+		this.isbn = removeHyphen(isbn);
 		this.ndc = ndc;
 		this.price = price;
 		this.registationTime = registationTime;
@@ -77,10 +77,29 @@ public class Book extends DTO implements Serializable{
 		this.publishDate = publishDate;
 		this.publisher = publisher;
 		this.pages = pages;
-		this.isbn = isbn;
+		this.isbn = removeHyphen(isbn);
 		this.ndc = ndc;
 		this.price = price;
 		this.registationTime = registationTime;
+		this.comment = comment;
+		this.status = status;
+		this.favorite = favorite;
+	}
+	
+	/** テーブルからデータを取得する用のコンストラクタ
+	 *  */
+	public Book(int id, String title, LocalDate publishDate, String publisher,
+			int pages, String isbn, String ndc, int price,
+			String comment, BookStatus status, boolean favorite) {
+
+		this.id = id;
+		this.title = title;
+		this.publishDate = publishDate;
+		this.publisher = publisher;
+		this.pages = pages;
+		this.isbn = removeHyphen(isbn);
+		this.ndc = ndc;
+		this.price = price;
 		this.comment = comment;
 		this.status = status;
 		this.favorite = favorite;
@@ -90,100 +109,48 @@ public class Book extends DTO implements Serializable{
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public String getTitle() {
 		return title;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	//	public List<Author> getAuthor() {return author;}
-	//
-	//	public void setAuthor(List<Author> author) {this.author = author;}
-
 	public LocalDate getPublishDate() {
 		return publishDate;
-	}
-
-	public void setPublishDate(LocalDate publishDate) {
-		this.publishDate = publishDate;
 	}
 
 	public String getPublisher() {
 		return publisher;
 	}
 
-	public void setPublisher(String publisher) {
-		this.publisher = publisher;
-	}
-
 	public int getPages() {
 		return pages;
-	}
-
-	public void setPages(int pages) {
-		this.pages = pages;
 	}
 
 	public String getISBN() {
 		return isbn;
 	}
 
-	public void setISBN(String isbn) {
-		this.isbn = isbn;
-	}
-
 	public String getNDC() {
 		return ndc;
-	}
-
-	public void setNDC(String ndc) {
-		this.ndc = ndc;
 	}
 
 	public int getPrice() {
 		return price;
 	}
 
-	public void setPrice(int price) {
-		this.price = price;
-	}
-
 	public LocalDateTime getRegistationTime() {
 		return registationTime;
 	}
-
-	public void setRegistationTime(LocalDateTime registationTime) {
-		this.registationTime = registationTime;
-	}
-
+	
 	public String getComment() {
 		return comment;
-	}
-
-	public void setComment(String comment) {
-		this.comment = comment;
 	}
 
 	public BookStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(BookStatus status) {
-		this.status = status;
-	}
-
 	public boolean isFavorite() {
 		return favorite;
-	}
-
-	public void setFavorite(boolean favorite) {
-		this.favorite = favorite;
 	}
 
 	@Override
@@ -213,5 +180,52 @@ public class Book extends DTO implements Serializable{
 				", regisitation_time=" + registationTime.toString() + 
 				",  favorite=" + favorite + ", status=" + status + ", comment=" + comment + "\n";
 		
+	}
+
+	public static boolean isbnCheck(String isbn) {
+		// isbn-13 計算ルール 参考: https://isbn.jpo.or.jp/index.php/fix__calc_isbn/
+		// ISBN-10 参考: https://ja.wikipedia.org/wiki/ISBN
+		boolean flag = false;
+		char[] iArray = removeHyphen(isbn).toCharArray();
+		//		    System.out.println(iArray);
+		if (iArray.length == 13) {
+			if (isbn.startsWith("978") || isbn.startsWith("979")) {
+				//ISBN-13
+				int checker_13A = 0;
+				int checker_13B = 0;
+				for (int i = 0; i < 11; i = i + 2) {
+					//charとして保管された数字を計算に使う場合はCharacter.getNumericValue()で対応するintに変換
+					checker_13A += Character.getNumericValue(iArray[i]);
+					//A = ９７８から始まる ISBN の奇数の桁の数字の合計
+					checker_13B += Character.getNumericValue(iArray[i + 1]);
+					// B = ９７８から始まる ISBN の偶数の桁の数字の合計
+				}
+				int checker_13c = checker_13A + checker_13B * 3; //C = A + B * 3
+				//System.out.println(checker_13A + ":" + checker_13B + ":" + checker_13c);
+				if (10 - checker_13c % 10 == Character.getNumericValue(iArray[12])) {
+					// (10 - Cの下1桁(Cを10で割った余り)) = isbn最終桁であるなら真
+					flag = true;
+				}
+			}
+		} else if ((iArray.length == 10)) {
+			//ISBN-10 
+			int checker_ten = 0;
+			for (int i = 0; i < 9; i++) {
+				//チェックディジットを除いた左側の桁から10、9、8…2を掛けてそれらの和を取る
+				checker_ten += Character.getNumericValue(iArray[i]) * (10 - i);
+			}
+			if ((11 - checker_ten % 11) == Character.getNumericValue(iArray[9])) { //和を11で割った余りをisbnの最終桁と比べる
+				//ISBN-10 のチェックデジットが0～9又は11の場合は最終桁と同値になるはず
+				flag = true;
+			} else if (11 - (checker_ten % 11) == 10 && iArray[9] == 'X') {
+				//ISBN-10 のチェックデジットが10の場合、最終桁はXのはず
+				flag = true;
+			}
+		}
+		return flag;
+	}
+
+	static String removeHyphen(String isbn) {
+		return isbn.replace("-", "");
 	}
 }

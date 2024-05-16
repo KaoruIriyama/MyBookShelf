@@ -25,6 +25,7 @@ import dao.DAOFacade;
 import model.entity.Author;
 import model.entity.Book;
 import model.entity.BookInfo;
+import model.entity.BookStatus;
 import model.entity.Profession;
 
 //参考にした：https://recruit.gmo.jp/engineer/jisedai/blog/db-unit-introduction/
@@ -34,10 +35,7 @@ import model.entity.Profession;
 
 public class DAOFacadeTest {
 
-	
-
 	private static IDatabaseTester databaseTester = null;
-//	private static IDatabaseConnection databaseconn = null; 
 	private static IDataSet dataset;
 	private static DAOFacade facade = null;
 
@@ -46,7 +44,8 @@ public class DAOFacadeTest {
 //	private static final String JDBC_URL = "jdbc:h2:mem:bookShelf;DB_CLOSE_DELAY=-1";//インメモリモードで起動 
 	private static final String JDBC_URL 
 //	= "jdbc:h2:tcp://localhost/~/testShelf";
-	= "jdbc:h2:~/testShelf";
+	= "jdbc:h2:tcp://localhost/~/testShelf";
+//	= "jdbc:h2:~/testShelf";
 	private static final String DB_USER = "sa";
 	private static final String DB_PASS = "test";
 
@@ -60,25 +59,17 @@ public class DAOFacadeTest {
 	public static void setUp(){
 		try {
 			databaseTester = new JdbcDatabaseTester(JDBC_DRIVER, JDBC_URL, DB_USER, DB_PASS);
-//			databaseconn = databaseTester.getConnection();
-//			PreparedStatement pstemp = databaseconn.prepareStatement("SET REFERENTIAL_INTEGRITY FALSE");
-//			pstemp.execute();
 			//データベースにテストデータを読み込ませる
 			dataset = new FlatXmlDataSetBuilder().build(new InputSource("data/testdata.xml"));
 			databaseTester.setSetUpOperation(DatabaseOperation.CLEAN_INSERT);
 			databaseTester.setDataSet(dataset);
 			databaseTester.onSetup();//java.net.ConnectException: Connection refused: 
-//				no further information: localhost"
-//			new InsertIndentityOperation(DatabaseOperation.CLEAN_INSERT).execute(connection,dataSet); 
-			
+	
 			//setUpOperation()の引数にDatabaseOperation.CLEAN_INSERTを指定すると
 			//org.dbunit.dataset.NoSuchTableException: TAGGING
 			//引数にDatabaseOperation.INSERTを指定すると
 			//org.dbunit.dataset.NoSuchTableException: BOOKS
-			
-//			facade = new DAOFacade((Connection) databaseconn);
-//			facade = new DAOFacade(dataSource());
-			
+
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			fail();
@@ -91,44 +82,52 @@ public class DAOFacadeTest {
 		@AfterAll
 		public static void tearDown() throws Exception {
 			databaseTester.setTearDownOperation(DatabaseOperation.DELETE_ALL);
-			databaseTester.setTearDownOperation(DatabaseOperation.TRUNCATE_TABLE);
+//			databaseTester.setTearDownOperation(DatabaseOperation.TRUNCATE_TABLE);
+			
 			databaseTester.setDataSet(dataset);
-//			databaseTester.setTearDownOperation(DatabaseOperation.CLOSE_CONNECTION(databaseTester.getConnection()));
-//			databaseTester.setTearDownOperation(DatabaseOperation.DELETE_ALL);			
 			databaseTester.onTearDown();
 //			org.h2.jdbc.JdbcSQLSyntaxErrorException: "PUBLIC.AUTHORS" を空にできません
 //			Cannot truncate "PUBLIC.AUTHORS"; SQL statement:
 //			truncate table AUTHORS [90106-224]
+			//TRUNCATEは外部キー制約のあるテーブルに対してはできない
 		}
 
 		@Test
 	public void insertTestOK() {
 		facade = new DAOFacade(JDBC_URL, DB_USER, DB_PASS);
+
 		List<BookInfo> insert_list = new ArrayList<>();
-		//		書籍も作者も存在しない新規の書籍データ
-		insert_list.add(new BookInfo(
-				new Book("新版 思考の整理学", LocalDate.of(2024, 2, 13),
-						"筑摩書房", 256, "9784480439123", "なし", 630, ""),
-				new Author("外山 滋比古", Profession.Author)));
+		
 		//		testdata.xmlに存在するデータ
 		insert_list.add(new BookInfo(
 				new Book("永遠平和のために", LocalDate.of(1985, 1, 16),
 						"岩波書店", 138, "9784003362594", "134.2", 638, ""),
-				new Author("Immanuel Kant", Profession.Author)));
+				new Author("Immanuel Kant", Profession.Author)));//Updateされているので1が結果として帰ってきている
 		//		testdata.xmlに作者のみが存在するデータ
 		insert_list.add(new BookInfo(
 				new Book("カント「視霊者の夢」", LocalDate.of(2013, 3, 12),
 						"講談社", 173, "9784062921619", "147", 680, "講談社学術文庫 ; 2161 心霊研究 「霊界と哲学の対話」(論創社 1991年刊)の抜粋"),
 				new Author("Immanuel Kant", Profession.Author)));
-		System.out.println(facade.getNewbook() + ": " + facade.getNewauthor());
-		//0:0
+//		書籍も作者も存在しない新規の書籍データ
+		insert_list.add(new BookInfo(
+				new Book("新版 思考の整理学", LocalDate.of(2024, 2, 13),
+						"筑摩書房", 256, "9784480439123", "なし", 630, ""),
+				new Author("外山 滋比古", Profession.Author)));
+		//複数の著者を持つBookInfoを加える
+		List<Author> authorlist = new ArrayList<>(
+				Arrays.asList(new Author("Erich Fromm", Profession.Author),
+						new Author("鈴木 晶", Profession.Translater)));
+		insert_list.add(new BookInfo(
+				new Book("愛するということ", LocalDate.of(2020,8,28),
+						"紀伊國屋書店", 209, "978-4-314-01177-8", "158", 1300, "新訳版 1991年刊の改訳・新装版 原タイトル: THE ART OF LOVING"),
+				authorlist));
 		
-		assertEquals(facade.getNewbook(), 2);
-		assertEquals(facade.getNewauthor(), 1);
 		assertEquals(facade.insertBookInfo(insert_list), true);//false
-		System.out.println(facade.selectBookInfoAll());
+		assertEquals(facade.getNewauthor(), 3);	//2のハズと出た(new Author("鈴木 晶", Profession.Translater))が登録できてない)	
+		assertEquals(facade.getNewbook(), 3);
 		
-//		System.out.println(facade.selectBookInfoAll());
+		System.out.println(facade.selectBookInfoAll());
+
 	}
 
 		@Test
@@ -140,12 +139,12 @@ public class DAOFacadeTest {
 				new Book("新版 思考の整理学", null,
 						"筑摩書房", 256, "9784480439123", null, 630, ""),
 				new Author(null, Profession.Author)));
-		assertEquals(facade.insertBookInfo(insert_both), false);
+		assertEquals(facade.insertBookInfo(insert_both), false);//true 
 		assertEquals(facade.getNewbook(), 0);
 		assertEquals(facade.getNewauthor(), 0);
 	}
 
-		@Test
+	@Test
 	public void insertTestNGBook() {
 		//		書籍のみが不完全なデータ
 		facade = new DAOFacade(JDBC_URL, DB_USER, DB_PASS);
@@ -154,7 +153,7 @@ public class DAOFacadeTest {
 				new Book(null, LocalDate.of(1985, 1, 16),
 						"岩波書店", 138, null, "134.2", 638, ""),
 				new Author("Immanuel Kant", Profession.Author)));
-		assertEquals(facade.insertBookInfo(insert_book), false);
+		assertEquals(facade.insertBookInfo(insert_book), false);//true 
 		assertEquals(facade.getNewbook(), 0);
 		assertEquals(facade.getNewauthor(), 0);
 	}
@@ -169,7 +168,7 @@ public class DAOFacadeTest {
 						"筑摩書房", 256, "9784480439123", "なし", 630, ""),
 				new Author(null, null)));
 
-		assertEquals(facade.insertBookInfo(insert_author), false);
+		assertEquals(facade.insertBookInfo(insert_author), false);//true 
 		assertEquals(facade.getNewbook(), 0);
 		assertEquals(facade.getNewauthor(), 0);
 	}
@@ -186,6 +185,7 @@ public class DAOFacadeTest {
 		assertEquals(all_list.get(0).getBook().getTitle(), "永遠平和のために");
 		assertEquals(all_list.get(3).getAuthors().size(), 3);
 		assertEquals(all_list.get(1).getAuthors().get(0).getProfession().getPFName(),"編者");
+//		System.out.println(all_list);
 	}
 
 //	@Test
@@ -209,12 +209,37 @@ public class DAOFacadeTest {
 
 	//	@Test
 	public void updateListTestOK() {
-
+		facade = new DAOFacade(JDBC_URL, DB_USER, DB_PASS);
+//		testdata.xmlの書籍データから
+//		BookStatusとfavoriteを変更
+		var infofirst = new BookInfo(
+				new Book(1, "永遠平和のために", LocalDate.of(1985, 1, 16),
+						"岩波書店", 138, "9784003362594", "134.2", 638, "なし", BookStatus.Unread, true),
+				new Author("Immanuel Kant", Profession.Author));
+//		著者データを新規追加
+		infofirst.addAuthor(new Author("宇都宮 芳明",Profession.Translater));
+//		コメントを変更
+		var infosecond = new BookInfo(
+				new Book(4, "ヒルガードの心理学", LocalDate.of(2015, 9, 30), 
+						"金剛出版", 1094, "9784772414388","140" ,22000, "第16版", BookStatus.Finished, false),
+				new ArrayList<Author>(Arrays.asList(new Author(4, "Susan Nolen-Hoeksema", Profession.Author),
+						new Author(5, "Barbara Fredrickson", Profession.Author),
+						new Author(6, "Geoffrey R Loftus", Profession.Author))));
+//		著者データを新規追加
+		infosecond.addAuthor(new Author("内田 一成", Profession.Translater));	
+//		ISBNのハイフンを削除
+		var infothird = new BookInfo(new Book(3,"チーズはどこへ消えた?", LocalDate.of(2000,11,1),
+						"扶桑社", 94 ,"459403019X", "159", 838, "なし", BookStatus.Unread, true),
+				new Author(3,"Johnson Spencer" ,Profession.Author));
+		List<BookInfo> update_list = new ArrayList<BookInfo>(Arrays.asList(infofirst, infosecond, infothird));
+		assertEquals(facade.updateBookInfoList(update_list), 3);
+		
+		
 	}
 
 	//	@Test
 	public void updateListTestNG() {
-
+		
 	}
 
 //	DELETE SUCCESS(20240425)

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class ConnectionManager{
 	private Connection conn = null;
-//	private static DataSource source = null;jdbc:h2:~/bookShelf
+//	private static DataSource source = null;
 	private static ConnectionManager manager = null;
 	public static String JDBC_URL 
 	= "jdbc:h2:~/bookShelf";//こちらは接続成功

@@ -25,9 +25,8 @@ public class BookInfo extends DTO implements Serializable{
 	}
 
 	public BookInfo() {
-		// TODO 自動生成されたコンストラクター・スタブ
 	}
-
+	//book:authorが一対一の関係で納められているBookInfoをbook:authorが一対多の関係になるように整理するメソッド
 	public static List<BookInfo> retributeList(List<BookInfo> temp) {
 		List<BookInfo> infolist = new ArrayList<>();
 		// int j = 0;
@@ -45,7 +44,7 @@ public class BookInfo extends DTO implements Serializable{
 		return infolist;
 	}
 
-	//retributeListの逆
+	//retributeListの逆(一対多を一対一に)
 	public static List<BookInfo> antitributeList(List<BookInfo> listed) {
 		List<BookInfo> infolist = new ArrayList<>();
 		for (int j = 0; j < listed.size(); j++) {
@@ -59,6 +58,19 @@ public class BookInfo extends DTO implements Serializable{
 		return infolist;
 	}
 
+	public static List<BookInfo> antitributeOne(BookInfo info){
+		List<BookInfo> infolist = new ArrayList<>();
+		
+			Book book = info.getBook();
+			for (int k = 0; k < info.getAuthors().size(); k++) {
+				Author author = info.getAuthors().get(k);
+				BookInfo tagged = new BookInfo(book, author);
+				infolist.add(tagged);
+			}
+		
+		return infolist;
+	}
+	
 	public void addAuthor(Author au) {
 		this.authors.add(au);
 	}

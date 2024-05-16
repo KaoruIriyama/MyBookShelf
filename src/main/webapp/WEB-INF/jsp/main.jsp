@@ -18,15 +18,22 @@
 		<h1>蔵書一覧</h1>
 		</div>
 	</div>
-	<%--<h2><c:out value="${Msg}"/></h2>
-<form action= "MainServlet" method="post">--%>
-	<p><c:if test="${not empty Msg}"><c:out value="${Msg }"/></c:if></p>
+	<%--<h2><c:out value="${Msg}"/></h2>--%>
+	<p><c:if test="${not empty Msg}"><c:out value="${Msg}"/></c:if></p>
 	<form method="get">
 	<jsp:include page="/WEB-INF/jsp/include/readonlylist.jsp"></jsp:include>
 	
 		<div class="col-12 m-3">
 			<div class="btn-group" role="group">
 			<input type="submit" class="btn btn-info" value="編集" formaction="EditServlet"/>
+			<%-- ハリボテになっている！->　テーブルが空の場合反応、空でない(蔵書が表示されている)時は無反応
+			ついでにbookseach-> searchresult->	mainと移動したときにはリストが空の状態になっていた
+			(http://localhost:8080/MyBookShelf/RecordServlet)
+			->redirectによりsearchresultからの移動でもリストは出るようになった
+			フッターから直接蔵書一覧に飛ぶとリストが出てくる(そして編集ボタンは押せない)
+			(http://localhost:8080/MyBookShelf/MainServlet)
+			フォワード・リダイレクトを見直せ--%>
+			
 			</div>
 		</div>
 	</form>

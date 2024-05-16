@@ -32,10 +32,16 @@ public class RecordServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
-		String url = "WEB-INF/jsp/main.jsp";
-		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-		dispatcher.forward(request, response);
+		//DBへの登録処理
+//		List<BookInfo> infolist 
+//			= null;
+//		RecordBookLogic record = new RecordBookLogic();
+//		record.execute(infolist);
+		
+//		String url = "WEB-INF/jsp/main.jsp";
+//		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+//		dispatcher.forward(request, response);
+		response.sendRedirect("MainServlet");
 	}
 
 }

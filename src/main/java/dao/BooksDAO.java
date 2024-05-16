@@ -1,13 +1,10 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,214 +12,23 @@ import model.entity.Book;
 import model.entity.BookStatus;
 import model.entity.DTO;
 
-class BooksDAO extends DAOTemplate{
+public class BooksDAO extends DAOTemplate{
 
 	private ConnectionManager manager;
 	private String sql;
-	private Connection conn;
-	
-	BooksDAO(){
+
+	public BooksDAO(){
 		this.manager = ConnectionManager.getInstance();
-		this.conn = this.manager.getConn();
 	}
 	
 	BooksDAO(ConnectionManager manager) {
 		this.manager = manager;
-		this.conn = this.manager.getConn();
 	}
 	
-	BooksDAO(Connection conn) {
-		this.conn = conn;
+//for test
+	public BooksDAO(String db_url, String db_user, String db_pass){
+		this.setManager(ConnectionManager.getInstance(db_url, db_user, db_pass));
 	}
-//
-//	BooksDAO(DataSource source) {
-//		BooksDAO.source = source;
-//	}
-
-	int insertBook(Book book) throws SQLException {
-		int result = 0;
-		if (book.isNotEmpty()) {
-			//			try{
-			//Merge Into文(対象テーブルに登録したいデータが存在しないときのみ登録)
-			sql = "MERGE INTO BOOKS USING"
-					+ "(VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)) SOURCE "
-					+ "(TITLE, PUBLISH_DATE, PUBLISHER,　"
-					+ "PAGES, ISBN, NDC, "
-					+ "PRICE, REGISTATION_TIME, COMMENT) "
-					+ "ON ((SOURCE .ISBN = BOOKS .ISBN) AND "
-					+ "(SOURCE .PUBLISH_DATE = BOOKS .PUBLISH_DATE)) "
-					+ "WHEN NOT MATCHED BY BOOKS THEN "
-					+ "INSERT VALUES "
-					+ "(TITLE, PUBLISH_DATE, PUBLISHER, "
-					+ "PAGES, ISBN, NDC, "
-					+ "PRICE, REGISTATION_TIME, COMMENT)";
-			//間違ったSQL文
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1, book.getTitle());
-			pstmt.setDate(2, Date.valueOf(book.getPublishDate()));//LocalDate -> Date
-			pstmt.setString(3, book.getPublisher());
-			pstmt.setInt(4, book.getPages());
-			pstmt.setString(5, book.getISBN());
-			pstmt.setString(6, book.getNDC());
-			pstmt.setInt(7, book.getPrice());
-			pstmt.setTimestamp(8, Timestamp.valueOf(LocalDateTime.now()));//ここが働いていない？
-			pstmt.setString(9, book.getComment());
-			//LocalDateTime -> TimeStamp
-			//			pstmt.setString(3, person.getGender().getName());
-			//定数名でなく変数名を入れる
-			result = pstmt.executeUpdate();
-			System.out.println("BOOKS" + sql + " "+ result);
-//			this.closeConnection(pstmt, rs);
-			this.conn = null;
-		}
-		return result;
-
-		//			}catch(SQLException e) {
-		//				e.printStackTrace();
-		//				System.out.println("recordBook()の実行中に例外が発生しました。");
-		//				return 0;
-		//			}
-		//			finally {
-		//				this.closeConnection(pstmt, rs);
-		//			}
-
-	}
-
-	List<Book> selectBookbyKeyword(String keyword) {
-		if (keyword == null) {
-			return null;
-		} else {
-			List<Book> blist = new ArrayList<>();
-			try {
-
-				//		    		sql = "SELECT * FROM BOOKS WHERE NAME = ?";
-				PreparedStatement pstmt = conn.prepareStatement(sql);
-				ResultSet rs = pstmt.executeQuery();
-				pstmt.setString(1, keyword);
-				rs = pstmt.executeQuery();
-
-				while (rs.next()) {
-					try {
-						Book book = getInstancefromResultSet(rs);
-
-						blist.add(book);
-					} catch (NullPointerException e) {
-						e.printStackTrace();
-						System.out.println("Bookの取得に失敗しました。");
-						return null;
-					}
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-				System.out.println("selectBookbyKeyword()の実行中に例外が発生しました。");
-				return null;
-			} finally {
-//				this.closeConnection(pstmt, rs);
-				this.conn = null;
-			}
-			return blist;
-		}
-	}
-
-	boolean updateBookListData(List<Book> blist) throws SQLException {
-		int result = 0;
-		if (blist.stream().anyMatch(b -> b.isNotEmpty())) {
-			{
-				//				try {
-				//				Merge文バージョン
-				//					List<String> values = new ArrayList<>();
-				//		    	for(Book b : blist){ 
-				//		    		
-				//		    			StringBuilder sb = new StringBuilder();
-				//			    		sb.append(b.getTitle()).append(",").
-				//			    		append(b.getPublishDate().toString()).append(",").//LocalDate
-				//			    		append(b.getPublisher()).append(",").
-				//			    		append(b.getPages()).append(",").//int
-				//			    		append(b.getNDC()).append(",").
-				//			    		append(b.getPrice()).append(",").//int
-				//			    		append(b.getRegistationTime()).append(",").//LocalDateTime
-				//			    		append(b.getComment()).append(",").
-				//			    		append(b.getStatus().toString()).append(",").
-				//			    		append(b.isFavorite());//boolean
-				//			    		String value = "( "+ sb.toString() + " )";
-				//			    		values.add(value);
-				//		    		
-				//		    	}String valholder = convertListtoPlaceholder(values);
-
-				//					//Merge Into文(対象テーブルに登録したいデータが存在しないときのみ登録)
-				//			sql = "MERGE INTO BOOKS USING"
-				//					+ "(VALUES" + valholder + ") SOURCE "
-				//					+ "(ID, TITLE, PUBLISH_DATE, PUBLISHER, "
-				//					+ "PAGES, ISBN, NDC, PRICE, REGISTATION_TIME, COMMENT, STATUS, FAVORITE) "
-				//					+ "ON ((SOURCE .ID = BOOKS .ID) "
-				//					+ "AND (SOURCE .ISBN = BOOKS .ISBN)) "
-				//					+ "WHEN MATCHED THEN "
-				//					+ "UPDATE VALUES "
-				//					+ "(ID, TITLE, PUBLISH_DATE, PUBLISHER, "
-				//					+ "PAGES, ISBN, NDC, PRICE, REGISTATION_TIME, COMMENT, STATUS, FAVORITE)";
-
-				//case演算子を使ったバージョン
-
-				//				StringBuilder sbid = new StringBuilder();
-				//				StringBuilder sbtitle = new StringBuilder();
-				//				StringBuilder sbpub_date = new StringBuilder();
-				//				StringBuilder sbpublisher = new StringBuilder();
-				//				StringBuilder sbid = new StringBuilder();
-				//				StringBuilder sbid = new StringBuilder();
-				//				StringBuilder sbid = new StringBuilder();
-				//				
-				//				StringBuilder sbid = new StringBuilder();
-				//				StringBuilder sbid = new StringBuilder();
-				//				StringBuilder sbid = new StringBuilder();
-				//				StringBuilder sbid = new StringBuilder();
-				//	    		for(Book b : blist) {
-				//	    			sbid.append(b.getId()).append(",");	
-				//	    			sbtitle.append("WHEN ").append(b.getId()).append(" THEN '").append(p.getName()).append("' ");
-				//	    			sbage.append("WHEN ").append(b.getId()).append(" THEN ").append(p.getAge()).append(" ");
-				//	    			sbgender.append("WHEN ").append(b.getId()).append(" THEN '").append(p.getGender()).append("' ");
-				//	    		}	
-				//	    		
-				//	    		String idHolder = sbid.deleteCharAt( sbid.length() -1 ).toString();
-				//	    		
-				//	    		//これでsbの末尾にある","を消すことが出来る
-				//	    		
-				//	    		String nameHolder = "CASE ID " + sbname.toString() + "END, ";
-				//	    		String ageHolder = "CASE ID " + sbage.toString() + "END, ";
-				//	    		String genderHolder = "CASE ID " + sbgender.toString() + "END ";
-				//	    		
-				//				sql = "UPDATE BOOKS SET "
-				//							+ "NAME = " + nameHolder
-				//							+ "AGE = " + ageHolder
-				//							+ "GENDER = " + genderHolder
-				//							+ "WHERE ID IN (" + idHolder + ")";
-				//		    
-				//		    sql = "UPDATE BOOKS SET "
-				//		    		
-				//		    		+ "WHERE ID IN (" + idHolder + ")";
-				//				
-				System.out.println(sql);//テスト用
-				//				
-				PreparedStatement pstmt = conn.prepareStatement(sql);
-				
-				//					
-				result = pstmt.executeUpdate();
-				//					return (result == blist.size());
-//				this.closeConnection(pstmt, rs);
-				this.conn = null;			
-				//				}catch(SQLException e) {
-				//					e.printStackTrace();
-				//					System.out.println("updatePersonList()の実行中に例外が発生しました。");
-				//					return false;
-				//				}
-				//			finally {
-				//					this.closeConnection(pstmt, rs);
-				//				}
-			}
-		}
-		return (result == blist.size());
-	}
-
 	@Override
 	Book getInstancefromResultSet(ResultSet rs) throws SQLException {
 		int id = 0;
@@ -256,7 +62,7 @@ class BooksDAO extends DAOTemplate{
 
 	
 	@Override
-	protected String createSelectListSQL(List<Integer> idlist) {
+	public String createSelectListSQL(List<Integer> idlist) {
 		String placeholder = convertListtoPlaceholder(idlist);
 
 		String sql = "SELECT * FROM BOOKS WHERE ID IN " + placeholder;
@@ -264,30 +70,57 @@ class BooksDAO extends DAOTemplate{
 	}
 
 	@Override
-	protected String createInsertOneSQL(DTO dto) {
-		String sql = "MERGE INTO BOOKS USING"
-				+ "(VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)) SOURCE "
-				+ "(TITLE, PUBLISH_DATE, PUBLISHER,　"
-				+ "PAGES, ISBN, NDC, "
-				+ "PRICE, REGISTATION_TIME, COMMENT) "
-				+ "ON ((SOURCE .ISBN = BOOKS .ISBN) AND "
-				+ "(SOURCE .PUBLISH_DATE = BOOKS .PUBLISH_DATE)) "
-				+ "WHEN NOT MATCHED BY BOOKS THEN "
-				+ "INSERT VALUES "
-				+ "(TITLE, PUBLISH_DATE, PUBLISHER, "
-				+ "PAGES, ISBN, NDC, "
-				+ "PRICE, REGISTATION_TIME, COMMENT)";
+	public <T extends DTO> String createInsertOneSQL(T t) {
+		Book book = null;
+		if(t instanceof Book) {book = (Book) t;}
+		List<String> values = getVarcharListFromDTO(book);
+	
+	String valueholder = convertListtoPlaceholder(values);
+	//Merge Into文(対象テーブルに登録したいデータが存在しないときのみ登録)
+	String sql	
+//	= "MERGE INTO BOOKS (TITLE, PUBLISH_DATE, PUBLISHER, PAGES, "
+//			+ "ISBN, NDC, PRICE, COMMENT) "
+//	+ "KEY (ISBN, PUBLISH_DATE) VALUES " + valueholder;//決定版
+	
+	= "MERGE INTO BOOKS USING DUAL ON (ISBN = " + values.get(4)
+	+ " AND PUBLISH_DATE = " + values.get(1)
+	+ ") WHEN NOT MATCHED THEN INSERT "
+	+ "(TITLE, PUBLISH_DATE, PUBLISHER, PAGES, ISBN, NDC, PRICE, COMMENT) " 
+	+ "OVERRIDING USER VALUE VALUES " + valueholder;
+	
+//	= "MERGE INTO BOOKS T USING (VALUES " + valueholder + ") "
+//	+ "S(TITLE, PUBLISH_DATE, PUBLISHER, PAGES, ISBN, NDC, PRICE, COMMENT) "
+//	+ "ON (T.ISBN = S.ISBN AND T.PUBLISH_DATE = S.PUBLISH_DATE) "
+//	+ "WHEN NOT MATCHED THEN INSERT VALUES "
+//	+ "(S.TITLE, S.PUBLISH_DATE, S.PUBLISHER, S.PAGES, S.ISBN, S.NDC, S.PRICE, S.COMMENT)";
 		return sql;
 	}
 
-	@Override
-	protected String createInsertListSQL(List<DTO> list) {
+	List<String> getVarcharListFromDTO(Book book) {
+		List<String> values = new ArrayList<>();
+		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		
+		if(book.isNotEmpty()) {
+
+			values.add(decorateBySingleQuote(book.getTitle()));
+			values.add(decorateBySingleQuote(book.getPublishDate().format(fmt)));
+			values.add(decorateBySingleQuote(book.getPublisher()));
+			values.add(String.valueOf(book.getPages()));
+			values.add(decorateBySingleQuote(book.getISBN()));
+			values.add(decorateBySingleQuote(book.getNDC()));
+			values.add(String.valueOf(book.getPrice()));
+			values.add(decorateBySingleQuote(book.getComment()));
+		}
+		return values;
+	}
+
+	@Override
+	public <T extends DTO> String createInsertListSQL(List<T> list) {
 		return null;
 	}
 
 	@Override
-	protected String createUpdateListSQL(List<DTO> list) {
+	protected <T extends DTO> String createUpdateListSQL(List<T> list) {
 	
 		return null;
 	}

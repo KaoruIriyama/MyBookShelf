@@ -15,15 +15,29 @@
 			</div>
 		</div>
 	<%--ここで空欄のまま送信ボタンを押すと警告が出るようにしたい --%>
-		<form method="post">
-		<jsp:include page="/WEB-INF/jsp/include/searchform.jsp"></jsp:include> 
+		<form>
+		<%--<jsp:include page="/WEB-INF/jsp/include/searchform.jsp"></jsp:include>--%> 
+			<div class="form-group">
+				<p>ISBNで検索</p>
+				<input type="text" class="form-control" name="isbn"
+				placeholder="ISBN(例 978-4-295-01596-3)" />
+			</div>
+			<div class="form-group">
+				<p>キーワード検索</p>
+				キーワード<input type="text" class="form-control" name="any" /><br>
+				タイトル<input type="text" class="form-control" name="title" /><br>
+				著者<input type="search" class="form-control" name="creator" /><br>
+				出版社<input type="search" class="form-control" name="publisher" /><br>
+				出版日<input type="date" class="form-control" name="from"  />
+				～<input type="date" class="form-control" name="until"  /><br>
+			</div>
 		<%--<%@include file="/WEB-INF/jsp/include/searchform.jsp" %>--%>
 			<div class="col-12 m-3">
 				<div class="btn-group" role="group">
 					<input type="submit" class="btn btn-info" value="検索"
-					 formaction="ListSearchServlet">
-					<input type="reset" class="btn btn-info" value="リセット">
-					<%--はりぼて --%>
+					 formaction="ListSearchServlet"  formmethod="post"/><%--はりぼて --%>
+					<input type="reset" class="btn btn-info" value="リセット"/><%--はりぼて --%>
+					
 				</div>
 			</div>
 		</form>

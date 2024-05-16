@@ -20,44 +20,6 @@
 			<form method="get">
 				<%--ここから共通--%>
 				<jsp:include page="/WEB-INF/jsp/include/readonlylist.jsp"></jsp:include>
-				<%--<table class="table table-striped">
-					<thead class="thead-dark">
-						<tr>
-						<th scope="col">選択<br>
-						<input type="checkbox" id="checksAll" name="book"></th>
-						<th scope="col">タイトル</th>
-						<th scope="col">著者</th>
-						<th scope="col">出版日付</th>
-						<th scope="col">出版社</th>
-						<th scope="col">ISBN</th>
-						<th scope="col">登録時刻</th>
-						<th scope="col">ステータス</th>
-						<th scope="col">お気に入り</th>
-						<th scope="col">詳細</th>
-						</tr>
-					</thead>
-					<tbody>
-					<c:forEach var="bookinfo" items="${infolist}" varStatus="vs">
-						<tr>
-						<td scope="row"><input type="checkbox" class="checks" name="bookid" 
-						value="${bookinfo}" onclick="checkAllorchecks()"></td>
-						<%--name属性を配列にすることでcheckboxで複数選択された値をpost出来る --%>
-						<%--<td><c:out value="${bookinfo.book.getTitle()}" /></td>
-						<td><c:forEach var="author" items="${bookinfo.authors}">
-						<c:out value="${author.name}"/>:
-						<c:out value="${author.profession.getPFName()}" /><br>
-						</c:forEach></td>
-						<td><c:out value="${bookinfo.book.getPublishDate()}" /></td>
-						<td><c:out value="${bookinfo.book.getPublisher()}" /></td>
-						<td><c:out value="${bookinfo.book.getISBN()}" /></td>
-						<td><c:out value="${bookinfo.book.getRegistationTime()}" /></td>
-						<td><c:out value="${bookinfo.book.getStatus().getName()}" /></td>
-						<td><c:out value="${bookinfo.book.isFavorite()}" /></td>
-						<td><a href="DetailServlet?id=${bookinfo}"></a></td>
-						</tr>
-					</c:forEach>
-					</tbody>
-				</table>--%>
 			<%--ここまで共通--%>
 				<div class="col-12 m-3">
 					<div class="btn-group" role="group">

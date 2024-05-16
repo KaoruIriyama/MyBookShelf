@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,6 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import model.ViewLogic;
+import model.entity.BookInfo;
 
 /**
  * Servlet implementation class MainServlet
@@ -21,11 +25,11 @@ public class MainServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String msg = null;
-//		response.getWriter().append("Served at: ").append(request.getContextPath());
-//		ViewLogic view = new ViewLogic();
-//		List<BookInfo> infolist = view.selectAll();
-//		if(infolist.size()> 0) {
-//			request.setAttribute("infolist", infolist);
+//データベースの問題などでlogicが取得できなかった時の異常系対応
+		ViewLogic view = new ViewLogic();
+		List<BookInfo> infolist = view.selectAll();
+		if(infolist.size()> 0) {
+			request.setAttribute("infolist", infolist);
 	//		if(total > LIMIT){
 	//        //ページ数
 	//        int pageCount=total%LIMIT == 0 ? total/LIMIT : total/LIMIT +1;
@@ -56,7 +60,7 @@ public class MainServlet extends HttpServlet {
 	//        sb.append("</ul>\n");
 	//        sb.append("</div>\n");
 	//        request.setAttribute("Pagenation", sb.toString());  
-	//      } 
+	      } 
 
 //		}else {
 //			msg = "目録取得に失敗しました。";

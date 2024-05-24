@@ -107,7 +107,7 @@
 			<td><c:out value="${bookinfo.book.getRegistationTime().toString()}" /></td>
 			<td><c:out value="${bookinfo.book.getStatus().getName()}" /></td>
 			<td><c:out value="${bookinfo.book.isFavorite()}" /></td>
-			<td><a href="DetailServlet?id=${bookinfo.getBook().getId()}"></a></td><%--表示されない --%>
+			<td><a href="DetailServlet?id=${bookinfo.book.getId()}">詳細</a></td><%--表示されない --%>
 			</tr>
 		</c:forEach>
 		</tbody>

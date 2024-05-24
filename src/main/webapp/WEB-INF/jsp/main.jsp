@@ -39,6 +39,7 @@
 	</form>
 </div>
 <jsp:include page="/WEB-INF/jsp/include/footer.jsp"></jsp:include>
-<script src="./checkbox.js"></script>
+<script src="${pageContext.request.contextPath}/JavaScript/checkbox.js"></script>
+<script src="${pageContext.request.contextPath}/JavaScript/handleSubmitbyChecked.js"></script>
 </body>
 </html>

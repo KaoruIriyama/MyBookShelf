@@ -174,11 +174,11 @@ public class Book extends DTO implements Serializable{
 
 	@Override
 	public String toString() {
-		return "title=" + title + ", publishDate=" + publishDate.toString()
-				+ ",  publisher=" + publisher + ", pages=" + pages +
-				", isbn=" + isbn + ", ndc=" + ndc+ ", price=" + price + 
-				", regisitation_time=" + registationTime.toString() + 
-				",  favorite=" + favorite + ", status=" + status + ", comment=" + comment + "\n";
+		
+		return "書名 " + title + ", 発行日 " + publishDate.toString()
+				+ ", 出版者 " + publisher + ", ページ数 " + pages +
+				", ISBN " + isbn + ", NDC分類 " + ndc+ ", 価格 " + price + 
+				", コメント " + comment + "\n";
 		
 	}
 

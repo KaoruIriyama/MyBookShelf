@@ -52,19 +52,11 @@ public class AuthorsDAO extends DAOTemplate{
 
 		//Merge Into文(対象テーブルに登録したいデータが存在しないときのみ登録)
 		String sql 
-//		= "MERGE INTO AUTHORS (NAME, PROFESSION) "
-//		+ "KEY (NAME, PROFESSION) VALUES " + value;//決定版
 		
 		= "MERGE INTO AUTHORS USING DUAL ON (NAME = " + varchars.get(0)
 		+ "AND PROFESSION = " + varchars.get(1)
 		+ ") WHEN NOT MATCHED THEN INSERT (NAME, PROFESSION) "
 		+ "OVERRIDING USER VALUE VALUES " + value;
-		
-//		= "MERGE INTO AUTHORS T USING (VALUES " + value + ") "
-//				+ "S(NAME, PROFESSION)"
-//				+ "ON (T.NAME = S.NAME AND T.PROFESSION= S.PROFESSION) "
-//				+ "WHEN NOT MATCHED THEN INSERT VALUES "
-//				+ "(S.NAME, S.PROFESSION)";
 		return sql;
 	}
 
@@ -77,7 +69,7 @@ public class AuthorsDAO extends DAOTemplate{
 		for (T t : list) {
 			if(t instanceof Author) {au = (Author) t;}
 			if (au.isNotEmpty()) {
-				values.add(" ROW" + convertListtoPlaceholder(getVarcharListFromDTO(au)));
+				values.add(convertListtoPlaceholder(getVarcharListFromDTO(au)));
 			}
 		}
 		
@@ -90,9 +82,9 @@ public class AuthorsDAO extends DAOTemplate{
 //		= "MERGE INTO AUTHORS USING (NAME, PROFESSION) "
 //		+ "KEY (NAME, PROFESSION) VALUES " + valueholder ;//決定版
 		
-		= "MERGE INTO AUTHORS USING DUAL ON ((NAME, PROFESSION) IN "
+		= "MERGE INTO AUTHORS USING DUAL ON (NAME, PROFESSION) IN "
 		+ valueholder 
-		+ ") WHEN NOT MATCHED THEN INSERT (NAME, PROFESSION) "
+		+ " WHEN NOT MATCHED THEN INSERT (NAME, PROFESSION) "
 		+ "OVERRIDING USER VALUE VALUES "
 		+ valueholder;
 //		org.h2.jdbc.JdbcSQLDataException: 
@@ -122,14 +114,7 @@ public class AuthorsDAO extends DAOTemplate{
 //		WHEN NOT MATCHED THEN INSERT VALUES (S.NAME, S.PROFESSION) [21002-224]
 	}
 
-	static List<String> getVarcharListFromDTO(Author au) {
-		List<String> values = new ArrayList<>();
-		if (au.isNotEmpty()) {
-			values.add(decorateBySingleQuote(au.getName()));
-			values.add(decorateBySingleQuote(au.getProfession().getPFName()));
-		}
-		return values;
-	}
+	
 	
 	@Override
 	protected String createSelectAllSQL() {
@@ -158,5 +143,12 @@ public class AuthorsDAO extends DAOTemplate{
 		return sql;
 	}
 
-	
+	static List<String> getVarcharListFromDTO(Author au) {
+		List<String> values = new ArrayList<>();
+		if (au.isNotEmpty()) {
+			values.add(decorateBySingleQuote(au.getName()));
+			values.add(decorateBySingleQuote(au.getProfession().getPFName()));
+		}
+		return values;
+	}
 }

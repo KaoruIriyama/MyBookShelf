@@ -16,8 +16,8 @@ import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
 import org.h2.tools.RunScript;
 import org.junit.BeforeClass;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.xml.sax.InputSource;
 
@@ -55,8 +55,8 @@ public class DAOFacadeTest {
 		//テスト用にデータベースを作成
 				RunScript.execute(JDBC_URL, DB_USER, DB_PASS, "data/schema.sql", Charset.forName("UTF-8"), false);
 	}
-	@BeforeAll
-	public static void setUp(){
+	@BeforeEach
+	public void setUp(){
 		try {
 			databaseTester = new JdbcDatabaseTester(JDBC_DRIVER, JDBC_URL, DB_USER, DB_PASS);
 			//データベースにテストデータを読み込ませる
@@ -79,8 +79,8 @@ public class DAOFacadeTest {
 		}
 	}	
 
-		@AfterAll
-		public static void tearDown() throws Exception {
+		@AfterEach
+		public void tearDown() throws Exception {
 			databaseTester.setTearDownOperation(DatabaseOperation.DELETE_ALL);
 //			databaseTester.setTearDownOperation(DatabaseOperation.TRUNCATE_TABLE);
 			
@@ -121,12 +121,13 @@ public class DAOFacadeTest {
 				new Book("愛するということ", LocalDate.of(2020,8,28),
 						"紀伊國屋書店", 209, "978-4-314-01177-8", "158", 1300, "新訳版 1991年刊の改訳・新装版 原タイトル: THE ART OF LOVING"),
 				authorlist));
-		
-		assertEquals(facade.insertBookInfo(insert_list), true);//false
+		System.out.println(insert_list);
+		assertEquals(facade.insertBookInfo(insert_list), true);
+		System.out.println(facade.selectBookInfoAll());
 		assertEquals(facade.getNewauthor(), 3);	//2のハズと出た(new Author("鈴木 晶", Profession.Translater))が登録できてない)	
 		assertEquals(facade.getNewbook(), 3);
 		
-		System.out.println(facade.selectBookInfoAll());
+		
 
 	}
 

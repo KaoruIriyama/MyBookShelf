@@ -168,8 +168,8 @@ public class Book extends DTO implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Book other = (Book) obj;
-		//ISBNが同じなら同じとみなす
-		return Objects.equals(isbn, other.isbn);
+		//ISBNと発行日が同じなら同じとみなす
+		return Objects.equals(isbn, other.isbn) & Objects.equals(publishDate, other.publishDate);
 	}
 
 	@Override

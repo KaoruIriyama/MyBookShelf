@@ -73,7 +73,7 @@ public class DAOFacade extends DAOTemplate{
 				for (BookInfo b : data) {
 					this.setNewbook(this.getNewbook() + bkdao.insertOne(conn, b.getBook()));
 					try {
-						if(b.getAuthors().size() > 1) {//ここの分岐が上手く行っていない
+						if(b.getAuthors().size() >= 2) {//ここの分岐が上手く行っていない
 							int acount = 0;
 							for(int i = 0; i < b.getAuthors().size(); i++){
 								acount += athdao.insertOne(conn, b.getAuthors().get(i));
@@ -82,6 +82,7 @@ public class DAOFacade extends DAOTemplate{
 //									+ acount
 //									+ athdao.insertList(conn, b.getAuthors())
 //									);
+							this.setNewauthor(this.getNewauthor() + acount);
 						}else{
 							this.setNewauthor(this.getNewauthor() 
 									+ athdao.insertOne(conn, b.getAuthors().get(0)));

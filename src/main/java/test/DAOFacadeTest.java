@@ -102,7 +102,7 @@ public class DAOFacadeTest {
 		insert_list.add(new BookInfo(
 				new Book("永遠平和のために", LocalDate.of(1985, 1, 16),
 						"岩波書店", 138, "9784003362594", "134.2", 638, ""),
-				new Author("Immanuel Kant", Profession.Author)));//Updateされているので1が結果として帰ってきている
+				new Author("Immanuel Kant", Profession.Author)));
 		//		testdata.xmlに作者のみが存在するデータ
 		insert_list.add(new BookInfo(
 				new Book("カント「視霊者の夢」", LocalDate.of(2013, 3, 12),

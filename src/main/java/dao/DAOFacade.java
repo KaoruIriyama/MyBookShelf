@@ -102,7 +102,7 @@ public class DAOFacade extends DAOTemplate{
 //					} 
 				}
 				
-				if (newtag > 0 && newtag >= newbook) {//ここが問題か
+				if (newtag > 0 && newtag >= newbook) {
 					conn.commit();
 					flg = true;
 				} else {

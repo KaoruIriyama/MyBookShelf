@@ -37,9 +37,6 @@
 					<input type="submit" class="btn btn-info" value="検索" 
 					formaction="BookSearchServlet"  formmethod="post"/><%--反応した --%>
 					<input type="reset" class="btn btn-info" value="リセット"/><%--反応する --%>
-					<%--<input type="submit" class="btn btn-info" value="手入力で登録する" 
-					formaction="RecordServlet" formmethod="get"/><%--はりぼて --%>
-					<%--はりぼて --%>
 				</div>
 			</div>
 		</form>

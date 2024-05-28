@@ -34,13 +34,13 @@
 				<c:set var="translater_checked">checked</c:set></c:when>
 				<c:when test="${author.profession.ordinal() == 2}">
 				<c:set var="editer_checked">checked</c:set></c:when>
-				<c:when test="${author.profession.ordinal() == 2}">
+				<c:when test="${author.profession.ordinal() == 3}">
 				<c:set var="writer_checked">checked</c:set></c:when>
-				<c:when test="${author.profession.ordinal() == 2}">
+				<c:when test="${author.profession.ordinal() == 4}">
 				<c:set var="storyteller_checked">checked</c:set></c:when>
-				<c:when test="${author.profession.ordinal() == 2}">
+				<c:when test="${author.profession.ordinal() == 5}">
 				<c:set var="artist_checked">checked</c:set></c:when>
-				<c:when test="${author.profession.ordinal() == 2}">
+				<c:when test="${author.profession.ordinal() == 6}">
 				<c:set var="other_checked">checked</c:set></c:when>
 			</c:choose>
 			:<select name="authorprof" class="form-control" required>

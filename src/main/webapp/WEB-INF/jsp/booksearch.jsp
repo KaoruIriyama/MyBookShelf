@@ -42,8 +42,9 @@
 		</form>
 		
 		<div class="col-12 m-3">
-			<a class="btn btn-info" href="RecordServlet">手入力で登録する</a><%--はりぼて --%>		
-			<%--<input type="submit" class="btn btn-info" value="手入力で登録する" />--%>
+			<%--<a class="btn btn-info" href="RecordServlet">手入力で登録する</a><%--はりぼて --%>		
+			<input type="submit" class="btn btn-info" value="手入力で登録する" 
+			formaction="RecordServlet"  formmethod="get"/><%--はりぼて --%>	
 		</div>
 		
 	</div>

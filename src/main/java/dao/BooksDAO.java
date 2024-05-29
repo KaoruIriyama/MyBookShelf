@@ -106,7 +106,7 @@ public class BooksDAO extends DAOTemplate{
 			values.add(decorateBySingleQuote(book.getPublishDate().format(fmt)));
 			values.add(decorateBySingleQuote(book.getPublisher()));
 			values.add(String.valueOf(book.getPages()));
-			values.add(decorateBySingleQuote(book.getISBN()));
+			values.add(decorateBySingleQuote(book.getISBN().getValue()));
 			values.add(decorateBySingleQuote(book.getNDC()));
 			values.add(String.valueOf(book.getPrice()));
 			values.add(decorateBySingleQuote(book.getComment()));

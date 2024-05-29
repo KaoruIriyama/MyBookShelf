@@ -101,10 +101,11 @@ public class RSSParser {
 						sub.orElse("") + " " + desc;
 
 				List<Author> alist = new ArrayList<>();
-				Book book = new Book(title, publishDate, publisher, pages, isbn, ndc, price, comment);
+				Book book = 
+						new Book(title, publishDate, publisher, pages, isbn, ndc, price, comment);
 				NodeList creators = bookelement.getElementsByTagName("dc:creator");
 				for (int k = 0; k < creators.getLength(); k++) {
-					String name = Author.nameParser(creators.item(k).getTextContent());
+					String name = creators.item(k).getTextContent();
 					//createrの数だけ新しい著者インスタンスをlistに詰める
 					alist.add(new Author(name, Profession.Author));
 				}

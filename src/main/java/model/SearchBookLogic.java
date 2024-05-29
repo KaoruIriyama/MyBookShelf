@@ -10,7 +10,7 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.entity.Book;
+import model.entity.BookISBN;
 import model.entity.BookInfo;
 
 public class SearchBookLogic {
@@ -33,7 +33,7 @@ public class SearchBookLogic {
 	public List<BookInfo> searchByISBN(String isbn) {
 		List<BookInfo> infolist = new ArrayList<>();
 
-		if (Book.isbnCheck(isbn)) {
+		if (BookISBN.isbnCheck(isbn)) {
 			/** OpenBD APIを利用して、書籍データをJSON形式で取得する*/
 			//			String openbdurl = "https://api.openbd.jp/v1/get?isbn=" + isbn + "&pretty";
 			/** 国立国会図書館webAPIを利用して、書籍データをRSS形式で取得する*/

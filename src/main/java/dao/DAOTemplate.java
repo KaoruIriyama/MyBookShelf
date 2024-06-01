@@ -5,20 +5,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import model.entity.DTO;
 
 public abstract class DAOTemplate {
 	private ConnectionManager manager;
-//	private String sql;
-
-//	static {
-//		try {
-//			Class.forName("org.h2.Driver");
-//		} catch (ClassNotFoundException e) {
-//			throw new IllegalStateException("JDBCドライバを読み込めませんでした");
-//		}
-//	}
 
 	public ConnectionManager getManager() {	return this.manager;}
 	
@@ -26,7 +18,7 @@ public abstract class DAOTemplate {
 	
 	public final <T extends DTO> int insertOne(Connection conn, T t) throws SQLException{
 		int result = 0;
-		if(t.isNotEmpty()) {
+		if(checkDTO(t)) {
 			result += executeUpdatefromSQL(conn, createInsertOneSQL(t));
 		}
 		return result;
@@ -34,7 +26,7 @@ public abstract class DAOTemplate {
 
 	public final <T extends DTO> int insertList(Connection conn, List<T> list) throws SQLException{
 		int result = 0;
-		if (list.stream().allMatch(dto -> dto.isNotEmpty())) {
+		if (isListNotEmpty(list)) {
 			result += executeUpdatefromSQL(conn, createInsertListSQL(list));
 		}
 		return result;
@@ -78,7 +70,7 @@ public abstract class DAOTemplate {
 	protected final <T extends DTO> int updateList(Connection conn,List<T> list)
 			throws SQLException {
 		int result = 0;
-		if (list.stream().allMatch(t -> t.isNotEmpty())) {
+		if (isListNotEmpty(list)) {
 			result = executeUpdatefromSQL(conn, createUpdateListSQL(list));
 		}
 		return result; 
@@ -122,24 +114,6 @@ public abstract class DAOTemplate {
 		return "(" + String.join(",", strlist) + ")";
 	}
 
-//	protected abstract static <T extends DTO> String getVarcharFromDTO(T t);
-	//	インスタンスごとに(va, vb, ... , vn)という文字列を
-	//	つくって返すメソッドを作る
-//	public static String convertListtoValueholder(List<DTO> list) {
-//
-//		List<String> values = new ArrayList<>();
-//	    	for(DTO o : list){ 
-////		インスタンスoのもつフィールド一覧を取得し、
-////		    		それぞれのフィールドデータがnullでなければsbに加える
-////		    		StringBuilder sb = new StringBuilder();
-//					List<String> valuelist = o.getAllValue();//受け取れてない
-//		    		String value = "("+ String.join(", ", valuelist) + ")";
-//		    		values.add(value);
-//		   		}
-//		String valueHolder = "(" + String.join(", ", values) + ")";
-//		return valueHolder;
-//	}
-
 	protected static String decorateBySingleQuote(String s) {
 		return "\'" + s + "\'";
 	}
@@ -147,6 +121,14 @@ public abstract class DAOTemplate {
 	//idリストに0が含まれるかどうか調べる
 	protected boolean checkIDList(List<Integer> idList) {
 		return idList.stream().noneMatch(i -> i == 0);
+	}
+	//DTOのリストにNullが含まれていたら除外し、残りのインスタンスのフィールドにnullである値が含まれていないか調べる
+	private <T extends DTO> boolean isListNotEmpty(List<T> list) {
+		return list.stream().filter(Objects::nonNull).allMatch(t -> t.isNotEmpty());
+	}
+	//DTOインスタンスそのものと、インスタンスのフィールドに対するnullチェック
+	private <T extends DTO> boolean checkDTO(T t) {
+		return Objects.nonNull(t) && t.isNotEmpty();
 	}
 	
 	abstract <T extends DTO> T getInstancefromResultSet(ResultSet rs) throws SQLException;

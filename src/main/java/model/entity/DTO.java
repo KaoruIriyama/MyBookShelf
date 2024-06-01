@@ -1,8 +1,6 @@
 package model.entity;
 
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class DTO {
@@ -15,13 +13,6 @@ public abstract class DTO {
 		return Stream.of(fields)
 				.map(this::getFieldValue)
 				.noneMatch(Objects::isNull);
-	}
-	
-	public List<String> getAllValue(){
-		java.lang.reflect.Field[] fields = DTO.class.getDeclaredFields();
-		List<String> strlist = Stream.of(fields)
-		.map(this::getFieldValue).map(Object::toString).collect(Collectors.toList());
-		return strlist;
 	}
 	
 	//isNotEmpty()の内部で使われている

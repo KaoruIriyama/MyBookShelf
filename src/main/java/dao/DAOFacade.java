@@ -71,8 +71,9 @@ public class DAOFacade extends DAOTemplate{
 			conn.setAutoCommit(false);
 			
 				for (BookInfo b : data) {
-					this.setNewbook(this.getNewbook() + bkdao.insertOne(conn, b.getBook()));
 					try {
+						this.setNewbook(this.getNewbook() + 
+								bkdao.insertOne(conn, b.getBook()));
 						if(b.getAuthors().size() >= 2) {//ここの分岐が上手く行っていない
 							int acount = 0;
 							for(int i = 0; i < b.getAuthors().size(); i++){
@@ -90,7 +91,7 @@ public class DAOFacade extends DAOTemplate{
 					} catch (SQLException e) {
 						e.printStackTrace();
 						conn.rollback();
-					}
+					} 
 				}
 				for (BookInfo bi : data) {
 //					if (tagdao.insertTaggingfromBookInfo(conn, bi) != 0) {
@@ -279,7 +280,6 @@ public class DAOFacade extends DAOTemplate{
 		int authorid = rs.getInt("AUTHOR_ID");
 		String name = rs.getString("NAME");
 		Profession profession 
-//		= Profession.getByOrder(rs.getInt("PROFESSION"));
 		= Profession.getByPFName(rs.getString("PROFESSION"));
 		Author author = new Author(authorid, name, profession);
 		

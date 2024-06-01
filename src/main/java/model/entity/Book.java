@@ -125,8 +125,8 @@ public class Book extends DTO implements Serializable{
 		return pages;
 	}
 
-	public BookISBN getISBN() {
-		return this.isbn;
+	public String getISBN() {
+		return this.isbn.getValue();
 	}
 
 	public String getNDC() {

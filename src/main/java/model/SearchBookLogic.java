@@ -8,17 +8,22 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import model.entity.BookISBN;
 import model.entity.BookInfo;
 
 public class SearchBookLogic {
+	public final List<String> querywords = 
+		Arrays.asList("any", "title", "creator", "publisher", "from", "until");
+	
 	//query=値の形式の文字列をリストとして引数に渡す
-	public List<BookInfo> searchByKeyword(List<String> keywords){
+	public List<BookInfo> searchByKeyword(Map<String, String> keyWordMap){
 		List<BookInfo> infolist = new ArrayList<>();
-		String query = String.join("&", keywords);
-		
+		String query = parseKeyWords(keyWordMap);
 		/** 国立国会図書館webAPIを利用して、書籍データをRSS形式で取得する*/
 		String ndcurl = "https://ndlsearch.ndl.go.jp/api/opensearch?" + query;
 		RSSParser rssparser = new RSSParser();
@@ -28,6 +33,18 @@ public class SearchBookLogic {
 			throw new NullPointerException("書籍情報の取得に失敗しました。");
 		}
 		return infolist;
+	}
+	
+	public String parseKeyWords(Map<String, String> keyWordMap){
+		List<String> keywords = new ArrayList<>();
+		for(String key : keyWordMap.keySet()) {
+			Optional<String> value = Optional.ofNullable(keyWordMap.get(key));
+			if(value.orElse("").length() >= 1) {
+				keywords.add(key + "=" + value.get());
+			}
+		}
+		String query = String.join("&", keywords);
+		return query;
 	}
 	
 	public List<BookInfo> searchByISBN(String isbn) {

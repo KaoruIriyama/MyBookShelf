@@ -94,13 +94,11 @@ public class DAOFacade extends DAOTemplate{
 					} 
 				}
 				for (BookInfo bi : data) {
-//					if (tagdao.insertTaggingfromBookInfo(conn, bi) != 0) {
 						//本一冊ごとにTAGGINGへの登録を行う(内部では著者名の数だけ登録をする)
 						//						全ての著者が登録できたとき、insertメソッドの返り値は1になるので、
 						//						それが確認出来たら本一冊の登録が終わったと判断し新規タグの登録完了カウントを
 						//						1増やす
 						newtag += tagdao.insertTaggingfromBookInfo(conn, bi);
-//					} 
 				}
 				
 				if (newtag > 0 && newtag >= newbook) {

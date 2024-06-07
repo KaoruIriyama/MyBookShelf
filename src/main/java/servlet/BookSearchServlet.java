@@ -1,6 +1,10 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,6 +12,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import model.SearchBookLogic;
+import model.entity.BookInfo;
 
 /**
  * Servlet implementation class BookSearchServlet
@@ -56,18 +63,16 @@ public class BookSearchServlet extends HttpServlet {
 //		が YYYY-MM なら、until も YYYY-MM 形式で指定する。）とする必要がある
 //		 --%>
 		
-//		SearchBookLogic sbLogic = new SearchBookLogic();
-//		List<BookInfo> infolist = new ArrayList<>();
-//		if(request.getParameter("isbn") != null) {
-//			infolist = sbLogic.searchByISBN(request.getParameter("isbn"));
-//		}else{
-//			Map<String, String> keyWordMap = new HashMap<>();
-//			for(String word : sbLogic.querywords) {
-//				keyWordMap.put(word, request.getParameter(word));
-//			}
-//			infolist = sbLogic.searchByKeyword(keyWordMap);
-//		}
-//		request.setAttribute("infolist", infolist);
+		SearchBookLogic sbLogic = new SearchBookLogic();
+		List<BookInfo> infolist = new ArrayList<>();
+		
+			Map<String, String> keyWordMap = new HashMap<>();
+			for(String word : sbLogic.querywords) {
+				keyWordMap.put(word, request.getParameter(word));
+			}
+			infolist = sbLogic.execute(keyWordMap);
+		
+		request.setAttribute("infolist", infolist);
 		String url = "WEB-INF/jsp/record.jsp";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 		dispatcher.forward(request, response);

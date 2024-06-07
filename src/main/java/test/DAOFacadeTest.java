@@ -82,13 +82,9 @@ public class DAOFacadeTest {
 		@AfterEach
 		public void tearDown() throws Exception {
 			databaseTester.setTearDownOperation(DatabaseOperation.DELETE_ALL);
-//			databaseTester.setTearDownOperation(DatabaseOperation.TRUNCATE_TABLE);
 			
 			databaseTester.setDataSet(dataset);
 			databaseTester.onTearDown();
-//			org.h2.jdbc.JdbcSQLSyntaxErrorException: "PUBLIC.AUTHORS" を空にできません
-//			Cannot truncate "PUBLIC.AUTHORS"; SQL statement:
-//			truncate table AUTHORS [90106-224]
 			//TRUNCATEは外部キー制約のあるテーブルに対してはできない
 		}
 

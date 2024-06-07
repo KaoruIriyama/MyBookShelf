@@ -40,7 +40,7 @@ public class AuthorName implements Serializable{
 			//			","で前後を分解する(姓・名の分離)
 			String[] splited = name.split(",");
 			//名前が半角(英字)かどうかを判定
-			if (StringUtils.isAlphanumeric(name) || StringUtils.isAsciiPrintable(name)) {
+			if (isHankaku(name)) {
 				//				半角かつ、名前に","があれば、後ろ・前の順に並べる
 				result = splited[1] + " " + splited[0];
 			} else {
@@ -51,5 +51,9 @@ public class AuthorName implements Serializable{
 			result = name;
 		}
 		return result;
+	}
+
+	public static boolean isHankaku(String name) {
+		return StringUtils.isAlphanumeric(name) || StringUtils.isAsciiPrintable(name);
 	}
 }

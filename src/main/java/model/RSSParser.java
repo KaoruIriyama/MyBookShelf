@@ -36,8 +36,8 @@ public class RSSParser {
 		BookInfo info = new BookInfo();
 
 		try {
+			//1.InputStreamとして返ってきたデータを読み取るためにDocumentインスタンスに変換
 			Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
-
 			// 2.XPathの処理を実行するXPathのインスタンスを取得する
 			javax.xml.xpath.XPath xpath = XPathFactory.newInstance().newXPath();
 			// 3.XPathでの検索条件を作る
@@ -51,12 +51,12 @@ public class RSSParser {
 				Element bookelement = (Element) nodeList.item(i);
 
 				// 7.Elementから必要な情報を取得して出力する(getElementsByTagName()の戻り値はNodeListであることに注意)
-				String title = (bookelement.getElementsByTagName("dc:title")).item(0).getTextContent();
+				String title = bookelement.getElementsByTagName("dc:title").item(0).getTextContent();
 				LocalDate publishDate = datePrettier(
 						bookelement.getElementsByTagName("dcterms:issued").item(0).getTextContent());
 				String publisher = bookelement.getElementsByTagName("dc:publisher").item(0).getTextContent();
 				int pages = Integer.parseInt(
-						(bookelement.getElementsByTagName("dc:extent")).item(0).getTextContent().replace("p", ""));
+						bookelement.getElementsByTagName("dc:extent").item(0).getTextContent().replace("p", ""));
 
 				String isbn = (bookelement.getElementsByTagName("dc:identifier")).item(0)
 						.getTextContent().replace("-", "");

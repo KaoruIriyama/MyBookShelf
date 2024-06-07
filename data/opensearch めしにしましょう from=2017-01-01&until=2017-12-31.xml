@@ -1,0 +1,116 @@
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/" xmlns:dcndl="http://ndl.go.jp/dcndl/terms/" xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" version="2.0">
+  <channel>
+    <title>"めしにしましょう" 2017-01-01 2017-12-31 - 国立国会図書館サーチ OpenSearch</title>
+    <link>https://ndlsearch.ndl.go.jp/api/opensearch?title=%22%E3%82%81%E3%81%97%E3%81%AB%E3%81%97%E3%81%BE%E3%81%97%E3%82%87%E3%81%86%22&amp;from=2017-01-01&amp;until=2017-12-31</link>
+    <description>Search results for title="めしにしましょう" from=2017-01-01 until=2017-12-31</description>
+    <language>ja</language>
+    <openSearch:totalResults>3</openSearch:totalResults>
+    <openSearch:startIndex>1</openSearch:startIndex>
+    <openSearch:itemsPerPage>200</openSearch:itemsPerPage>
+    <item>
+      <title>めしにしましょう</title>
+      <link>https://ndlsearch.ndl.go.jp/books/R100000002-I027987877</link>
+      <description><![CDATA[<p>2,講談社,2017,978-4-06-354659-0<p><ul><li>タイトル：めしにしましょう</li><li>タイトル（読み）：メシ ニ シマショウ</li><li>責任表示：小林銅蟲 著</li><li>シリーズ名：イブニングKC ; 659</li><li>シリーズ名（読み）：イブニング ケーシー ; 659</li><li>NDC(9)：726.1</li></ul>]]></description>
+      <author>小林, 銅蟲,小林銅蟲 著</author>
+      <category>図書</category>
+      <category>紙</category>
+      <guid isPermaLink="true">https://ndlsearch.ndl.go.jp/books/R100000002-I027987877</guid>
+      <pubDate>Tue, 18 Jan 2022 01:33:07 +0900</pubDate>
+      <dc:title>めしにしましょう</dc:title>
+      <dcndl:titleTranscription>メシ ニ シマショウ</dcndl:titleTranscription>
+      <dc:creator>小林, 銅蟲</dc:creator>
+      <dcndl:creatorTranscription>コバヤシ, ドウム</dcndl:creatorTranscription>
+      <dcndl:volume>2</dcndl:volume>
+      <dcndl:seriesTitle>イブニングKC ; 659</dcndl:seriesTitle>
+      <dcndl:seriesTitleTranscription>イブニング ケーシー ; 659</dcndl:seriesTitleTranscription>
+      <dc:publisher>講談社</dc:publisher>
+      <dcndl:publicationPlace>JP</dcndl:publicationPlace>
+      <dc:date xsi:type="dcterms:W3CDTF">2017</dc:date>
+      <dcterms:issued>2017.2</dcterms:issued>
+      <dcndl:price>590円</dcndl:price>
+      <dc:extent>120p</dc:extent>
+      <dc:identifier xsi:type="dcndl:ISBN">978-4-06-354659-0</dc:identifier>
+      <dc:identifier xsi:type="dcndl:NDLBibID">027987877</dc:identifier>
+      <dc:identifier xsi:type="dcndl:JPNO">22854009</dc:identifier>
+      <dc:identifier xsi:type="dcndl:TOHANMARCNO">07382424</dc:identifier>
+      <dcndl:genre>漫画</dcndl:genre>
+      <dcndl:genreTranscription>マンガ</dcndl:genreTranscription>
+      <dc:subject xsi:type="dcndl:NDLC">Y84</dc:subject>
+      <dc:subject xsi:type="dcndl:NDC9">726.1</dc:subject>
+      <rdfs:seeAlso rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I027987877"/>
+      <rdfs:seeAlso rdf:resource="https://www.books.or.jp/book-details/0635465900100011000U"/>
+      <rdfs:seeAlso rdf:resource="https://www.books.or.jp/book-details/9784063546590"/>
+      <dc:description> 2017</dc:description>
+    </item>
+    <item>
+      <title>めしにしましょう</title>
+      <link>https://ndlsearch.ndl.go.jp/books/R100000002-I028355966</link>
+      <description><![CDATA[<p>3,講談社,2017,978-4-06-354682-8<p><ul><li>タイトル：めしにしましょう</li><li>タイトル（読み）：メシ ニ シマショウ</li><li>責任表示：小林銅蟲 著</li><li>シリーズ名：イブニングKC ; 682</li><li>シリーズ名（読み）：イブニング ケーシー ; 682</li><li>NDC(10)：726.1</li></ul>]]></description>
+      <author>小林, 銅蟲,小林銅蟲 著</author>
+      <category>図書</category>
+      <category>紙</category>
+      <guid isPermaLink="true">https://ndlsearch.ndl.go.jp/books/R100000002-I028355966</guid>
+      <pubDate>Mon, 17 Jan 2022 23:46:59 +0900</pubDate>
+      <dc:title>めしにしましょう</dc:title>
+      <dcndl:titleTranscription>メシ ニ シマショウ</dcndl:titleTranscription>
+      <dc:creator>小林, 銅蟲</dc:creator>
+      <dcndl:creatorTranscription>コバヤシ, ドウム</dcndl:creatorTranscription>
+      <dcndl:volume>3</dcndl:volume>
+      <dcndl:seriesTitle>イブニングKC ; 682</dcndl:seriesTitle>
+      <dcndl:seriesTitleTranscription>イブニング ケーシー ; 682</dcndl:seriesTitleTranscription>
+      <dc:publisher>講談社</dc:publisher>
+      <dcndl:publicationPlace>JP</dcndl:publicationPlace>
+      <dc:date xsi:type="dcterms:W3CDTF">2017</dc:date>
+      <dcterms:issued>2017.7</dcterms:issued>
+      <dcndl:price>590円</dcndl:price>
+      <dc:extent>120p</dc:extent>
+      <dc:identifier xsi:type="dcndl:ISBN">978-4-06-354682-8</dc:identifier>
+      <dc:identifier xsi:type="dcndl:NDLBibID">028355966</dc:identifier>
+      <dc:identifier xsi:type="dcndl:JPNO">22926093</dc:identifier>
+      <dc:identifier xsi:type="dcndl:TOHANMARCNO">07390950</dc:identifier>
+      <dcndl:genre>漫画</dcndl:genre>
+      <dcndl:genreTranscription>マンガ</dcndl:genreTranscription>
+      <dc:subject xsi:type="dcndl:NDLC">Y84</dc:subject>
+      <dc:subject xsi:type="dcndl:NDC10">726.1</dc:subject>
+      <rdfs:seeAlso rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I028355966"/>
+      <rdfs:seeAlso rdf:resource="https://www.books.or.jp/book-details/06A0000000000004085B"/>
+      <rdfs:seeAlso rdf:resource="https://www.books.or.jp/book-details/9784063546828"/>
+      <dc:description> 2017</dc:description>
+    </item>
+    <item>
+      <title>めしにしましょう</title>
+      <link>https://ndlsearch.ndl.go.jp/books/R100000002-I028713867</link>
+      <description><![CDATA[<p>4,講談社,2017,978-4-06-510593-1<p><ul><li>タイトル：めしにしましょう</li><li>タイトル（読み）：メシ ニ シマショウ</li><li>責任表示：小林銅蟲 著</li><li>シリーズ名：イブニングKC</li><li>シリーズ名（読み）：イブニング ケーシー</li><li>NDC(10)：726.1</li></ul>]]></description>
+      <author>小林, 銅蟲,小林銅蟲 著</author>
+      <category>図書</category>
+      <category>紙</category>
+      <guid isPermaLink="true">https://ndlsearch.ndl.go.jp/books/R100000002-I028713867</guid>
+      <pubDate>Mon, 24 Jan 2022 21:11:39 +0900</pubDate>
+      <dc:title>めしにしましょう</dc:title>
+      <dcndl:titleTranscription>メシ ニ シマショウ</dcndl:titleTranscription>
+      <dc:creator>小林, 銅蟲</dc:creator>
+      <dcndl:creatorTranscription>コバヤシ, ドウム</dcndl:creatorTranscription>
+      <dcndl:volume>4</dcndl:volume>
+      <dcndl:seriesTitle>イブニングKC</dcndl:seriesTitle>
+      <dcndl:seriesTitleTranscription>イブニング ケーシー</dcndl:seriesTitleTranscription>
+      <dc:publisher>講談社</dc:publisher>
+      <dcndl:publicationPlace>JP</dcndl:publicationPlace>
+      <dc:date xsi:type="dcterms:W3CDTF">2017</dc:date>
+      <dcterms:issued>2017.12</dcterms:issued>
+      <dcndl:price>590円</dcndl:price>
+      <dc:extent>120p</dc:extent>
+      <dc:identifier xsi:type="dcndl:ISBN">978-4-06-510593-1</dc:identifier>
+      <dc:identifier xsi:type="dcndl:NDLBibID">028713867</dc:identifier>
+      <dc:identifier xsi:type="dcndl:JPNO">22991433</dc:identifier>
+      <dc:identifier xsi:type="dcndl:TOHANMARCNO">07399684</dc:identifier>
+      <dcndl:genre>漫画</dcndl:genre>
+      <dcndl:genreTranscription>マンガ</dcndl:genreTranscription>
+      <dc:subject xsi:type="dcndl:NDLC">Y84</dc:subject>
+      <dc:subject xsi:type="dcndl:NDC10">726.1</dc:subject>
+      <rdfs:seeAlso rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I028713867"/>
+      <rdfs:seeAlso rdf:resource="https://www.books.or.jp/book-details/06A0000000000012197C"/>
+      <rdfs:seeAlso rdf:resource="https://www.books.or.jp/book-details/9784065105931"/>
+      <dc:description> 2017</dc:description>
+    </item>
+  </channel>
+</rss>

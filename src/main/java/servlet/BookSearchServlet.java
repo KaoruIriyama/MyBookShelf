@@ -73,6 +73,7 @@ public class BookSearchServlet extends HttpServlet {
 			infolist = sbLogic.execute(keyWordMap);
 		
 		request.setAttribute("infolist", infolist);
+		System.out.println(infolist);
 		String url = "WEB-INF/jsp/record.jsp";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 		dispatcher.forward(request, response);

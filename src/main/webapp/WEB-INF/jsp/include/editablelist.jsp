@@ -32,7 +32,7 @@
 				value="${bookinfo}" onclick="checkAllorchecks()"></td>
 			<%--name属性を配列にすることでcheckboxで複数選択された値をpost出来る --%>
 			<td><input type="text" class="form-control" name="title" 
-				value="<c:out value="${bookinfo.book.getTitle()}" />"></td>
+				value="<c:out value="${bookinfo.book.getTitle()}" />" required></td>
 			<td><c:forEach var="author" items="${bookinfo.authors}">
 		氏名<input type="search" class="form-control" name="authorname" 
 				value="<c:out value="${author.name}"/>"/>
@@ -74,14 +74,14 @@
 			<td><input type="search" class="form-control" name="publisher" 
 				value="<c:out value="${bookinfo.book.getPublisher()}" />" required></td>
 			<td><input type="search" class="form-control" name="pages" 
-				value="<c:out value="${bookinfo.book.getISBN()}" />" required></td>
+				value="<c:out value="${bookinfo.book.getISBN()}" />" required></td><%--一部出てない--%>
 			<td><input type="text" class="form-control" name="isbn" 
-				value="<c:out value="${bookinfo.book.getRegistationTime()}" />" required></td>
+				value="<c:out value="${bookinfo.book.getRegistationTime()}" />" required></td><%--出てない--%>
 			<td><input type="text" class="form-control" name="ndc" 
-				value="<c:out value="${bookinfo.book.getStatus().getName()}" />" required></td>
+				value="<c:out value="${bookinfo.book.getStatus().getName()}" />" required></td><%--出てない--%>
 			<td><input type="number" class="form-control" name="price" 
-				value="<c:out value="${bookinfo.book.isFavorite()}" />" required></td>
-			<td><a href="DetailServlet?id=${bookinfo}"></a></td>
+				value="<c:out value="${bookinfo.book.isFavorite()}" />" required></td><%--出てない--%>
+			<td><a href="DetailServlet?id=${bookinfo}"></a></td><%--出てない--%>
 			</tr>
 		</c:forEach>
 		</tbody>

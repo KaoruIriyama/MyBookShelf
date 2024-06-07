@@ -9,7 +9,7 @@
 <body>
 <jsp:include page="/WEB-INF/jsp/include/header.jsp"></jsp:include>
 <div class="container-fluid">
-	<div class="jumbotron mt-1 mt-4"><%--画像を入れたい --%>
+	<div class="jumbotron mt-1 mt-2 mt-3 mt-4"><%--画像を入れたい --%>
 		<h1 class="text-center">My BookShelf</h1>
 		<p class="lead">
 		国立国会図書館open-searchAPIを用いてISBNから書籍を検索し、<br>

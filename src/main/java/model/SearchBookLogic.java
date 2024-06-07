@@ -89,7 +89,7 @@ public class SearchBookLogic {
 		HttpClient client;
 		
 		String encodedURL = queryURLPrettier(urlreq);//半角スペースなどをエンコード
-		System.out.println(encodedURL);
+//		System.out.println(encodedURL);
 		try {
 			client = HttpClient.newHttpClient();
 			HttpRequest request = HttpRequest.newBuilder().uri(new URI(encodedURL)).GET().build();//java.net.URISyntaxException

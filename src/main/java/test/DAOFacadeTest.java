@@ -23,10 +23,10 @@ import org.xml.sax.InputSource;
 
 import dao.DAOFacade;
 import model.entity.Author;
-import model.entity.Book;
 import model.entity.BookInfo;
-import model.entity.BookStatus;
 import model.entity.Profession;
+import model.entity.book.Book;
+import model.entity.book.BookStatus;
 
 //参考にした：https://recruit.gmo.jp/engineer/jisedai/blog/db-unit-introduction/
 

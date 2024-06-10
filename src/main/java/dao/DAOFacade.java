@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.entity.Author;
-import model.entity.Book;
 import model.entity.BookInfo;
-import model.entity.BookStatus;
 import model.entity.DTO;
 import model.entity.Profession;
+import model.entity.book.Book;
+import model.entity.book.BookStatus;
 
 public class DAOFacade extends DAOTemplate{
 	private ConnectionManager manager;

@@ -31,6 +31,6 @@ public enum Profession implements Serializable{
 		        return value;
 		      }
 		    }
-		    return null; // 特定できない場合
+		return null; // 特定できない場合
 	}
 }

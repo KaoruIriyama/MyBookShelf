@@ -8,9 +8,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.entity.Book;
-import model.entity.BookStatus;
 import model.entity.DTO;
+import model.entity.book.Book;
+import model.entity.book.BookStatus;
 
 public class BooksDAO extends DAOTemplate{
 

@@ -21,9 +21,9 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import model.entity.Author;
-import model.entity.Book;
 import model.entity.BookInfo;
 import model.entity.Profession;
+import model.entity.book.Book;
 
 public class RSSParser {
 

@@ -1,4 +1,4 @@
-package model.entity;
+package model.entity.book;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -6,20 +6,22 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
+import model.entity.DTO;
+
 public class Book extends DTO implements Serializable{
 
-	private int id;//INTEGER
-	private String title;//VARCHAR(100)
-	private LocalDate publishDate;//DATE
-	private String publisher;//VARCHAR(50)
-	private int pages;//INTEGER
-	private BookISBN isbn;
-	private String ndc;//日本十進分類表（Nippon Decimal Classification) VARCHAR (9)
-	private int price;//INTEGER
-	private LocalDateTime registationTime;//DATE
-	private String comment;//TEXT
-	private BookStatus status;// VARCHAR(5)
-	private boolean favorite;//BOOLEAN
+	private int id = 0;//INTEGER
+	private BookTitle title = new BookTitle("無題");
+	private LocalDate publishDate = LocalDate.now();//DATE
+	private BookPublisher publisher = new BookPublisher("不明");
+	private int pages = 0;//INTEGER
+	private BookISBN isbn = new BookISBN("なし");
+	private BookNDC ndc = new BookNDC("なし");
+	private int price = 0;//INTEGER
+	private LocalDateTime registationTime = LocalDateTime.now();//DATE
+	private String comment = "なし";//TEXT
+	private BookStatus status = BookStatus.Unread;// VARCHAR(5)
+	private boolean favorite =  false;//BOOLEAN
 
 	/** JavaBeansの条件を満たすためのコンストラクタ
 	 *  */
@@ -30,21 +32,21 @@ public class Book extends DTO implements Serializable{
 	 * apiからデータが取れなかった時に備えてnullチェックと代替の値を用意する*/
 	public Book(String title, LocalDate publishDate, String publisher,
 			int pages, String isbn, String ndc, int price, String comment) {
-		Optional<String> optitle = Optional.ofNullable(title);
+		
 		Optional<LocalDate> opdate = Optional.ofNullable(publishDate);
-		Optional<String> oppublisher = Optional.ofNullable(publisher);
+		
 		Optional<Integer> oppages = Optional.ofNullable(pages);
 		
-		Optional<String> opndc = Optional.ofNullable(ndc);
+		
 		Optional<Integer> opprice = Optional.ofNullable(price);
 		Optional<String> opcomment = Optional.ofNullable(comment);
 
-		this.title = optitle.orElse("無題");
+		this.title = new BookTitle(title);
 		this.publishDate = opdate.orElse(LocalDate.now());
-		this.publisher = oppublisher.orElse("不明");
+		this.publisher = new BookPublisher(publisher);
 		this.pages = oppages.orElse(0);
 		this.isbn = new BookISBN(isbn);
-		this.ndc = opndc.orElse("なし");
+		this.ndc  = new BookNDC(ndc);
 		this.price = opprice.orElse(0);
 		this.comment = opcomment.orElse("なし");
 	}
@@ -55,12 +57,12 @@ public class Book extends DTO implements Serializable{
 			int pages, String isbn, String ndc, int price,
 			LocalDateTime registationTime, String comment) {
 
-		this.title = title;
+		this.title = new BookTitle(title);
 		this.publishDate = publishDate;
-		this.publisher = publisher;
+		this.publisher = new BookPublisher(publisher);
 		this.pages = pages;
 		this.isbn = new BookISBN(isbn);
-		this.ndc = ndc;
+		this.ndc  = new BookNDC(ndc);
 		this.price = price;
 		this.registationTime = registationTime;
 		this.comment = comment;
@@ -73,12 +75,12 @@ public class Book extends DTO implements Serializable{
 			LocalDateTime registationTime, String comment, BookStatus status, boolean favorite) {
 
 		this.id = id;
-		this.title = title;
+		this.title = new BookTitle(title);
 		this.publishDate = publishDate;
-		this.publisher = publisher;
+		this.publisher = new BookPublisher(publisher);
 		this.pages = pages;
 		this.isbn = new BookISBN(isbn);
-		this.ndc = ndc;
+		this.ndc  = new BookNDC(ndc);
 		this.price = price;
 		this.registationTime = registationTime;
 		this.comment = comment;
@@ -93,12 +95,12 @@ public class Book extends DTO implements Serializable{
 			String comment, BookStatus status, boolean favorite) {
 
 		this.id = id;
-		this.title = title;
+		this.title = new BookTitle(title);
 		this.publishDate = publishDate;
-		this.publisher = publisher;
+		this.publisher = new BookPublisher(publisher);
 		this.pages = pages;
 		this.isbn = new BookISBN(isbn);
-		this.ndc = ndc;
+		this.ndc  = new BookNDC(ndc);
 		this.price = price;
 		this.comment = comment;
 		this.status = status;
@@ -110,7 +112,7 @@ public class Book extends DTO implements Serializable{
 	}
 
 	public String getTitle() {
-		return title;
+		return title.getTitle();
 	}
 
 	public LocalDate getPublishDate() {
@@ -118,7 +120,7 @@ public class Book extends DTO implements Serializable{
 	}
 
 	public String getPublisher() {
-		return publisher;
+		return publisher.getPublisher();
 	}
 
 	public int getPages() {
@@ -130,7 +132,7 @@ public class Book extends DTO implements Serializable{
 	}
 
 	public String getNDC() {
-		return ndc;
+		return ndc.getNdc();
 	}
 
 	public int getPrice() {
@@ -155,8 +157,8 @@ public class Book extends DTO implements Serializable{
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(comment, favorite, id, isbn, ndc, pages, price, publishDate, publisher,
-				registationTime, status, title);
+		return Objects.hash(comment, favorite, id, isbn, ndc.getNdc(), pages, price, publishDate, publisher.getPublisher(),
+				registationTime, status, title.getTitle());
 	}
 
 	@Override
@@ -175,9 +177,9 @@ public class Book extends DTO implements Serializable{
 	@Override
 	public String toString() {
 		
-		return "書名 " + title + ", 発行日 " + publishDate.toString()
-				+ ", 出版者 " + publisher + ", ページ数 " + pages +
-				", ISBN " + isbn.toString() + ", NDC分類 " + ndc+ ", 価格 " + price + 
+		return "書名 " + title.getTitle() + ", 発行日 " + publishDate.toString()
+				+ ", 出版者 " + publisher.getPublisher() + ", ページ数 " + pages +
+				", ISBN " + isbn.toString() + ", NDC分類 " + ndc.getNdc()+ ", 価格 " + price + 
 				", コメント " + comment + "\n";
 		
 	}

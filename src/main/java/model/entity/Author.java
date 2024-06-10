@@ -2,10 +2,9 @@ package model.entity;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.Optional;
 
 public class Author extends DTO implements Serializable{
-	private int id;
+	private int id = 0;
 	private AuthorName name = new AuthorName("");
 	private Profession profession = Profession.Author; //テーブル上ではINTEGERとして扱う
 
@@ -17,10 +16,9 @@ public class Author extends DTO implements Serializable{
 	 *  apiからデータが取れなかった時に備えてnullチェックと代替の値を用意する*/
 	public Author(String name, Profession profession) {
 		
-		Optional<Profession> opprof = Optional.ofNullable(profession);
 
 		this.name = new AuthorName(name);
-		this.profession = opprof.orElse(Profession.Author);
+		this.profession = profession;
 	}
 
 	/** テーブル登録用のコンストラクタ

@@ -1,7 +1,7 @@
-package model.entity;
+package model.entity.book;
 
 import java.io.Serializable;
-import java.util.Optional;
+import java.util.Objects;
 
 public class BookISBN implements Serializable{
 	public String isbn = "なし";
@@ -10,15 +10,16 @@ public class BookISBN implements Serializable{
 	}
 	
 	public BookISBN(String isbn) {
-		if(isbnCheck(isbn)) {
-			Optional<String> opisbn = Optional.ofNullable(isbn);
-			this.isbn = removeHyphen(opisbn.orElse("なし"));
+		if(lengthCheck(isbn)) {
+			if(isbnCheck(isbn)) {
+				this.isbn = removeHyphen(isbn);
+			}
 		}
 	}
 	
 	public String getValue() {return this.isbn;}
 	
-	public void setValue(String data) {this.isbn = data;}
+//	public void setValue(String data) {this.isbn = data;}
 	
 	public static boolean isbnCheck(String isbn) {
 		// isbn-13 計算ルール 参考: https://isbn.jpo.or.jp/index.php/fix__calc_isbn/
@@ -38,9 +39,8 @@ public class BookISBN implements Serializable{
 					// B = ９７８から始まる ISBN の偶数の桁の数字の合計
 				}
 				int checker_13c = checker_13A + checker_13B * 3; //C = A + B * 3
-				//System.out.println(checker_13A + ":" + checker_13B + ":" + checker_13c);
+				
 				return isCorrectlyISBN13(iArray, checker_13c);
-					
 			
 		} else if (isISBN10(iArray)) {
 			//ISBN-10 
@@ -77,10 +77,13 @@ public class BookISBN implements Serializable{
 		return isbn.replace("-", "");
 	}
 
+	private boolean lengthCheck(String isbn) {
+		return Objects.nonNull(isbn) & isbn.length() <= 15;
+	}
+	
 	@Override
 	public String toString() {
 		return this.getValue();
 	}
-	
-	
+
 }

@@ -1,4 +1,4 @@
-package model.entity;
+package model.entity.book;
 
 import java.io.Serializable;
 

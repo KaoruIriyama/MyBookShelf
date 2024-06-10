@@ -17,9 +17,9 @@ import org.junit.jupiter.api.Test;
 import model.RSSParser;
 import model.SearchBookLogic;
 import model.entity.Author;
-import model.entity.Book;
 import model.entity.BookInfo;
 import model.entity.Profession;
+import model.entity.book.Book;
 
 public class SearchBookLogictest {
 	private SearchBookLogic logic = new SearchBookLogic();

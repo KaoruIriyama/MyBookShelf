@@ -8,7 +8,7 @@
 
 <%--editlist.jspとrecord.jspに共通の編集可能リスト--%>
 <%--ここから共通--%>
-	<table class="table table-striped">
+	<table class="table-responsive table-striped ">
 		<thead class="thead-dark">
 			<tr>
 			<th scope="col">選択<br>
@@ -35,7 +35,7 @@
 				value="<c:out value="${bookinfo.book.getTitle()}" />" required></td>
 			<td><c:forEach var="author" items="${bookinfo.authors}">
 		氏名<input type="search" class="form-control" name="authorname" 
-				value="<c:out value="${author.name}"/>"/>
+				value="<c:out value="${author.name.getValue()}"/>"/>
 			<c:choose>
 			<c:when test="${author.profession.ordinal() == 0}">
 			<c:set var="author_checked">checked</c:set></c:when>

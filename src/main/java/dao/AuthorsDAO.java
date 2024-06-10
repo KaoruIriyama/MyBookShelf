@@ -146,7 +146,7 @@ public class AuthorsDAO extends DAOTemplate{
 	static List<String> getVarcharListFromDTO(Author au) {
 		List<String> values = new ArrayList<>();
 		if (au.isNotEmpty()) {
-			values.add(decorateBySingleQuote(au.getName()));
+			values.add(decorateBySingleQuote(au.getName().getValue()));
 			values.add(decorateBySingleQuote(au.getProfession().getPFName()));
 		}
 		return values;

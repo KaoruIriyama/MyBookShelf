@@ -76,4 +76,11 @@ public class BookISBN implements Serializable{
 	static String removeHyphen(String isbn) {
 		return isbn.replace("-", "");
 	}
+
+	@Override
+	public String toString() {
+		return this.getValue();
+	}
+	
+	
 }

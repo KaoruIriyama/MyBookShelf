@@ -177,7 +177,7 @@ public class Book extends DTO implements Serializable{
 		
 		return "書名 " + title + ", 発行日 " + publishDate.toString()
 				+ ", 出版者 " + publisher + ", ページ数 " + pages +
-				", ISBN " + isbn + ", NDC分類 " + ndc+ ", 価格 " + price + 
+				", ISBN " + isbn.toString() + ", NDC分類 " + ndc+ ", 価格 " + price + 
 				", コメント " + comment + "\n";
 		
 	}

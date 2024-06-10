@@ -11,7 +11,7 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/jsp/include/header.jsp"></jsp:include>
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row justify-content-center">
 			<div class="col-sm-12">
 			<h1>書籍新規登録</h1>

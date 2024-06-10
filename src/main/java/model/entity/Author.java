@@ -6,8 +6,8 @@ import java.util.Optional;
 
 public class Author extends DTO implements Serializable{
 	private int id;
-	private AuthorName name;
-	private Profession profession; //テーブル上ではINTEGERとして扱う
+	private AuthorName name = new AuthorName("");
+	private Profession profession = Profession.Author; //テーブル上ではINTEGERとして扱う
 
 	/** JavaBeansの条件を満たすためのコンストラクタ*/
 	public Author() {
@@ -27,25 +27,25 @@ public class Author extends DTO implements Serializable{
 	 *  */
 	public Author(int id, String name, Profession profession) {
 		this.id = id;
-		this.name.setName(name);
+		this.name = new AuthorName(name);
 		this.profession = profession;
 	}
 
 	public int getId() {
-		return id;
+		return this.id;
 	}
 
-	public String getName() {
-		return name.getName();
+	public AuthorName getName() {
+		return this.name;
 	}
 
 	public Profession getProfession() {
-		return profession;
+		return this.profession;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(name.getName(), profession);
+		return Objects.hash(name.getValue(), profession);
 	}
 
 	@Override
@@ -56,15 +56,12 @@ public class Author extends DTO implements Serializable{
 		if (!(obj instanceof Author))
 			return false;
 		Author other = (Author) obj;
-		return Objects.equals(name.getName(), other.name.getName()) && profession == other.profession;
+		return Objects.equals(name.getValue(), other.name.getValue()) && profession == other.profession;
 	}
 
 	public String toString() {
-		Optional<String> opname = Optional.ofNullable(this.name.getName());
-		Optional<Profession> opprof = Optional.ofNullable(this.profession);
-		String showname = opname.orElse("");
-		Profession showprofession = opprof.orElse(Profession.Author);
-		return showname + ":" + showprofession.getPFName() + "\n";
+		
+		return this.getName().getValue() + ":" + this.getProfession().getPFName() + "\n";
 	}
 
 

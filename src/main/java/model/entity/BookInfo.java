@@ -104,6 +104,6 @@ public class BookInfo extends DTO implements Serializable{
 		for (Author a : this.authors) {
 			sb.append(a.toString()).append(" ");
 		}
-		return this.book + ":" + sb.toString();
+		return this.book.toString() + "/" + sb.toString();
 	}
 }

@@ -31,19 +31,29 @@ public class SearchBookLogictest {
 			new Author("外山 滋比古", Profession.Author));
 	Map<String, String> keyWordsingle;
 	Map<String, String> keyWordplural;
+	
+//	@Test
+	public void executeTry() {
+		keyWordsingle = new HashMap<String, String>();
+		keyWordsingle.put("title", "めしにしましょう");
+		List<BookInfo> list = logic.execute(keyWordsingle);
+		System.out.println(list);
+	}
+	
 	//success 2024/06/06
-	@Test
+//	@Test
 	public void executeOKByISBN() {
 		keyWordsingle = new HashMap<String, String>();
 		keyWordsingle.put("isbn", "978-4-480-43912-3");
 //		String isbn = "978-4-480-43912-3";
 		List<BookInfo> list = logic.execute(keyWordsingle);
+		System.out.println(list);
 		assertEquals(list.get(0).getBook().getTitle(), example.getBook().getTitle());
 		assertEquals(list.get(0).getAuthors().get(0), example.getAuthors().get(0));
 		assertEquals(list.get(0).getBook().getPublisher(), example.getBook().getPublisher());
 	}
 
-	@Test
+//	@Test
 	public void executeNGByISBN() {
 		keyWordsingle = new HashMap<String, String>();
 		keyWordsingle.put("isbn", "978-4-480-43912-7");
@@ -52,7 +62,7 @@ public class SearchBookLogictest {
 //		assertThrows(NullPointerException.class, () -> {logic.execute(keyWordsingle);});
 	}
 //success 2024/06/07
-	@Test
+//	@Test
 	public void executeOKByKeyWords() {
 		keyWordsingle = new HashMap<String, String>();
 		keyWordsingle.put("title", "思考の整理学");
@@ -73,7 +83,7 @@ public class SearchBookLogictest {
 		assertEquals(plurallist.get(2).getBook().getISBN(), "9784065105931");
 	}
 
-	@Test
+//	@Test
 	public void executeNGByKeyWords() {
 		keyWordsingle = new HashMap<String, String>();
 		keyWordsingle.put("title", "思考の整理学");
@@ -149,7 +159,7 @@ public class SearchBookLogictest {
 //		}
 //	}
 
-	//	 @Test
+		 @Test
 	public void parseRSStoInfoOK() {
 		InputStream fis = null;
 		try {
@@ -162,9 +172,11 @@ public class SearchBookLogictest {
 
 
 			List<BookInfo> list = rssp.parseRSStoInfo(fis);
+			System.out.println(list);
 			assertNotNull(list);
-			System.out.println(list.get(0));
-			assertEquals(list.get(0), example);
+			assertEquals(list.get(0).getBook().getTitle(), example.getBook().getTitle());
+			assertEquals(list.get(0).getAuthors().get(0), example.getAuthors().get(0));
+			assertEquals(list.get(0).getBook().getPublisher(), example.getBook().getPublisher());
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {

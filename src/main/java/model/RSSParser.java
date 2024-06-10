@@ -64,6 +64,7 @@ public class RSSParser {
 				int price = Integer.parseInt(
 						bookelement.getElementsByTagName("dcndl:price").item(0).getTextContent().replace("円", ""));
 				//ndcと補足情報のキーワードは同じタグに詰められていたのでここで一括処理
+				
 				NodeList subjects = bookelement.getElementsByTagName("dc:subject");
 				String ndc = null;
 				List<String> subs = new ArrayList<>();
@@ -71,10 +72,10 @@ public class RSSParser {
 					Element e = (Element) subjects.item(j);
 					if (e.hasAttribute("xsi:type")) {
 						if (e.getAttribute("xsi:type").contains("dcndl:NDC")) {
-							ndc = e.getTextContent();
+							ndc = e.getTextContent();//ndc
 						}
 					} else {
-						subs.add(e.getTextContent());
+						subs.add(e.getTextContent());//補足情報
 					}
 				}
 				//commentには文庫やシリーズの情報を詰める(在れば)
@@ -96,7 +97,7 @@ public class RSSParser {
 					}
 				}
 
-				Optional<String> sub = Optional.ofNullable(subs.stream().toString());
+				Optional<String> sub = Optional.ofNullable(String.join(" ", subs));//ここが問題か
 				String comment = series + " " + volume + " " +
 						sub.orElse("") + " " + desc;
 

@@ -16,7 +16,6 @@ import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -52,17 +51,16 @@ public class RSSParser {
 
 				// 7.Elementから必要な情報を取得して出力する(getElementsByTagName()の戻り値はNodeListであることに注意)
 				String title = bookelement.getElementsByTagName("dc:title").item(0).getTextContent();
-				LocalDate publishDate = datePrettier(
-						bookelement.getElementsByTagName("dcterms:issued").item(0).getTextContent());
+				
+				String pubdateStr = bookelement.getElementsByTagName("dcterms:issued").item(0).getTextContent();
+				
 				String publisher = bookelement.getElementsByTagName("dc:publisher").item(0).getTextContent();
-				int pages = Integer.parseInt(
-						bookelement.getElementsByTagName("dc:extent").item(0).getTextContent().replace("p", ""));
+				
+				String pageStr = bookelement.getElementsByTagName("dc:extent").item(0).getTextContent();
 
-				String isbn = (bookelement.getElementsByTagName("dc:identifier")).item(0)
-						.getTextContent().replace("-", "");
+				String isbn = bookelement.getElementsByTagName("dc:identifier").item(0).getTextContent();
 
-				int price = Integer.parseInt(
-						bookelement.getElementsByTagName("dcndl:price").item(0).getTextContent().replace("円", ""));
+				String priceStr = bookelement.getElementsByTagName("dcndl:price").item(0).getTextContent();
 				//ndcと補足情報のキーワードは同じタグに詰められていたのでここで一括処理
 				
 				NodeList subjects = bookelement.getElementsByTagName("dc:subject");
@@ -79,18 +77,14 @@ public class RSSParser {
 					}
 				}
 				//commentには文庫やシリーズの情報を詰める(在れば)
-				String series = "";
-				String volume = "";
-				String desc = "";
-				Node node_series = bookelement.getElementsByTagName("dcndl:seriesTitle").item(0);
-				Node node_volume = bookelement.getElementsByTagName("dcndl:volume").item(0);
+			
+				String node_series = bookelement.getElementsByTagName("dcndl:seriesTitle").item(0).getTextContent();
+				String node_volume = bookelement.getElementsByTagName("dcndl:volume").item(0).getTextContent();
 				NodeList node_desc = bookelement.getElementsByTagName("dc:description");
-				if (node_series != null) {
-					series = node_series.getTextContent();
-				}
-				if (node_volume != null) {
-					volume = node_volume.getTextContent() + "巻";
-				}
+				
+				String series = (node_series != null ? node_series: "");
+				String volume = (node_volume != null ? node_volume + "巻": "");
+				String desc = "";
 				if (node_desc != null) {
 					for (int j = 0; j < node_desc.getLength(); j++) {
 						desc += node_desc.item(j).getTextContent() + " ";
@@ -98,12 +92,14 @@ public class RSSParser {
 				}
 
 				Optional<String> sub = Optional.ofNullable(String.join(" ", subs));//ここが問題か
-				String comment = series + " " + volume + " " +
-						sub.orElse("") + " " + desc;
+				String comment = series + " " + volume + " " +sub.orElse("") + " " + desc;
 
 				List<Author> alist = new ArrayList<>();
-				Book book = 
-						new Book(title, publishDate, publisher, pages, isbn, ndc, price, comment);
+				Book book = new Book
+						(title, datePrettier(pubdateStr), publisher, 
+						integerPrettier(pageStr, "p"), isbn, ndc, 
+						integerPrettier(priceStr, "円"), comment);
+				//Authorの氏名はdc:creatorタグから取る
 				NodeList creators = bookelement.getElementsByTagName("dc:creator");
 				for (int k = 0; k < creators.getLength(); k++) {
 					String name = creators.item(k).getTextContent();
@@ -125,6 +121,9 @@ public class RSSParser {
 			}
 		}
 		return infolist;
+	}
+	int integerPrettier(String pageStr, String s) {
+		return Integer.parseInt(pageStr.replace(s, ""));
 	}
 	//NDC－apiの出版年月には「日」がないので、日付を1日として挿入するためのメソッド
 	private LocalDate datePrettier(String month) {

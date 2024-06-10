@@ -6,20 +6,15 @@ import java.util.Objects;
 public class BookISBN implements Serializable{
 	public String isbn = "なし";
 
-	public BookISBN() {
-	}
+	public BookISBN() {}
 	
 	public BookISBN(String isbn) {
-		if(lengthCheck(isbn)) {
-			if(isbnCheck(isbn)) {
-				this.isbn = removeHyphen(isbn);
-			}
+		if(lengthCheck(isbn) & isbnCheck(isbn)) {
+			this.isbn = removeHyphen(isbn);
 		}
 	}
 	
 	public String getValue() {return this.isbn;}
-	
-//	public void setValue(String data) {this.isbn = data;}
 	
 	public static boolean isbnCheck(String isbn) {
 		// isbn-13 計算ルール 参考: https://isbn.jpo.or.jp/index.php/fix__calc_isbn/
@@ -27,7 +22,6 @@ public class BookISBN implements Serializable{
 		char[] iArray = removeHyphen(isbn).toCharArray();
 		//		    System.out.println(iArray);
 		if (isISBN13(isbn, iArray) ) {
-		
 				//ISBN-13
 				int checker_13A = 0;
 				int checker_13B = 0;
@@ -50,7 +44,9 @@ public class BookISBN implements Serializable{
 				checker_ten += Character.getNumericValue(iArray[i]) * (10 - i);
 			}
 			return isCorrectlyISBN10(iArray, checker_ten);
-		}else {return false;} 
+		}else {
+			return false;
+		} 
 	}
 
 	private static boolean isISBN13(String isbn, char[] iArray) {

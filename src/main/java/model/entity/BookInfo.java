@@ -8,7 +8,7 @@ import java.util.Objects;
 import model.entity.book.Book;
 
 /** データベースのBOOK＿AUTHORビューのレコードに対応するクラス*/
-public class BookInfo extends DTO implements Serializable{
+public class BookInfo implements DTO, Serializable{
 	private Book book;
 	private List<Author> authors = new ArrayList<>();
 

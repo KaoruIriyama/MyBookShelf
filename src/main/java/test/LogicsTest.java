@@ -43,9 +43,6 @@ class LogicsTest {
 	private static final String DB_PASS = "test";
 	private List<BookInfo> infolist = new ArrayList<>();
 	private List<BookInfo> resultlist = new ArrayList<>();
-	private RecordBookLogic record;
-	private ViewLogic view;
-	private EditLogic edit;
 	
 	@BeforeClass
 	public static void createSchema() throws SQLException {
@@ -85,24 +82,25 @@ class LogicsTest {
 
 //	@Test
 	void RecordBookLogicExecuteOK() {
-		fail("まだ実装されていません");
+		RecordBookLogic record = new RecordBookLogic(JDBC_URL, DB_USER, DB_PASS);
+		//int
 	}
 	
 //	@Test
 	void RecordBookLogicExecuteNG() {
-		fail("まだ実装されていません");
+		RecordBookLogic record = new RecordBookLogic(JDBC_URL, DB_USER, DB_PASS);
 	}
 	//Select 2024/05/02 success
 	@Test
 	void ViewLogicSelectAllOK() {
-		this.view = new ViewLogic(JDBC_URL, DB_USER, DB_PASS);
+		ViewLogic view = new ViewLogic(JDBC_URL, DB_USER, DB_PASS);
 		this.resultlist = view.selectAll();
 		System.out.println(resultlist);
 	}
 	
 	@Test
 	void ViewLogicSelectSomeOK() {
-		this.view = new ViewLogic(JDBC_URL, DB_USER, DB_PASS);
+		ViewLogic view = new ViewLogic(JDBC_URL, DB_USER, DB_PASS);
 		List<Integer> idlist = Arrays.asList(1, 3, 5);
 		this.resultlist = view.selectSome(idlist);
 		assertEquals(resultlist.size(), 3);
@@ -110,7 +108,7 @@ class LogicsTest {
 	
 	@Test
 	void ViewLogicSelectSomeNG() {
-		this.view = new ViewLogic(JDBC_URL, DB_USER, DB_PASS);
+		ViewLogic view = new ViewLogic(JDBC_URL, DB_USER, DB_PASS);
 		List<Integer> idlist = Arrays.asList(0, 1, 2);
 		this.resultlist = view.selectSome(idlist);
 		assertEquals(resultlist.size(), 0);
@@ -118,17 +116,19 @@ class LogicsTest {
 	
 //	@Test
 	void EditLogicExecuteUpdateOK() {
+		EditLogic edit = new EditLogic(JDBC_URL, DB_USER, DB_PASS);
 		fail("まだ実装されていません");
 	}
 	
 //	@Test
 	void EditLogicExecuteUpdateNG() {
+		EditLogic edit = new EditLogic(JDBC_URL, DB_USER, DB_PASS);
 		fail("まだ実装されていません");
 	}
 	//ExecuteDelete 2024/05/02 success
 //	@Test
 	void EditLogicExecuteDeleteOK() {
-		this.edit = new EditLogic(JDBC_URL, DB_USER, DB_PASS);
+		EditLogic edit = new EditLogic(JDBC_URL, DB_USER, DB_PASS);
 		List<Integer> bookidlist = Arrays.asList(1, 3);
 		assertEquals(edit.executeDelete(bookidlist, "book"), 2);
 		List<Integer> authoridlist = Arrays.asList(5, 6);
@@ -137,7 +137,7 @@ class LogicsTest {
 	
 //	@Test
 	void EditLogicExecuteDeleteNG() {
-		this.edit = new EditLogic(JDBC_URL, DB_USER, DB_PASS);
+		EditLogic edit = new EditLogic(JDBC_URL, DB_USER, DB_PASS);
 		List<Integer> bookidlist = Arrays.asList(0, 2);
 		assertEquals(edit.executeDelete(bookidlist, "book"), 0);
 		List<Integer> authoridlist = Arrays.asList(0, 4);

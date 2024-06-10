@@ -3,7 +3,7 @@ package model.entity;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Author extends DTO implements Serializable{
+public class Author implements DTO, Serializable{
 	private int id = 0;
 	private AuthorName name = new AuthorName("");
 	private Profession profession = Profession.Author; //テーブル上ではINTEGERとして扱う

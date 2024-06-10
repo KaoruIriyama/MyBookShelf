@@ -2,7 +2,7 @@ package model.entity;
 
 import java.io.Serializable;
 
-public class Tagging extends DTO implements Serializable{
+public class Tagging implements DTO, Serializable{
 	private Integer bookid;
 	private Integer authorid;
 

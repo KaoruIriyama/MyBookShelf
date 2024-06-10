@@ -8,7 +8,7 @@ import java.util.Optional;
 
 import model.entity.DTO;
 
-public class Book extends DTO implements Serializable{
+public class Book implements DTO, Serializable{
 
 	private int id = 0;//INTEGER
 	private BookTitle title = new BookTitle("無題");
@@ -34,10 +34,7 @@ public class Book extends DTO implements Serializable{
 			int pages, String isbn, String ndc, int price, String comment) {
 		
 		Optional<LocalDate> opdate = Optional.ofNullable(publishDate);
-		
 		Optional<Integer> oppages = Optional.ofNullable(pages);
-		
-		
 		Optional<Integer> opprice = Optional.ofNullable(price);
 		Optional<String> opcomment = Optional.ofNullable(comment);
 
@@ -57,15 +54,10 @@ public class Book extends DTO implements Serializable{
 			int pages, String isbn, String ndc, int price,
 			LocalDateTime registationTime, String comment) {
 
-		this.title = new BookTitle(title);
-		this.publishDate = publishDate;
-		this.publisher = new BookPublisher(publisher);
-		this.pages = pages;
-		this.isbn = new BookISBN(isbn);
-		this.ndc  = new BookNDC(ndc);
-		this.price = price;
+		new Book(title, publishDate, publisher,
+				pages, isbn, ndc, price, comment);
+		
 		this.registationTime = registationTime;
-		this.comment = comment;
 	}
 
 	/** テーブルからデータを取得する用のコンストラクタ
@@ -73,19 +65,12 @@ public class Book extends DTO implements Serializable{
 	public Book(int id, String title, LocalDate publishDate, String publisher,
 			int pages, String isbn, String ndc, int price,
 			LocalDateTime registationTime, String comment, BookStatus status, boolean favorite) {
-
-		this.id = id;
-		this.title = new BookTitle(title);
-		this.publishDate = publishDate;
-		this.publisher = new BookPublisher(publisher);
-		this.pages = pages;
-		this.isbn = new BookISBN(isbn);
-		this.ndc  = new BookNDC(ndc);
-		this.price = price;
+		
+		new Book(id, title, publishDate, publisher,
+				pages, isbn, ndc, price,
+				comment, status, favorite);
+		
 		this.registationTime = registationTime;
-		this.comment = comment;
-		this.status = status;
-		this.favorite = favorite;
 	}
 	
 	/** テーブルからデータを取得する用のコンストラクタ
@@ -94,66 +79,36 @@ public class Book extends DTO implements Serializable{
 			int pages, String isbn, String ndc, int price,
 			String comment, BookStatus status, boolean favorite) {
 
+		new Book(title, publishDate, publisher,
+				pages, isbn, ndc, price, comment);
 		this.id = id;
-		this.title = new BookTitle(title);
-		this.publishDate = publishDate;
-		this.publisher = new BookPublisher(publisher);
-		this.pages = pages;
-		this.isbn = new BookISBN(isbn);
-		this.ndc  = new BookNDC(ndc);
-		this.price = price;
-		this.comment = comment;
 		this.status = status;
 		this.favorite = favorite;
 	}
 
-	public int getId() {
-		return id;
-	}
+	public int getId() { return this.id; }
 
-	public String getTitle() {
-		return title.getTitle();
-	}
+	public String getTitle() { return title.getTitle(); }
 
-	public LocalDate getPublishDate() {
-		return publishDate;
-	}
+	public LocalDate getPublishDate() {	return publishDate;	}
 
-	public String getPublisher() {
-		return publisher.getPublisher();
-	}
+	public String getPublisher() { return publisher.getPublisher();	}
 
-	public int getPages() {
-		return pages;
-	}
+	public int getPages() {	return pages; }
 
-	public String getISBN() {
-		return this.isbn.getValue();
-	}
+	public String getISBN() { return this.isbn.getValue(); }
 
-	public String getNDC() {
-		return ndc.getNdc();
-	}
+	public String getNDC() { return ndc.getNdc(); }
 
-	public int getPrice() {
-		return price;
-	}
+	public int getPrice() {	return price;}
 
-	public LocalDateTime getRegistationTime() {
-		return registationTime;
-	}
+	public LocalDateTime getRegistationTime() {	return registationTime;	}
 	
-	public String getComment() {
-		return comment;
-	}
+	public String getComment() {return comment;}
 
-	public BookStatus getStatus() {
-		return status;
-	}
+	public BookStatus getStatus() {	return status;}
 
-	public boolean isFavorite() {
-		return favorite;
-	}
+	public boolean isFavorite() {return favorite;}
 
 	@Override
 	public int hashCode() {

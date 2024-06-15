@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.nio.charset.Charset;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +25,10 @@ import dao.DAOFacade;
 import model.EditLogic;
 import model.RecordBookLogic;
 import model.ViewLogic;
+import model.entity.Author;
 import model.entity.BookInfo;
+import model.entity.Profession;
+import model.entity.book.Book;
 
 class LogicsTest {
 
@@ -83,7 +87,32 @@ class LogicsTest {
 //	@Test
 	void RecordBookLogicExecuteOK() {
 		RecordBookLogic record = new RecordBookLogic(JDBC_URL, DB_USER, DB_PASS);
-		//int
+		List<BookInfo> insert_list = new ArrayList<>();
+		
+		//		testdata.xmlに存在するデータ
+		insert_list.add(new BookInfo(
+				new Book("永遠平和のために", LocalDate.of(1985, 1, 16),
+						"岩波書店", 138, "9784003362594", "134.2", 638, ""),
+				new Author("Immanuel Kant", Profession.Author)));
+		//		testdata.xmlに作者のみが存在するデータ
+		insert_list.add(new BookInfo(
+				new Book("カント「視霊者の夢」", LocalDate.of(2013, 3, 12),
+						"講談社", 173, "9784062921619", "147", 680, "講談社学術文庫 ; 2161 心霊研究 「霊界と哲学の対話」(論創社 1991年刊)の抜粋"),
+				new Author("Immanuel Kant", Profession.Author)));
+//		書籍も作者も存在しない新規の書籍データ
+		insert_list.add(new BookInfo(
+				new Book("新版 思考の整理学", LocalDate.of(2024, 2, 13),
+						"筑摩書房", 256, "9784480439123", "なし", 630, ""),
+				new Author("外山 滋比古", Profession.Author)));
+		//複数の著者を持つBookInfoを加える
+		List<Author> authorlist = new ArrayList<>(
+				Arrays.asList(new Author("Erich Fromm", Profession.Author),
+						new Author("鈴木 晶", Profession.Translater)));
+		insert_list.add(new BookInfo(
+				new Book("愛するということ", LocalDate.of(2020,8,28),
+						"紀伊國屋書店", 209, "978-4-314-01177-8", "158", 1300, "新訳版 1991年刊の改訳・新装版 原タイトル: THE ART OF LOVING"),
+				authorlist));
+		assertEquals(record.execute(insert_list), 3);//int
 	}
 	
 //	@Test

@@ -25,12 +25,14 @@ import model.entity.Profession;
 import model.entity.book.Book;
 
 public class RSSParser {
-
+	
+//	Map<String, String> RSStags = new HashMap<>(); 
+	
 	/** fetchRSS()で取得した書籍データをList<BookInfo>に加工して返すメソッド。
 	 * RSSの読み取りにはjavax.xml.xpathパッケージを用いる*/
 	
 	public List<BookInfo> parseRSStoInfo(InputStream is) {
-
+		
 		List<BookInfo> infolist = new ArrayList<>();
 		BookInfo info = new BookInfo();
 
@@ -50,18 +52,18 @@ public class RSSParser {
 				Element bookelement = (Element) nodeList.item(i);
 
 				// 7.Elementから必要な情報を取得して出力する(getElementsByTagName()の戻り値はNodeListであることに注意)
-				String title = bookelement.getElementsByTagName("dc:title").item(0).getTextContent();
+				String title = getTextByTagName(bookelement,"dc:title",0);
 				
-				String pubdateStr = bookelement.getElementsByTagName("dcterms:issued").item(0).getTextContent();
+				String pubdateStr = getTextByTagName(bookelement,"dcterms:issued",0);
 				
-				String publisher = bookelement.getElementsByTagName("dc:publisher").item(0).getTextContent();
+				String publisher = getTextByTagName(bookelement,"dc:publisher",0);
 				
-				String pageStr = bookelement.getElementsByTagName("dc:extent").item(0).getTextContent();
+				String pageStr = getTextByTagName(bookelement,"dc:extent", 0);
 
-				String isbn = bookelement.getElementsByTagName("dc:identifier").item(0).getTextContent();
+				String isbn = getTextByTagName(bookelement,"dc:identifier",0);
 
-				String priceStr = bookelement.getElementsByTagName("dcndl:price").item(0).getTextContent();
-				//ndcと補足情報のキーワードは同じタグに詰められていたのでここで一括処理
+				String priceStr = getTextByTagName(bookelement,"dcndl:price",0);
+				//ndcと補足情報のキーワードは同じ"dc:subject"タグに詰められていたのでここで一括処理
 				
 				NodeList subjects = bookelement.getElementsByTagName("dc:subject");
 				String ndc = null;
@@ -76,22 +78,15 @@ public class RSSParser {
 						subs.add(e.getTextContent());//補足情報
 					}
 				}
+				Optional<String> sub = Optional.ofNullable(String.join(" ", subs));//ここが問題か
+				
 				//commentには文庫やシリーズの情報を詰める(在れば)
 			
-				String node_series = bookelement.getElementsByTagName("dcndl:seriesTitle").item(0).getTextContent();
-				String node_volume = bookelement.getElementsByTagName("dcndl:volume").item(0).getTextContent();
-				NodeList node_desc = bookelement.getElementsByTagName("dc:description");
-				
-				String series = (node_series != null ? node_series: "");
-				String volume = (node_volume != null ? node_volume + "巻": "");
-				String desc = "";
-				if (node_desc != null) {
-					for (int j = 0; j < node_desc.getLength(); j++) {
-						desc += node_desc.item(j).getTextContent() + " ";
-					}
-				}
+				String series = getTextByTagName(bookelement,"dcndl:seriesTitle",0);
+				String volume = getTextByTagName(bookelement,"dcndl:volume",0).length() > 0 ? 
+						getTextByTagName(bookelement,"dcndl:volume",0) + "巻": "";
+				String desc = String.join(" ", getTextListByTagName(bookelement, "dc:description"));
 
-				Optional<String> sub = Optional.ofNullable(String.join(" ", subs));//ここが問題か
 				String comment = series + " " + volume + " " +sub.orElse("") + " " + desc;
 
 				List<Author> alist = new ArrayList<>();
@@ -100,10 +95,14 @@ public class RSSParser {
 						integerPrettier(pageStr, "p"), isbn, ndc, 
 						integerPrettier(priceStr, "円"), comment);
 				//Authorの氏名はdc:creatorタグから取る
-				NodeList creators = bookelement.getElementsByTagName("dc:creator");
-				for (int k = 0; k < creators.getLength(); k++) {
-					String name = creators.item(k).getTextContent();
-					//createrの数だけ新しい著者インスタンスをlistに詰める
+				List<String> authornames = getTextListByTagName(bookelement, "dc:creator");
+//				NodeList creators = bookelement.getElementsByTagName("dc:creator");
+//				for (int k = 0; k < creators.getLength(); k++) {
+//					String name = creators.item(k).getTextContent();
+//					//createrの数だけ新しい著者インスタンスをlistに詰める
+////					alist.add(new Author(name, Profession.Author));
+//				}
+				for(String name : authornames) {
 					alist.add(new Author(name, Profession.Author));
 				}
 				info = new BookInfo(book, alist);
@@ -122,13 +121,32 @@ public class RSSParser {
 		}
 		return infolist;
 	}
+	
+	private String getTextByTagName(Element element, String tagname, int index) {
+		String result = element.getElementsByTagName(tagname).item(index).getTextContent();
+		return (result != null ? result : "");
+	}
+	
+	private List<String> getTextListByTagName(Element element, String tagname) {
+		List<String> resultlist = new ArrayList<>();
+		NodeList nodes = element.getElementsByTagName(tagname);
+		for(int i = 0; i < nodes.getLength(); i++) {
+			if(nodes.item(i).getTextContent() != null) {
+			resultlist.add(nodes.item(i).getTextContent());
+			}
+		}
+		return resultlist;
+	}
+	
 	int integerPrettier(String pageStr, String s) {
-		return Integer.parseInt(pageStr.replace(s, ""));
+		//pageStrがnullなら0を、そうでないならStringを(余計な字sを取り除いて)intに変換したものを返す
+		return (pageStr != null? Integer.parseInt(pageStr.replace(s, "")) : 0);
 	}
 	//NDC－apiの出版年月には「日」がないので、日付を1日として挿入するためのメソッド
+	//nullチェックも行う
 	private LocalDate datePrettier(String month) {
 		String date = month + ".1";
 		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy.M.d");
-		return LocalDate.parse(date, fmt);
+		return (month != null? LocalDate.parse(date, fmt): LocalDate.now());
 	}
 }

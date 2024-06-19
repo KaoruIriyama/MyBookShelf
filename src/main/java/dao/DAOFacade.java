@@ -272,8 +272,9 @@ public class DAOFacade extends DAOTemplate{
 		//					列挙型の定数からフィールド変数を呼び出す
 		//No enum constant model.entity.BookStatus.既読
 		boolean favorite = rs.getBoolean("FAVORITE");
-		Book book = new Book(bookid, title, pubdate, publisher, pages, isbn, ndc, price, registime, comment, status,
-				favorite);
+		Book book = new Book(bookid, title, pubdate, publisher, 
+				pages, isbn, ndc, price, 
+				registime, comment, status, favorite);
 		
 		int authorid = rs.getInt("AUTHOR_ID");
 		String name = rs.getString("NAME");

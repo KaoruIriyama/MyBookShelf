@@ -54,8 +54,21 @@ public class Book implements DTO, Serializable{
 			int pages, String isbn, String ndc, int price,
 			LocalDateTime registationTime, String comment) {
 
-		new Book(title, publishDate, publisher,
-				pages, isbn, ndc, price, comment);
+//		new Book(title, publishDate, publisher,
+//				pages, isbn, ndc, price, comment);//コンストラクタの内部呼び出しはなるべくやめるのがよい？
+		Optional<LocalDate> opdate = Optional.ofNullable(publishDate);
+		Optional<Integer> oppages = Optional.ofNullable(pages);
+		Optional<Integer> opprice = Optional.ofNullable(price);
+		Optional<String> opcomment = Optional.ofNullable(comment);
+
+		this.title = new BookTitle(title);
+		this.publishDate = opdate.orElse(LocalDate.now());
+		this.publisher = new BookPublisher(publisher);
+		this.pages = oppages.orElse(0);
+		this.isbn = new BookISBN(isbn);
+		this.ndc  = new BookNDC(ndc);
+		this.price = opprice.orElse(0);
+		this.comment = opcomment.orElse("なし");
 		
 		this.registationTime = registationTime;
 	}
@@ -66,9 +79,26 @@ public class Book implements DTO, Serializable{
 			int pages, String isbn, String ndc, int price,
 			LocalDateTime registationTime, String comment, BookStatus status, boolean favorite) {
 		
-		new Book(id, title, publishDate, publisher,
-				pages, isbn, ndc, price,
-				comment, status, favorite);
+//		new Book(id, title, publishDate, publisher,
+//				pages, isbn, ndc, price,
+//				comment, status, favorite);
+		Optional<LocalDate> opdate = Optional.ofNullable(publishDate);
+		Optional<Integer> oppages = Optional.ofNullable(pages);
+		Optional<Integer> opprice = Optional.ofNullable(price);
+		Optional<String> opcomment = Optional.ofNullable(comment);
+
+		this.title = new BookTitle(title);
+		this.publishDate = opdate.orElse(LocalDate.now());
+		this.publisher = new BookPublisher(publisher);
+		this.pages = oppages.orElse(0);
+		this.isbn = new BookISBN(isbn);
+		this.ndc  = new BookNDC(ndc);
+		this.price = opprice.orElse(0);
+		this.comment = opcomment.orElse("なし");
+		
+		this.id = id;
+		this.status = status;
+		this.favorite = favorite;
 		
 		this.registationTime = registationTime;
 	}
@@ -79,8 +109,22 @@ public class Book implements DTO, Serializable{
 			int pages, String isbn, String ndc, int price,
 			String comment, BookStatus status, boolean favorite) {
 
-		new Book(title, publishDate, publisher,
-				pages, isbn, ndc, price, comment);
+//		new Book(title, publishDate, publisher,
+//				pages, isbn, ndc, price, comment);
+		Optional<LocalDate> opdate = Optional.ofNullable(publishDate);
+		Optional<Integer> oppages = Optional.ofNullable(pages);
+		Optional<Integer> opprice = Optional.ofNullable(price);
+		Optional<String> opcomment = Optional.ofNullable(comment);
+
+		this.title = new BookTitle(title);
+		this.publishDate = opdate.orElse(LocalDate.now());
+		this.publisher = new BookPublisher(publisher);
+		this.pages = oppages.orElse(0);
+		this.isbn = new BookISBN(isbn);
+		this.ndc  = new BookNDC(ndc);
+		this.price = opprice.orElse(0);
+		this.comment = opcomment.orElse("なし");
+		
 		this.id = id;
 		this.status = status;
 		this.favorite = favorite;
@@ -88,27 +132,27 @@ public class Book implements DTO, Serializable{
 
 	public int getId() { return this.id; }
 
-	public String getTitle() { return title.getTitle(); }
+	public String getTitle() { return this.title.getTitle(); }
 
-	public LocalDate getPublishDate() {	return publishDate;	}
+	public LocalDate getPublishDate() {return this.publishDate;}
 
-	public String getPublisher() { return publisher.getPublisher();	}
+	public String getPublisher() { return this.publisher.getPublisher();}
 
-	public int getPages() {	return pages; }
+	public int getPages() {return this.pages; }
 
 	public String getISBN() { return this.isbn.getValue(); }
 
-	public String getNDC() { return ndc.getNdc(); }
+	public String getNDC() { return this.ndc.getNdc(); }
 
-	public int getPrice() {	return price;}
+	public int getPrice() {return this.price;}
 
-	public LocalDateTime getRegistationTime() {	return registationTime;	}
+	public LocalDateTime getRegistationTime() {return this.registationTime;}
 	
-	public String getComment() {return comment;}
+	public String getComment() {return this.comment;}
 
-	public BookStatus getStatus() {	return status;}
+	public BookStatus getStatus() {return this.status;}
 
-	public boolean isFavorite() {return favorite;}
+	public boolean isFavorite() {return this.favorite;}
 
 	@Override
 	public int hashCode() {
@@ -126,16 +170,16 @@ public class Book implements DTO, Serializable{
 			return false;
 		Book other = (Book) obj;
 		//ISBNと発行日が同じなら同じとみなす
-		return Objects.equals(isbn, other.isbn) & Objects.equals(publishDate, other.publishDate);
+		return Objects.equals(this.isbn, other.isbn) & Objects.equals(this.publishDate, other.publishDate);
 	}
 
 	@Override
 	public String toString() {
 		
-		return "書名 " + title.getTitle() + ", 発行日 " + publishDate.toString()
-				+ ", 出版者 " + publisher.getPublisher() + ", ページ数 " + pages +
-				", ISBN " + isbn.toString() + ", NDC分類 " + ndc.getNdc()+ ", 価格 " + price + 
-				", コメント " + comment + "\n";
+		return "書名 " + this.title.getTitle() + ", 発行日 " + this.publishDate.toString()
+				+ ", 出版者 " + this.publisher.getPublisher() + ", ページ数 " + this.pages +
+				", ISBN " + this.isbn.toString() + ", NDC分類 " + this.ndc.getNdc()+ ", 価格 " + this.price + 
+				", コメント " + this.comment + "\n";
 		
 	}
 	

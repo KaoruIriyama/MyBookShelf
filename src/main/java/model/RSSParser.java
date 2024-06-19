@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +27,8 @@ import model.entity.Profession;
 import model.entity.book.Book;
 
 public class RSSParser {
+	
+	public static final DateTimeFormatter fmt = DateTimeFormatter.ofPattern("y.M.d");
 	
 //	Map<String, String> RSStags = new HashMap<>(); 
 	
@@ -141,13 +144,18 @@ public class RSSParser {
 	//nullチェックも行う
 	private LocalDate datePrettier(String month) {
 		String date = month + ".1";
-		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy.M.d");
 		return (isMonth(month)? LocalDate.parse(date, fmt): LocalDate.now());
 	}
 	
 	private boolean isMonth(String month) {
-		//yyyy.Mの書式にあった文字列かどうか調べる
-		return month != null && month.matches("\\d{4}.\\d?");
-		//正常に動作していない
+		 boolean flag = false;
+		 //y.M.dの書式にあった文字列かどうか調べる
+		 if(month != null) {
+			  try{ //存在しない日(例 2017/02/29)の場合はfalseとする
+			 flag = month.equals(fmt.format(fmt.parse(month)));
+			 }catch(DateTimeParseException e){
+				 e.printStackTrace();
+			 }
+		 }return flag;
 	}
 }

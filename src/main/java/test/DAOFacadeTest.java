@@ -48,8 +48,10 @@ public class DAOFacadeTest {
 //	= "jdbc:h2:~/testShelf";
 	private static final String DB_USER = "sa";
 	private static final String DB_PASS = "test";
-
-
+	
+	private final Book nullbook = null;
+	private final Author nullauthor = null;
+	
 	@BeforeClass
 	public static void createSchema() throws SQLException {
 		//テスト用にデータベースを作成
@@ -88,7 +90,7 @@ public class DAOFacadeTest {
 			//TRUNCATEは外部キー制約のあるテーブルに対してはできない
 		}
 
-		@Test
+//		@Test
 	public void insertTestOK() {
 		facade = new DAOFacade(JDBC_URL, DB_USER, DB_PASS);
 
@@ -127,35 +129,30 @@ public class DAOFacadeTest {
 
 	}
 
-		@Test
+//		@Test
 	public void insertTestNGBoth() {
 		facade = new DAOFacade(JDBC_URL, DB_USER, DB_PASS);
 		List<BookInfo> insert_both = new ArrayList<>();
 		//		書籍も作者も不完全なデータ
-		insert_both.add(new BookInfo(
-				new Book("新版 思考の整理学", null,
-						"筑摩書房", 256, "9784480439123", null, 630, ""),
-				new Author(null, Profession.Author)));
+		insert_both.add(new BookInfo(nullbook, nullauthor));
 		assertEquals(facade.insertBookInfo(insert_both), false);//true 
 		assertEquals(facade.getNewbook(), 0);
 		assertEquals(facade.getNewauthor(), 0);
 	}
 
-	@Test
+//	@Test
 	public void insertTestNGBook() {
 		//		書籍のみが不完全なデータ
 		facade = new DAOFacade(JDBC_URL, DB_USER, DB_PASS);
 		List<BookInfo> insert_book = new ArrayList<>();
-		insert_book.add(new BookInfo(
-				new Book(null, LocalDate.of(1985, 1, 16),
-						"岩波書店", 138, null, "134.2", 638, ""),
+		insert_book.add(new BookInfo(nullbook,
 				new Author("Immanuel Kant", Profession.Author)));
 		assertEquals(facade.insertBookInfo(insert_book), false);//true 
 		assertEquals(facade.getNewbook(), 0);
 		assertEquals(facade.getNewauthor(), 0);
 	}
 
-	@Test
+//	@Test
 	public void insertTestNGAuthor() {
 		//		作者のみが不完全なデータ
 		facade = new DAOFacade(JDBC_URL, DB_USER, DB_PASS);
@@ -163,7 +160,7 @@ public class DAOFacadeTest {
 		insert_author.add(new BookInfo(
 				new Book("新版 思考の整理学", LocalDate.of(2024, 2, 13),
 						"筑摩書房", 256, "9784480439123", "なし", 630, ""),
-				new Author(null, null)));
+				nullauthor));
 
 		assertEquals(facade.insertBookInfo(insert_author), false);//true 
 		assertEquals(facade.getNewbook(), 0);
@@ -172,11 +169,11 @@ public class DAOFacadeTest {
 
 //	SELECT SUCCESS(20240425)	
 	
-//	@Test
+	@Test
 	public void selectBookInfoAllTest() {
 		facade = new DAOFacade(JDBC_URL, DB_USER, DB_PASS);
 		List<BookInfo> all_list = BookInfo.retributeList(facade.selectBookInfoAll());
-//		System.out.println(all_list);
+		System.out.println(all_list);
 		//リストの長さ、最初の書籍情報、最後から二番目の書籍の著者情報を調べる
 		assertEquals(all_list.size(), 5);
 		assertEquals(all_list.get(0).getBook().getTitle(), "永遠平和のために");

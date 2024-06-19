@@ -82,4 +82,22 @@ public class BookISBN implements Serializable{
 		return this.getValue();
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.isbn);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BookISBN other = (BookISBN) obj;
+		return Objects.equals(this.isbn, other.isbn);
+	}
+
+	
 }

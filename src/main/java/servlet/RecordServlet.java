@@ -34,7 +34,7 @@ public class RecordServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//DBへの登録処理
 //		List<BookInfo> infolist 
-//			= null;
+//			= new ArrayList<>();
 //		RecordBookLogic record = new RecordBookLogic();
 //		record.execute(infolist);
 		

@@ -16,6 +16,7 @@ import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -60,7 +61,7 @@ public class RSSParser {
 				
 				String pageStr = getTextByTagName(bookelement,"dc:extent", 0);
 
-				String isbn = getTextByTagName(bookelement,"dc:identifier",0);
+				String isbn = getTextByTagName(bookelement,"dc:identifier",0);//改善しないとだめ？
 
 				String priceStr = getTextByTagName(bookelement,"dcndl:price",0);
 				//ndcと補足情報のキーワードは同じ"dc:subject"タグに詰められていたのでここで一括処理
@@ -78,7 +79,7 @@ public class RSSParser {
 						subs.add(e.getTextContent());//補足情報
 					}
 				}
-				Optional<String> sub = Optional.ofNullable(String.join(" ", subs));//ここが問題か
+				Optional<String> sub = Optional.ofNullable(String.join(" ", subs));
 				
 				//commentには文庫やシリーズの情報を詰める(在れば)
 			
@@ -96,12 +97,6 @@ public class RSSParser {
 						integerPrettier(priceStr, "円"), comment);
 				//Authorの氏名はdc:creatorタグから取る
 				List<String> authornames = getTextListByTagName(bookelement, "dc:creator");
-//				NodeList creators = bookelement.getElementsByTagName("dc:creator");
-//				for (int k = 0; k < creators.getLength(); k++) {
-//					String name = creators.item(k).getTextContent();
-//					//createrの数だけ新しい著者インスタンスをlistに詰める
-////					alist.add(new Author(name, Profession.Author));
-//				}
 				for(String name : authornames) {
 					alist.add(new Author(name, Profession.Author));
 				}
@@ -123,8 +118,8 @@ public class RSSParser {
 	}
 	
 	private String getTextByTagName(Element element, String tagname, int index) {
-		String result = element.getElementsByTagName(tagname).item(index).getTextContent();
-		return (result != null ? result : "");
+		Node result = element.getElementsByTagName(tagname).item(index);
+		return (result != null ? result.getTextContent() : "");
 	}
 	
 	private List<String> getTextListByTagName(Element element, String tagname) {
@@ -147,6 +142,12 @@ public class RSSParser {
 	private LocalDate datePrettier(String month) {
 		String date = month + ".1";
 		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy.M.d");
-		return (month != null? LocalDate.parse(date, fmt): LocalDate.now());
+		return (isMonth(month)? LocalDate.parse(date, fmt): LocalDate.now());
+	}
+	
+	private boolean isMonth(String month) {
+		//yyyy.Mの書式にあった文字列かどうか調べる
+		return month != null && month.matches("\\d{4}.\\d?");
+		//正常に動作していない
 	}
 }

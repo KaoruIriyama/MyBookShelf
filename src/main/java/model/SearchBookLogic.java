@@ -112,11 +112,4 @@ public class SearchBookLogic {
 		//認識されてくれない
 		return queryURL.replaceAll(" ", "%20");
 	}
-//	
-//	private String keywordPrettier(String keyword) {
-//		if(!AuthorName.isHankaku(keyword)) {
-//			keyword = "\"" + keyword + "\""; 
-//		}
-//		return keyword;
-//	}
 }

@@ -21,7 +21,7 @@ public class Book implements DTO, Serializable{
 	private LocalDateTime registationTime = LocalDateTime.now();//DATE
 	private String comment = "なし";//TEXT
 	private BookStatus status = BookStatus.Unread;// VARCHAR(5)
-	private boolean favorite =  false;//BOOLEAN
+	private boolean favorite = false;//BOOLEAN
 
 	/** JavaBeansの条件を満たすためのコンストラクタ
 	 *  */
@@ -138,4 +138,5 @@ public class Book implements DTO, Serializable{
 				", コメント " + comment + "\n";
 		
 	}
+	
 }

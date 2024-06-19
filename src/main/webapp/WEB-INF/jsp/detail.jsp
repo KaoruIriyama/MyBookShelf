@@ -17,12 +17,12 @@
 			</div>
 		</div>
 	
-	<p><c:if test="${not empty Msg}"><c:out value="${Msg }"/></c:if></p>
+	<p><c:if test="${not empty Msg}"><c:out value="${Msg}"/></c:if></p>
 		<form method="post">
 		<input type="hidden" class="form-control" name="bookinfo" 
 		value="${bookinfo}">
 		タイトル<input type="text" class="form-control" name="title" 
-					value="<c:out value="${bookinfo.book.getTitle()}"/>" required><br>
+					value="<c:out value="${bookinfo.book.getTitle()}"/>" required/><br><%--エラー --%>
 		著者情報<c:forEach var="author" items="${bookinfo.authors}">
 			氏名<input type="search" class="form-control" name="authorname" 
 		value="<c:out value="${author.name}"/>"/>
@@ -91,12 +91,12 @@
 			<option value="Reading" <c:out value="${reading_checked}" />>途中</option>
 		</select>
 		<c:if test="${bookinfo.book.isFavorite() == true}">
-		<c:set var="favorite">checked</c:set>
+		<c:set var="favorite_checked">checked</c:set>
 		</c:if>
 		お気に入り<input type="checkbox" class="form-control" name="favorite" 
-		value="<c:out value="${favorite}" />" /><br>
+		value="<c:out value="${favorite_checked}" />" /><br>
 		コメント<textarea  class="form-control" name="comment" required>
-		<c:out value="${bookinfo.comment}"></c:out></textarea>
+		<c:out value="${bookinfo.book.getComment()}"></c:out></textarea>
 		
 			<div class="col-12 m-3">
 				<div class="btn-group" role="group">

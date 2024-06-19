@@ -21,16 +21,16 @@
 			</div>
 		</div>
 	<%--ここで空欄のまま送信ボタンを押すと警告が出るようにしたい --%>
-	<form action="RecordServlet" method="post">
-	<jsp:include page="/WEB-INF/jsp/include/editablelist.jsp"></jsp:include>	
-		<div class="col-12 m-3">
-			<div class="btn-group" role="group">
-				<input type="submit" class="btn btn-info" value="登録"
-					onclick="return confirm(以下の内容を登録しますか？);">
-				<input type="reset" class="btn btn-info" value="リセット">
+		<form action="RecordServlet" method="post">
+			<jsp:include page="/WEB-INF/jsp/include/editablelist.jsp"></jsp:include>	
+			<div class="col-12 m-3">
+				<div class="btn-group" role="group">
+					<input type="submit" class="btn btn-info" value="登録"
+						onclick="return confirm(以下の内容を登録しますか？);">
+					<input type="reset" class="btn btn-info" value="リセット"><%--はりぼて --%>
+				</div>
 			</div>
-		</div>
-	</form>
+		</form>
 	</div>
 <jsp:include page="/WEB-INF/jsp/include/footer.jsp"></jsp:include>
 <script src="${pageContext.request.contextPath}/JavaScript/checkbox.js"></script>

@@ -32,12 +32,12 @@ public class SearchBookLogictest {
 	Map<String, String> keyWordsingle;
 	Map<String, String> keyWordplural;
 	
-//	@Test
+	@Test
 	public void executeTry() {
 		keyWordsingle = new HashMap<String, String>();
-		keyWordsingle.put("title", "めしにしましょう");
+		keyWordsingle.put("title", "赤ずきんの森の少女たち");
 		List<BookInfo> list = logic.execute(keyWordsingle);
-		System.out.println(list);
+		System.out.println(list);//ISBNが全巻取れてない
 	}
 	
 	//success 2024/06/06
@@ -159,7 +159,7 @@ public class SearchBookLogictest {
 //		}
 //	}
 
-		 @Test
+//		 @Test
 	public void parseRSStoInfoOK() {
 		InputStream fis = null;
 		try {

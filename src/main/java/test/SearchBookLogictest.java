@@ -32,7 +32,7 @@ public class SearchBookLogictest {
 	Map<String, String> keyWordsingle;
 	Map<String, String> keyWordplural;
 	
-	@Test
+//	@Test
 	public void executeTry() {
 		keyWordsingle = new HashMap<String, String>();
 		keyWordsingle.put("title", "赤ずきんの森の少女たち");
@@ -44,25 +44,26 @@ public class SearchBookLogictest {
 //	@Test
 	public void executeOKByISBN() {
 		keyWordsingle = new HashMap<String, String>();
-		keyWordsingle.put("isbn", "978-4-480-43912-3");
+		keyWordsingle.put("isbn", "9784480439123");
 //		String isbn = "978-4-480-43912-3";
 		List<BookInfo> list = logic.execute(keyWordsingle);
 		System.out.println(list);
 		assertEquals(list.get(0).getBook().getTitle(), example.getBook().getTitle());
 		assertEquals(list.get(0).getAuthors().get(0), example.getAuthors().get(0));
 		assertEquals(list.get(0).getBook().getPublisher(), example.getBook().getPublisher());
+		assertEquals(list.get(0).getBook().getISBN(), "9784480439123");
 	}
 
 //	@Test
 	public void executeNGByISBN() {
 		keyWordsingle = new HashMap<String, String>();
-		keyWordsingle.put("isbn", "978-4-480-43912-7");
+		keyWordsingle.put("isbn", "9784480439127");
 		List<BookInfo> list = logic.execute(keyWordsingle);
 		assertEquals(list.size(), 0);
 //		assertThrows(NullPointerException.class, () -> {logic.execute(keyWordsingle);});
 	}
 //success 2024/06/07
-//	@Test
+	@Test
 	public void executeOKByKeyWords() {
 		keyWordsingle = new HashMap<String, String>();
 		keyWordsingle.put("title", "思考の整理学");
@@ -73,6 +74,7 @@ public class SearchBookLogictest {
 		assertEquals(singlelist.get(0).getBook().getTitle(), example.getBook().getTitle());
 		assertEquals(singlelist.get(0).getAuthors().get(0), example.getAuthors().get(0));
 		assertEquals(singlelist.get(0).getBook().getPublisher(), example.getBook().getPublisher());
+		assertEquals(singlelist.get(0).getBook().getISBN(), "9784480439123");
 		
 		keyWordplural = new HashMap<String, String>();
 		keyWordplural.put("title", "めしにしましょう");
@@ -159,7 +161,7 @@ public class SearchBookLogictest {
 //		}
 //	}
 
-//		 @Test
+		 @Test
 	public void parseRSStoInfoOK() {
 		InputStream fis = null;
 		try {

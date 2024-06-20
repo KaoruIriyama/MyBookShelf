@@ -144,7 +144,7 @@ public class RSSParser {
 	//nullチェックも行う
 	private LocalDate datePrettier(String month) {
 		String date = month + ".1";
-		return (isMonth(month)? LocalDate.parse(date, fmt): LocalDate.now());
+		return (isMonth(date)? LocalDate.parse(date, fmt): LocalDate.now());
 	}
 	
 	private boolean isMonth(String month) {

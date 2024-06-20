@@ -74,7 +74,7 @@ public class BookISBN implements Serializable{
 	}
 
 	private boolean lengthCheck(String isbn) {
-		return Objects.nonNull(isbn) & isbn.length() <= 15;
+		return Objects.nonNull(isbn) & isbn.length() <= 17;//数字13桁＋ハイフン4つ
 	}
 	
 	@Override

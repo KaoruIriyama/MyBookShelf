@@ -6,17 +6,17 @@
 <jsp:include page="/WEB-INF/jsp/include/bootstrap.jsp"></jsp:include>
 <title>MyBookShelf 蔵書検索</title>
 </head>
-<body>
+<body class="d-flex flex-column vh-100">
 <jsp:include page="/WEB-INF/jsp/include/header.jsp"></jsp:include>
+<main class="mb-auto">
 	<div class="container">
 		<div class="row justify-content-center">
 			<div class="col-sm-12">
-			<h1>蔵書内検索</h1>
+			<h1>蔵書検索</h1>
 			</div>
 		</div>
 	<%--ここで空欄のまま送信ボタンを押すと警告が出るようにしたい --%>
 		<form>
-		<%--<jsp:include page="/WEB-INF/jsp/include/searchform.jsp"></jsp:include>--%> 
 			<div class="form-group">
 				<p>ISBNで検索</p>
 				<input type="text" class="form-control" name="isbn"
@@ -31,17 +31,16 @@
 				出版日<input type="date" class="form-control" name="from"  />
 				～<input type="date" class="form-control" name="until"  /><br>
 			</div>
-		<%--<%@include file="/WEB-INF/jsp/include/searchform.jsp" %>--%>
 			<div class="col-12 m-3">
-				<div class="btn-group" role="group">
-					<input type="submit" class="btn btn-info" value="検索"
-					 formaction="ListSearchServlet"  formmethod="post"/><%--はりぼて --%>
+				<div class="btn-group" role="group"><%--このボタン二つが要素として認識されていない？ --%>
+					<input type="submit" class="btn btn-info" value="検索" 
+					formaction="ListSearchServlet" formmethod="post"/><%-- はりぼて --%>
 					<input type="reset" class="btn btn-info" value="リセット"/><%--はりぼて --%>
-					
 				</div>
 			</div>
 		</form>
 	</div>
+</main>
 <jsp:include page="/WEB-INF/jsp/include/footer.jsp"></jsp:include>
 </body>
 </html>

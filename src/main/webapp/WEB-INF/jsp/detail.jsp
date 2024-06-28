@@ -9,7 +9,7 @@
 <jsp:include page="/WEB-INF/jsp/include/bootstrap.jsp"></jsp:include>
 <title>MyBookShelf 書籍詳細</title>
 </head>
-<body><%--UIの改善をすること --%>
+<body class="d-flex flex-column vh-100"><%--UIの改善をすること --%>
 	<div class="container">
 		<div class="row justify-content-center">
 			<div class="col-sm-12">
@@ -20,7 +20,7 @@
 	<p><c:if test="${not empty Msg}"><c:out value="${Msg}"/></c:if></p>
 		<form method="post">
 		<input type="hidden" class="form-control" name="bookinfo" 
-		value="${bookinfo}">
+		value="${bookinfo.book.getId()}">
 		タイトル<input type="text" class="form-control" name="title" 
 					value="<c:out value="${bookinfo.book.getTitle()}"/>" required/><br><%--エラー --%>
 		著者情報<c:forEach var="author" items="${bookinfo.authors}">
@@ -91,7 +91,7 @@
 			<option value="Reading" <c:out value="${reading_checked}" />>途中</option>
 		</select>
 		<c:if test="${bookinfo.book.isFavorite() == true}">
-		<c:set var="favorite_checked">checked</c:set>
+		<c:set var="favorite_checked">true</c:set>
 		</c:if>
 		お気に入り<input type="checkbox" class="form-control" name="favorite" 
 		value="<c:out value="${favorite_checked}" />" /><br>

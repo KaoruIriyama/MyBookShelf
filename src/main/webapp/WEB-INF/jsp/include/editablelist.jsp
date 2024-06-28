@@ -29,7 +29,7 @@
 			<tr>
 			<td scope="row">
 			<input type="checkbox" class="checks" name="bookinfo" 
-				value="${bookinfo}" onclick="checkAllorchecks()"></td>
+				value="${bookinfo.book.getId()}" onclick="checkAllorchecks()"></td>
 			<%--name属性を配列にすることでcheckboxで複数選択された値をpost出来る --%>
 			<td><input type="text" class="form-control" name="title" 
 				value="<c:out value="${bookinfo.book.getTitle()}" />" required/></td>
@@ -37,21 +37,21 @@
 		氏名<input type="search" class="form-control" name="authorname" 
 				value="<c:out value="${author.name.getValue()}"/>"/>
 			<c:choose>
-			<c:when test="${author.profession.ordinal() == 0}">
-			<c:set var="author_checked">checked</c:set></c:when>
-			<c:when test="${author.profession.ordinal() == 1}">
-			<c:set var="translater_checked">checked</c:set></c:when>
-			<c:when test="${author.profession.ordinal() == 2}">
-			<c:set var="editer_checked">checked</c:set></c:when>
-			<c:when test="${author.profession.ordinal() == 3}">
-			<c:set var="writer_checked">checked</c:set></c:when>
-			<c:when test="${author.profession.ordinal() == 4}">
-			<c:set var="storyteller_checked">checked</c:set></c:when>
-			<c:when test="${author.profession.ordinal() == 5}">
-			<c:set var="artist_checked">checked</c:set></c:when>
-			<c:when test="${author.profession.ordinal() == 6}">
-			<c:set var="other_checked">checked</c:set></c:when>
-		</c:choose>
+				<c:when test="${author.profession.ordinal() == 0}">
+				<c:set var="author_checked">checked</c:set></c:when>
+				<c:when test="${author.profession.ordinal() == 1}">
+				<c:set var="translater_checked">checked</c:set></c:when>
+				<c:when test="${author.profession.ordinal() == 2}">
+				<c:set var="editer_checked">checked</c:set></c:when>
+				<c:when test="${author.profession.ordinal() == 3}">
+				<c:set var="writer_checked">checked</c:set></c:when>
+				<c:when test="${author.profession.ordinal() == 4}">
+				<c:set var="storyteller_checked">checked</c:set></c:when>
+				<c:when test="${author.profession.ordinal() == 5}">
+				<c:set var="artist_checked">checked</c:set></c:when>
+				<c:when test="${author.profession.ordinal() == 6}">
+				<c:set var="other_checked">checked</c:set></c:when>
+			</c:choose>
 		:<select name="authorprof" class="form-control" required>
 			<option value="Author" <c:out value="${author_checked}" />>
 			著者</option>
@@ -73,17 +73,39 @@
 				value="<c:out value="${bookinfo.book.getPublishDate()}" />" required></td>
 			<td><input type="search" class="form-control" name="publisher" 
 				value="<c:out value="${bookinfo.book.getPublisher()}" />" required></td>
-			<td><input type="search" class="form-control" name="pages" 
-				value="<c:out value="${bookinfo.book.getISBN()}" />" required></td><%--一部出てない--%>
-			<td><input type="text" class="form-control" name="isbn" 
-				value="<c:out value="${bookinfo.book.getRegistationTime()}" />" required></td><%--出てない--%>
-			<td><input type="text" class="form-control" name="ndc" 
-				value="<c:out value="${bookinfo.book.getStatus().getName()}" />" required></td><%--出てない--%>
-			<td><input type="number" class="form-control" name="price" 
-				value="<c:out value="${bookinfo.book.isFavorite()}" />" required></td><%--出てない--%>
-			<td><a href="DetailServlet?info=${bookinfo}">詳細</a></td>
+			<td><input type="search" class="form-control" name="isbn" 
+				value="<c:out value="${bookinfo.book.getISBN()}" />" required></td>
+			<td><input type="text" class="form-control" name="registationtime" 
+				value="<c:out value="${bookinfo.book.getRegistationTime()}" />" required></td>
+				
+			<td>
+			<c:choose><%--条件式でエラー--%>
+			<c:when test="${bookinfo.book.getStatus() == BookStatus.Unread">
+			<c:set var="unread_checked">checked</c:set>
+			</c:when>
+			<c:when test="${bookinfo.book.getStatus() == BookStatus.Finished">
+			<c:set var="finished_checked">checked</c:set>
+			</c:when>
+			<c:when test="${bookinfo.book.getStatus() == BookStatus.Reading">
+			<c:set var="reading_checked">checked</c:set>
+			</c:when>
+			</c:choose>
+			<input type="text" class="form-control" name="status" 
+				value="<c:out value="${bookinfo.book.getStatus().getName()}" />" required>
+			<select name="status" class="form-control" required>
+			<option value="unread" <c:out value="${unread_checked}"/>>未読</option>
+			<option value="finished" <c:out value="${finished_checked}"/>>既読</option>
+			<option value="reading" <c:out value="${reading_checked}"/>>読書中</option>
+			</td>
+			<td><c:if test="${bookinfo.book.isFavorite() == true}"><c:set var="favorite_checked">true</c:set></c:if>
+				<input type="checkbox" class="form-control" name="favorite" 
+				value="<c:out value="${favorite_checked}" />" required/></td>
+			<td><a href="DetailServlet?id=${bookinfo.book.getId()}">詳細</a></td>
+			<%--<td><a href="DetailServlet?info=${bookinfo}">詳細</a></td>--%>
 			<%--新規登録画面ではまだIDがないがどうするか？-> 普通にbookinfoインスタンスをリクエストパラメータにする
 			-> 画面遷移はしたがデータが受け継がれていない--%>
+			<%--普通にリスト画面に全項目をのせて、デフォルトでは一部項目だけ表示されるようにする
+			表示・非表示はボタンで切り替える --%>
 			</tr>
 		</c:forEach>
 		</tbody>

@@ -9,8 +9,9 @@
 <jsp:include page="/WEB-INF/jsp/include/bootstrap.jsp"></jsp:include>
 <title>MyBookShelf 蔵書検索結果</title>
 </head>
-<body>
+<body class="d-flex flex-column vh-100">
 <jsp:include page="/WEB-INF/jsp/include/header.jsp"></jsp:include>
+<main class="mb-auto">
 	<div class="container">
 		<div class="row justify-content-center">
 			<div class="col-sm-12">
@@ -25,13 +26,14 @@
 					<div class="btn-group" role="group">
 					<input type="submit" class="btn btn-info" value="編集" 
 					formaction="EditServlet"/>
-					<input type="button" class="btn btn-info" value="再検索" 
+					<input type="submit" class="btn btn-info" value="再検索" 
 					formaction="ListSearchServlet"/>
 					</div>
 				</div>
 			</form>	
 		</div>
 	</div>
+</main>
 <jsp:include page="/WEB-INF/jsp/include/footer.jsp"></jsp:include>
 </body>
 </html>

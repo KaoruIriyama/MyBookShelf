@@ -94,7 +94,7 @@
 		<c:forEach var="bookinfo" items="${infolist}" varStatus="vs">
 			<tr>
 			<td scope="row"><input type="checkbox" class="checks" name="bookinfo" 
-			value="${bookinfo}" onclick="checkAllorchecks()"></td>
+			value="${bookinfo.book.getId()}" onclick="checkAllorchecks()"></td>
 			<%--name属性を配列にすることでcheckboxで複数選択された値をpost出来る --%>
 			<td><c:out value="${bookinfo.book.getTitle()}" /></td>
 			<td><c:forEach var="author" items="${bookinfo.authors}">
@@ -107,8 +107,9 @@
 			<td><c:out value="${bookinfo.book.getRegistationTime().toString()}" /></td>
 			<td><c:out value="${bookinfo.book.getStatus().getName()}" /></td>
 			<td><c:out value="${bookinfo.book.isFavorite()}" /></td>
-			<%--<td><a href="DetailServlet?id=${bookinfo.book.getId()}">詳細</a></td>--%>
-			<td><a href="DetailServlet?info=${bookinfo}">詳細</a></td>
+			
+			<td><a href="DetailServlet?id=${bookinfo.book.getId()}">詳細</a></td>
+			<%--<td><a href="DetailServlet?info=${bookinfo}">詳細</a></td>--%>
 			<%--新規登録画面ではまだIDがないがどうするか？-> 普通にbookinfoインスタンスをリクエストパラメータにする
 			-> 画面遷移はしたがデータが受け継がれていない--%>
 			</tr>

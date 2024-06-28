@@ -26,7 +26,6 @@ public class EditServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		//mainページでリストが表示されている時にページ遷移が出来ない問題
 		String[] sArray = request.getParameterValues("bookinfo");
 		List<Integer> idList = new ArrayList<>();
 		for(int i = 0; i < sArray.length; i++) {idList.add(Integer.parseInt(sArray[i]));}

@@ -9,8 +9,9 @@
 <jsp:include page="/WEB-INF/jsp/include/bootstrap.jsp"></jsp:include>
 <title>MyBookShelf 登録</title>
 </head>
-<body>
+<body class="d-flex flex-column vh-100">
 <jsp:include page="/WEB-INF/jsp/include/header.jsp"></jsp:include>
+<main class="mb-auto">
 	<div class="container-fluid">
 		<div class="row justify-content-center">
 			<div class="col-sm-12">
@@ -27,11 +28,12 @@
 				<div class="btn-group" role="group">
 					<input type="submit" class="btn btn-info" value="登録"
 						onclick="return confirm(以下の内容を登録しますか？);">
-					<input type="reset" class="btn btn-info" value="リセット"><%--はりぼて --%>
+					<input type="reset" class="btn btn-info" value="リセット">
 				</div>
 			</div>
 		</form>
 	</div>
+</main>
 <jsp:include page="/WEB-INF/jsp/include/footer.jsp"></jsp:include>
 <script src="${pageContext.request.contextPath}/JavaScript/checkbox.js"></script>
 <script src="${pageContext.request.contextPath}/JavaScript/handleSubmitbyChecked.js"></script>

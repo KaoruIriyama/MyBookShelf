@@ -12,7 +12,7 @@ class="breadcrumb-item-activeを指定するとそのリンクはアクティブ
 <header>
 <div class="row">
 	<div class="col-12">
-		<nav class="navbar fixed-top navbar-dark bg-default">
+		<%--<nav class="navbar fixed-top navbar-dark bg-default">
 			<button class="navbar-dark navbar-toggler"
 				data-toggle="collapse"
 				data-target="#ex-content">
@@ -21,7 +21,8 @@ class="breadcrumb-item-activeを指定するとそのリンクはアクティブ
 					<input class="form-control" type="text" placeholder="search">
 					<button class="btn btn-info">検索</button>
 				</form>
-		</nav>
+		</nav>--%>
+		<h4 class="text-dark textalign-center">MyBookShelf</h4>
 		<%--<div class="collapse" id="ex-content">
 			<div class="bg-default text-info p-4">
 			<h4>エクスターナルコンテンツ</h4>

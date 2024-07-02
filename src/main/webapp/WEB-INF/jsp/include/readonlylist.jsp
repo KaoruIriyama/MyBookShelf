@@ -109,9 +109,6 @@
 			<td><c:out value="${bookinfo.book.isFavorite()}" /></td>
 			
 			<td><a href="DetailServlet?id=${bookinfo.book.getId()}">詳細</a></td>
-			<%--<td><a href="DetailServlet?info=${bookinfo}">詳細</a></td>--%>
-			<%--新規登録画面ではまだIDがないがどうするか？-> 普通にbookinfoインスタンスをリクエストパラメータにする
-			-> 画面遷移はしたがデータが受け継がれていない--%>
 			</tr>
 		</c:forEach>
 		</tbody>

@@ -18,7 +18,7 @@
 			<h1>書籍新規登録</h1>
 			</div>
 			<div>
-			<h2><c:if test="${not empty Msg}"><c:out value="${Msg }"/></c:if></h2>
+			<h2><c:if test="${not empty Msg}"><c:out value="${Msg}"/></c:if></h2>
 			</div>
 		</div>
 	<%--ここで空欄のまま送信ボタンを押すと警告が出るようにしたい --%>

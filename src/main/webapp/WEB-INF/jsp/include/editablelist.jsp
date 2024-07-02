@@ -31,10 +31,10 @@
 			<input type="checkbox" class="checks" name="bookinfo" 
 				value="${bookinfo.book.getId()}" onclick="checkAllorchecks()"></td>
 			<%--name属性を配列にすることでcheckboxで複数選択された値をpost出来る --%>
-			<td><input type="text" class="form-control" name="title" 
+			<td><input type="text" class="form-control" name="title" placeholder="タイトル"
 				value="<c:out value="${bookinfo.book.getTitle()}" />" required/></td>
 			<td><c:forEach var="author" items="${bookinfo.authors}">
-		氏名<input type="search" class="form-control" name="authorname" 
+		氏名<input type="search" class="form-control" name="authorname" placeholder="著者名"
 				value="<c:out value="${author.name.getValue()}"/>"/>
 			<c:choose>
 				<c:when test="${author.profession.ordinal() == 0}">
@@ -52,50 +52,46 @@
 				<c:when test="${author.profession.ordinal() == 6}">
 				<c:set var="other_checked">checked</c:set></c:when>
 			</c:choose>
-		:<select name="authorprof" class="form-control" required>
-			<option value="Author" <c:out value="${author_checked}" />>
-			著者</option>
-			<option value="Translater" <c:out value="${translater_checked}" />>
-			訳者</option>
-			<option value="Editer" <c:out value="${editer_checked}" />>
-			編者</option>
-			<option value="Writer" <c:out value="${writer_checked}" />>
-			筆記者</option>
-			<option value="StoryTeller" <c:out value="${storyteller_checked}" />>
-			原作者</option>
-			<option value="Artist" <c:out value="${artist_checked}" />>
-			作画者</option>
-			<option value="Other" <c:out value="${other_checked}" />>
-			その他</option>
-		</select><br>
+			:<select name="authorprof" class="form-control" required>
+				<option value="Author" <c:out value="${author_checked}" />>
+				著者</option>
+				<option value="Translater" <c:out value="${translater_checked}" />>
+				訳者</option>
+				<option value="Editer" <c:out value="${editer_checked}" />>
+				編者</option>
+				<option value="Writer" <c:out value="${writer_checked}" />>
+				筆記者</option>
+				<option value="StoryTeller" <c:out value="${storyteller_checked}" />>
+				原作者</option>
+				<option value="Artist" <c:out value="${artist_checked}" />>
+				作画者</option>
+				<option value="Other" <c:out value="${other_checked}" />>
+				その他</option>
+			</select><br>
 			</c:forEach></td>
-			<td><input type="date" class="form-control" name="publishdate" 
+			<td><input type="date" class="form-control" name="publishdate" placeholder=""
 				value="<c:out value="${bookinfo.book.getPublishDate()}" />" required></td>
-			<td><input type="search" class="form-control" name="publisher" 
+			<td><input type="search" class="form-control" name="publisher" placeholder="出版者"
 				value="<c:out value="${bookinfo.book.getPublisher()}" />" required></td>
-			<td><input type="search" class="form-control" name="isbn" 
+			<td><input type="search" class="form-control" name="isbn" placeholder="ISBN(ハイフンなし)"
 				value="<c:out value="${bookinfo.book.getISBN()}" />" required></td>
-			<td><input type="text" class="form-control" name="registationtime" 
+			<td><input type="text" class="form-control" name="registationtime" placeholder=""
 				value="<c:out value="${bookinfo.book.getRegistationTime()}" />" required></td>
 				
 			<td>
-			<c:choose><%--条件式でエラー--%>
-			<c:when test="${bookinfo.book.getStatus() == BookStatus.Unread">
-			<c:set var="unread_checked">checked</c:set>
-			</c:when>
-			<c:when test="${bookinfo.book.getStatus() == BookStatus.Finished">
-			<c:set var="finished_checked">checked</c:set>
-			</c:when>
-			<c:when test="${bookinfo.book.getStatus() == BookStatus.Reading">
-			<c:set var="reading_checked">checked</c:set>
-			</c:when>
-			</c:choose>
-			<input type="text" class="form-control" name="status" 
-				value="<c:out value="${bookinfo.book.getStatus().getName()}" />" required>
-			<select name="status" class="form-control" required>
-			<option value="unread" <c:out value="${unread_checked}"/>>未読</option>
-			<option value="finished" <c:out value="${finished_checked}"/>>既読</option>
-			<option value="reading" <c:out value="${reading_checked}"/>>読書中</option>
+			<c:choose>
+				<c:when test="${bookinfo.book.getStatus().ordinal() == 0}">
+				<c:set var="unread_checked">checked</c:set></c:when>
+				<c:when test="${bookinfo.book.getStatus().ordinal() == 1}">
+				<c:set var="finished_checked">checked</c:set></c:when>
+				<c:when test="${bookinfo.book.getStatus().ordinal() == 2}">
+				<c:set var="reading_checked">checked</c:set></c:when>
+			</c:choose>	
+			<select name="bookstatus" class="form-control" required>
+				<option value="Unread" <c:out value="${unread_checked}" />>未読</option>
+				<option value="Finished" <c:out value="${finished_checked}" />>既読</option>
+				<option value="Reading" <c:out value="${reading_checked}" />>途中</option>
+			</select>
 			</td>
 			<td><c:if test="${bookinfo.book.isFavorite() == true}"><c:set var="favorite_checked">true</c:set></c:if>
 				<input type="checkbox" class="form-control" name="favorite" 

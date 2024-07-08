@@ -6,6 +6,7 @@
 <html>
 <head>
 <jsp:include page="/WEB-INF/jsp/include/bootstrap.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/jsp/include/jQuery.jsp"></jsp:include>
 <title>MyBookShelf 編集リスト</title>
 </head>
 <body class="d-flex flex-column vh-100">

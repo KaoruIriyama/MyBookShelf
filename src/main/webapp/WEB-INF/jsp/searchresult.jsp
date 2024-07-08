@@ -7,6 +7,7 @@
 <html>
 <head>
 <jsp:include page="/WEB-INF/jsp/include/bootstrap.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/jsp/include/jQuery.jsp"></jsp:include>
 <title>MyBookShelf 蔵書検索結果</title>
 </head>
 <body class="d-flex flex-column vh-100">

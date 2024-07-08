@@ -95,7 +95,7 @@
 		</c:if>
 		お気に入り<input type="checkbox" class="form-control" name="favorite" 
 		value="<c:out value="${favorite_checked}" />" /><br>
-		コメント<textarea  class="form-control" name="comment" required>
+		コメント<textarea  class="form-control" name="comment">
 		<c:out value="${bookinfo.book.getComment()}"></c:out></textarea>
 		
 			<div class="col-12 m-3">

@@ -1,7 +1,7 @@
 function checkAllorchecks() {
 	const checkall = document.getElementById("checksAll");
 	const checks = document.querySelectorAll(".checks");
-	console.log(checks);
+//	console.log(checks);
 	// 全て選択のチェックボックスがクリックされた時
 	checkall.addEventListener('click', () => {
 	  for (val of checks) {

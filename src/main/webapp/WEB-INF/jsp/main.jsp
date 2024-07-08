@@ -8,6 +8,7 @@
 <html>
 <head>
 <jsp:include page="/WEB-INF/jsp/include/bootstrap.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/jsp/include/jQuery.jsp"></jsp:include>
 <title>MyBookShelf 蔵書一覧</title>
 </head>
 <body class="d-flex flex-column vh-100">
@@ -36,6 +37,7 @@
 				フォワード・リダイレクトを見直せ--%>
 				<%--2024/06/24　このボタンが要素として認識されていない？ --%>
 				<%--2024/06/28　編集ボタンは押せたがsArrayがnull --%>
+				<%--2024/07/04 画面遷移はしたが選択した書籍データが表示されていない！！--%>
 				</div>
 			</div>
 		</form>
@@ -43,7 +45,5 @@
 </main>
 
 <jsp:include page="/WEB-INF/jsp/include/footer.jsp"></jsp:include>
-<script src="${pageContext.request.contextPath}/JavaScript/checkbox.js"></script>
-<script src="${pageContext.request.contextPath}/JavaScript/handleSubmitbyChecked.js"></script>
 </body>
 </html>

@@ -74,22 +74,10 @@
 	<%--<%if(pagination != null){ %>
 	 <%=pagination %>
 	 <%} %>--%>
-	<table class="table table-striped">
-		<thead class="thead-dark">
-			<tr>
-			<th scope="col">選択<br>
-			<input type="checkbox" id="checksAll" name="books"></th>
-			<th scope="col">タイトル</th>
-			<th scope="col">著者</th>
-			<th scope="col">出版日付</th>
-			<th scope="col">出版社</th>
-			<th scope="col">ISBN</th>
-			<th scope="col">登録時刻</th>
-			<th scope="col">ステータス</th>
-			<th scope="col">お気に入り</th>
-			<th scope="col">詳細</th>
-			</tr>
-		</thead>
+	<input type="checkbox" id="checkDetail" onchange="showDetail()">
+	<label for="checkDetail"></label>全表示</input>
+	<table class="table table-responsive table-striped table-hover">
+		<jsp:include page="/WEB-INF/jsp/include/tablehead.jsp"></jsp:include>
 		<tbody>
 		<c:forEach var="bookinfo" items="${infolist}" varStatus="vs">
 			<tr>
@@ -97,18 +85,46 @@
 			value="${bookinfo.book.getId()}" onclick="checkAllorchecks()"></td>
 			<%--name属性を配列にすることでcheckboxで複数選択された値をpost出来る --%>
 			<td><c:out value="${bookinfo.book.getTitle()}" /></td>
-			<td><c:forEach var="author" items="${bookinfo.authors}">
+			<td>
+			<c:forEach var="author" items="${bookinfo.authors}">
 			<c:out value="${author.name}"/>:
 			<c:out value="${author.profession.getPFName()}" /><br>
-			</c:forEach></td>
+			</c:forEach>
+			</td>
 			<td><c:out value="${bookinfo.book.getPublishDate()}" /></td>
 			<td><c:out value="${bookinfo.book.getPublisher()}" /></td>
+			<td><c:out value="${bookinfo.book.getPages()}" /></td>
 			<td><c:out value="${bookinfo.book.getISBN()}" /></td>
+			<td><c:out value="${bookinfo.book.getNDC()}" /></td>
+			<td><c:out value="${bookinfo.book.getPrice()}" /></td>
 			<td><c:out value="${bookinfo.book.getRegistationTime().toString()}" /></td>
 			<td><c:out value="${bookinfo.book.getStatus().getName()}" /></td>
-			<td><c:out value="${bookinfo.book.isFavorite()}" /></td>
-			
-			<td><a href="DetailServlet?id=${bookinfo.book.getId()}">詳細</a></td>
+			<td><c:if test="${bookinfo.book.isFavorite() == true}">
+			<c:out value="★"/></c:if></td>
+			<%--ボタンを押してもダイアログが表示できない --%>
+			<td>
+			<c:if test="${bookinfo.book.getComment().length() >= 3}">
+				<button type="button" class="btn btn-success" 
+				data-toggle="modal" data-target="#comment-modal">コメント</button>
+				<div class="modal fade" id="comment-modal">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">コメント詳細</h5>
+							</div>
+							<div class="modal-body">
+								<c:out value="${bookinfo.book.getComment()}"></c:out>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-warning"
+								 data-dismiss="modal">閉じる</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</c:if>
+			</td>
+			<%--<td><a href="DetailServlet?id=${bookinfo.book.getId()}">詳細</a></td>--%>
 			</tr>
 		</c:forEach>
 		</tbody>
@@ -117,6 +133,8 @@
 	</c:if>
 	
 	<c:if test="${not empty Pagenation}"><c:out value="${Pagenation}"/></c:if>
-	
+
+	<script src="${pageContext.request.contextPath}/JavaScript/checkbox.js"></script>
+	<script src="${pageContext.request.contextPath}/JavaScript/handleSubmitbyChecked.js"></script>
 	
 	

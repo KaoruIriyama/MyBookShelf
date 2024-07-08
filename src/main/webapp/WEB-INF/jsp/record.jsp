@@ -7,6 +7,7 @@
 <html>
 <head>
 <jsp:include page="/WEB-INF/jsp/include/bootstrap.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/jsp/include/jQuery.jsp"></jsp:include>
 <title>MyBookShelf 登録</title>
 </head>
 <body class="d-flex flex-column vh-100">
@@ -35,7 +36,5 @@
 	</div>
 </main>
 <jsp:include page="/WEB-INF/jsp/include/footer.jsp"></jsp:include>
-<script src="${pageContext.request.contextPath}/JavaScript/checkbox.js"></script>
-<script src="${pageContext.request.contextPath}/JavaScript/handleSubmitbyChecked.js"></script>
 </body>
 </html>

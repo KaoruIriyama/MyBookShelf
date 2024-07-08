@@ -8,22 +8,11 @@
 
 <%--editlist.jspとrecord.jspに共通の編集可能リスト--%>
 <%--ここから共通--%>
-	<table class="table-responsive table-striped ">
-		<thead class="thead-dark">
-			<tr>
-			<th scope="col">選択<br>
-			<input type="checkbox" id="checksAll" name="books"></th>
-			<th scope="col">タイトル</th>
-			<th scope="col">著者</th>
-			<th scope="col">出版日付</th>
-			<th scope="col">出版社</th>
-			<th scope="col">ISBN</th>
-			<th scope="col">登録時刻</th>
-			<th scope="col">ステータス</th>
-			<th scope="col">お気に入り</th>
-			<th scope="col">詳細</th>
-			</tr>
-		</thead>
+	<input type="checkbox" id="checkDetail" onchange="showDetail()">
+	<%--showDetail()が機能していない --%>
+	<label for="checkDetail"></label>全表示</input>
+	<table class="table table-responsive table-striped table-hover">
+		<jsp:include page="/WEB-INF/jsp/include/tablehead.jsp"></jsp:include>
 		<tbody>
 		<c:forEach var="bookinfo" items="${infolist}" varStatus="vs">
 			<tr>
@@ -33,7 +22,8 @@
 			<%--name属性を配列にすることでcheckboxで複数選択された値をpost出来る --%>
 			<td><input type="text" class="form-control" name="title" placeholder="タイトル"
 				value="<c:out value="${bookinfo.book.getTitle()}" />" required/></td>
-			<td><c:forEach var="author" items="${bookinfo.authors}">
+			<td>
+			<c:forEach var="author" items="${bookinfo.authors}">
 		氏名<input type="search" class="form-control" name="authorname" placeholder="著者名"
 				value="<c:out value="${author.name.getValue()}"/>"/>
 			<c:choose>
@@ -68,16 +58,22 @@
 				<option value="Other" <c:out value="${other_checked}" />>
 				その他</option>
 			</select><br>
-			</c:forEach></td>
+			</c:forEach>
+			</td>
 			<td><input type="date" class="form-control" name="publishdate" placeholder=""
 				value="<c:out value="${bookinfo.book.getPublishDate()}" />" required></td>
 			<td><input type="search" class="form-control" name="publisher" placeholder="出版者"
 				value="<c:out value="${bookinfo.book.getPublisher()}" />" required></td>
+			<td><input type="number" class="form-control" name="pages" placeholder=""
+				value="<c:out value="${bookinfo.book.getPages()}" />" required></td>
 			<td><input type="search" class="form-control" name="isbn" placeholder="ISBN(ハイフンなし)"
 				value="<c:out value="${bookinfo.book.getISBN()}" />" required></td>
+			<td><input type="text" class="form-control" name="ndc" placeholder="日本十進法分類"
+				value="<c:out value="${bookinfo.book.getNDC()}" />"></td>
+			<td><input type="number" class="form-control" name="price" 
+				value="<c:out value="${bookinfo.book.getPrice()}"/>" required></td>
 			<td><input type="text" class="form-control" name="registationtime" placeholder=""
 				value="<c:out value="${bookinfo.book.getRegistationTime()}" />" required></td>
-				
 			<td>
 			<c:choose>
 				<c:when test="${bookinfo.book.getStatus().ordinal() == 0}">
@@ -93,10 +89,40 @@
 				<option value="Reading" <c:out value="${reading_checked}" />>途中</option>
 			</select>
 			</td>
-			<td><c:if test="${bookinfo.book.isFavorite() == true}"><c:set var="favorite_checked">true</c:set></c:if>
-				<input type="checkbox" class="form-control" name="favorite" 
-				value="<c:out value="${favorite_checked}" />" required/></td>
-			<td><a href="DetailServlet?id=${bookinfo.book.getId()}">詳細</a></td>
+			<td>
+			<c:if test="${bookinfo.book.isFavorite() == true}">
+				<c:set var="favorite_checked">true</c:set>
+			</c:if>
+			<input type="checkbox" class="form-control" name="favorite" 
+				value="<c:out value="${favorite_checked}" />" required/>
+			</td>
+			<%--ボタンを押してもダイアログが表示できない --%>
+			<td>
+			<c:if test="${bookinfo.book.getComment().length() >= 3}">
+				<button type="button" class="btn btn-success"  
+				data-toggle="modal" data-target="#comment-modal">コメント</button>
+				<div class="modal fade" id="comment-modal">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">コメント詳細</h5>
+							</div>
+							<div class="modal-body">
+								<textarea  class="form-control" name="comment">
+								<c:out value="${bookinfo.book.getComment()}"></c:out></textarea>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-warning"
+								 data-dismiss="modal">閉じる</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</c:if>
+			<%--<textarea  class="form-control" name="comment">
+				<c:out value="${bookinfo.book.getComment()}"></c:out></textarea>--%>
+			</td>
+			<%--<td><a href="DetailServlet?id=${bookinfo.book.getId()}">詳細</a></td>--%>
 			<%--<td><a href="DetailServlet?info=${bookinfo}">詳細</a></td>--%>
 			<%--新規登録画面ではまだIDがないがどうするか？-> 普通にbookinfoインスタンスをリクエストパラメータにする
 			-> 画面遷移はしたがデータが受け継がれていない--%>
@@ -106,3 +132,5 @@
 		</c:forEach>
 		</tbody>
 	</table>
+	<script src="${pageContext.request.contextPath}/JavaScript/checkbox.js"></script>
+	<script src="${pageContext.request.contextPath}/JavaScript/handleSubmitbyChecked.js"></script>

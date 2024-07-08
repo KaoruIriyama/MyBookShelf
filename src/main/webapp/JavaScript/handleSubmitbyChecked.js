@@ -5,5 +5,4 @@ function handleSubmitbyChecked(){
     	}else{
       		return true;
     	}
-	
 }

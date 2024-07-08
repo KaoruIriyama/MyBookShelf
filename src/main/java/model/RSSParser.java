@@ -15,6 +15,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -137,8 +138,8 @@ public class RSSParser {
 	}
 	
 	int integerPrettier(String pageStr, String s) {
-		//pageStrがnullなら0を、そうでないならStringを(余計な字sを取り除いて)intに変換したものを返す
-		return (pageStr != null? Integer.parseInt(pageStr.replace(s, "")) : 0);
+		//pageStrがnullか空文字なら0を、そうでないならStringを(余計な字sを取り除いて)intに変換したものを返す
+		return (StringUtils.isBlank(pageStr) ? 0 : Integer.parseInt(pageStr.replace(s, "")));
 	}
 	//NDC－apiの出版年月には「日」がないので、日付を1日として挿入するためのメソッド
 	//nullチェックも行う
@@ -150,9 +151,9 @@ public class RSSParser {
 	private boolean isMonth(String month) {
 		 boolean flag = false;
 		 //y.M.dの書式にあった文字列かどうか調べる
-		 if(month != null) {
+		 if((month.length() >= 5 & month.length() <= 10) || month != null) {//y.M.d~yyyy.MM.ddのの形
 			  try{ //存在しない日(例 2017/02/29)の場合はfalseとする
-			 flag = month.equals(fmt.format(fmt.parse(month)));
+			 flag = month.equals(fmt.format(fmt.parse(month)));//java.time.format.DateTimeParseException: Text '.1' could not be parsed at index 0
 			 }catch(DateTimeParseException e){
 				 e.printStackTrace();
 			 }

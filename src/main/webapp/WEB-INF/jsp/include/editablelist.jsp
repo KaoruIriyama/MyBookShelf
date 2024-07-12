@@ -17,6 +17,7 @@
 		<c:forEach var="bookinfo" items="${infolist}" varStatus="vs">
 			<tr>
 			<td scope="row">
+			<input type="hidden" name="bookhash" value="${bookinfo.hashCode()}"/><%--idのない新規登録時の書籍データにも対応するための隠しパラメータ --%>
 			<input type="checkbox" class="checks" name="bookinfo" 
 				value="${bookinfo.book.getId()}" onclick="checkAllorchecks()"></td>
 			<%--name属性を配列にすることでcheckboxで複数選択された値をpost出来る --%>
@@ -24,6 +25,7 @@
 				value="<c:out value="${bookinfo.book.getTitle()}" />" required/></td>
 			<td>
 			<c:forEach var="author" items="${bookinfo.authors}">
+			<input type="hidden" name="authorhash" value="${bookinfo.hashCode()}"/>
 		氏名<input type="search" class="form-control" name="authorname" placeholder="著者名"
 				value="<c:out value="${author.name.getValue()}"/>"/>
 			<c:choose>
@@ -96,7 +98,6 @@
 			<input type="checkbox" class="form-control" name="favorite" 
 				value="<c:out value="${favorite_checked}" />" required/>
 			</td>
-			<%--ボタンを押してもダイアログが表示できない --%>
 			<td>
 			<c:if test="${bookinfo.book.getComment().length() >= 3}">
 				<button type="button" class="btn btn-success"  

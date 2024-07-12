@@ -101,7 +101,7 @@
 			<td><c:out value="${bookinfo.book.getStatus().getName()}" /></td>
 			<td><c:if test="${bookinfo.book.isFavorite() == true}">
 			<c:out value="★"/></c:if></td>
-			<%--ボタンを押してもダイアログが表示できない --%>
+			<%--ボタンを押してもダイアログが表示できない ->解決。bootstrapのバージョンにあったJQueryをCDNで利用すると解決した--%>
 			<td>
 			<c:if test="${bookinfo.book.getComment().length() >= 3}">
 				<button type="button" class="btn btn-success" 
@@ -124,7 +124,6 @@
 				</div>
 			</c:if>
 			</td>
-			<%--<td><a href="DetailServlet?id=${bookinfo.book.getId()}">詳細</a></td>--%>
 			</tr>
 		</c:forEach>
 		</tbody>

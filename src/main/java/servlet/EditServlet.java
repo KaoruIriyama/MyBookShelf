@@ -27,16 +27,23 @@ public class EditServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String[] sArray = request.getParameterValues("bookinfo");
+		
 		List<Integer> idList = new ArrayList<>();
-		for(int i = 0; i < sArray.length; i++) {idList.add(Integer.parseInt(sArray[i]));}
+		for(int i = 0; i < sArray.length; i++) {
+			System.out.print(sArray[i] + " ");
+			idList.add(Integer.parseInt(sArray[i]));
+		}
 		
 		ViewLogic view  = new ViewLogic();
 		List<BookInfo> infolist = view.selectSome(idList);
+		System.out.println(infolist);//debug
 		request.setAttribute("infoList", infolist);
 		
 		String url = "WEB-INF/jsp/editlist.jsp";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 		dispatcher.forward(request, response);
+//		画面遷移はしたが選択した書籍データが表示されていない！！
+//		sArray内のidは正しいものが格納されている(5 6 7)
 	}
 
 	/**

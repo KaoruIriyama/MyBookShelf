@@ -61,9 +61,5 @@ public class Author implements DTO, Serializable{
 		
 		return this.getName().getValue() + ":" + this.getProfession().getPFName() + "\n";
 	}
-
-
-	//authorインスタンスにnullのフィールドが含まれていないときtrueを返す
-	//参考:https://qiita.com/omochisama/items/7a10295e23be92c1db76
 	
 }
